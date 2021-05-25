@@ -329,3 +329,9 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
     *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute getters *(and to the act if given in the query.)*
 
     > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, while you are querying you can give an **`id`** argument and set it to **`1234`**. On the other hand, in the resolver you would look for an id argument and fetch the User with the given id from the data source.
+
+## <a name="4.3">4.3</a> Schema
+
+Your Sage server’s data capability is defined by its data schema, which is just a list of entity types. That’s it. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
+
+In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document. 
