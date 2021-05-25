@@ -349,3 +349,15 @@ Sage consists from following components :
 ##  <a name="type-system">5.1</a> Type System
 
 The Sage Type system describes the capabilities of a Sage server and is used to determine if a query is valid. The type system also can be used to add strict type constraints on attributes to determine that values provided at runtime are valid an of a desired.
+
+### Schema
+
+A Sage service’s data capabilities are referred to as that service’s “*schema*”.
+
+A schema is defined as a list of entity types it supports.
+
+A Sage schema must itself be internally valid.
+
+All entity types within a Sage schema must have unique, string names. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types (including Scalar and Introspection types).
+
+All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
