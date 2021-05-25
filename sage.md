@@ -81,3 +81,35 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 Sage is a query-based, entity-focused data exchange *(or retrieval)* approach designed to simplify the communication for data interactions between different layers of applications by providing an expressive, intuitive and lightweight way. 
 
 The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
+
+For example, here is a sample Sage transaction *(request and response for a query)* ***:***
+
+***— Query :***
+
+```json
+{
+  "forrest": {
+  	"type": "Movie",
+  	"attr": ["name", "starring", "releaseYear"],
+  	"args": {
+ 			"id": 5
+  	}
+	}
+}
+```
+
+***— Result :***
+
+```json
+{
+  "data": {
+    "forrest": {
+      "name": "Forrest Gump",
+      "starring": "Tom Hanks",
+      "relaseYear": 1994
+    }
+  }
+}
+```
+
+In this example, we requested for a **Movie** entity with the argument **id: 5** and wanted attributes of **name**, **starring** and **releaseYear**. And as a result you got an object which contains only what you wanted.
