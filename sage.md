@@ -335,3 +335,15 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
 Your Sage server’s data capability is defined by its data schema, which is just a list of entity types. That’s it. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
 
 In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document. 
+
+# <a name="components">5</a> Components
+
+Sage consists from following components :
+
+- Type System
+- Introspection
+- Validation
+- Execution
+- Response
+
+##  
