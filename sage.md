@@ -432,3 +432,89 @@ The Boolean scalar type represents `true` or `false`. Response formats should us
 
 Sage servers may coerce non‐boolean raw values to `boolean` when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
 
+### Entity
+
+Sage Entities represent…
+
+- a list of named attributes *(= fields, properties)*, each of which yield a value *(optionally, a value of a specific type)* 
+- a list of named acts (= methods) each of which are functions that you can call from your query item *(and optionally with the arguments you give)*.
+
+Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
+
+All attributes and acts defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
+
+> #### Note
+>
+> Sage queries are not hierarchal. You request for entities individually, but you can also compose different entity types in one manually. It’s completely up to the end user who will develop a Sage service.
+>
+> We wanted to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just link to them. 
+>
+> We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. 
+>
+> We want Sage to be the data exchange protocol of future.
+
+For example, a `Person` entity type could be described as **:**
+
+*— just as an example, in a hypothetical format* **:**
+
+```scss
+entity Person {	id: @integer  name: @string	age: @integer}
+```
+
+Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
+
+> Do not forget that strict-types are optional. You don’t need to set a type constraint for each attribute you define.
+
+Only attributes and acts which are declared on that entity type may validly be queried on that entity.
+
+For example, selecting all the attributes of a `Person` **:**
+
+```json
+{	"someone": {    "type": "Person",    "attr": ["name", "age"],    "args": {      "id": 10    }  } }
+```
+
+Would yield the object:
+
+```json
+{  "someone": {  	"name": "Doruk Eray",  	"age": 17,	}}
+```
+
+While selecting a subset of attributes:
+
+```json
+{	"someone": {    "type": "Person",    "attr": ["name"],    "args": {      "id": 10    }  } }
+```
+
+Must only yield exactly that subset:
+
+```json
+{  "someone": {  	"name": "Doruk Eray",	}}
+```
+
+We see that an attribute of an entity type may be a scalar type, but it can also be an **list** or **entity**.
+
+For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
+
+```scss
+entity Person {  id: @integer  name: @string	age: @integer  occupation: @entity(User)}
+```
+
+And let’s say we only requested for `occupation` attribute. Here it returns an *object* **:**
+
+```json
+{  "someone": {  	"occupation": {    	"company": "Dorkodu",    	"role": "Founder",    	"startYear": 2017   	}	}}
+```
+
+#### Type Validation
+
+Entity types can be invalid if incorrectly defined. These set of rules must be adhered to by every Entity type in a Sage schema.
+
+1.  An Entity type must define one or more attributes.
+2.  For each attribute of an Entity type :
+    1.  The attribute must have a unique name within that Entity type; no two attributes may share the same name.
+    2.  The attribute must not have a name which begins with the character "**@**" *(at)*.
+    3.  The attribute must return a type which must be **output-able**. We will talk about this later.
+3.  For each act of an Entity type :
+    1.  The act must have a unique name within that Entity type; no two acts may share the same name.
+    2.  The act must not have a name which begins with the character "**@**" *(at)*.
+    3.  The act must be a callable *(function, method, closure etc.)*, and accept at least one parameter, which is the query object. 
