@@ -519,6 +519,38 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
     3.  The act must be a callable *(function, method, closure etc.)*, and accept at least one parameter, which is the query object. 
 
+### List
+
+A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type. 
+
+To denote that a field uses a List type, the item type also must be declared as a type constraint.
+
+*— For example, here we define an attribute which is a string list **:***
+
+```php
+/* 
+ * A psuedo attribute definition, with a list type constraint. 
+ */
+// Attribute(<name>, <resolver>, <options>)
+$attribute = new Attribute(  
+  'names',  
+  function ($query) {    
+  	// This will return an array of strings		
+  	return DataSource::getNames();	
+	},  
+	[    
+  	'type'        => Type::listOf( Type::string() ),    
+  	'description' => "Names list."  
+	]
+);
+```
+
+**Result Coercion**<br>Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
+
+If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in a the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
+
+For more information on the error handling process, see “Errors and Non‐Nullability” within the Execution section.
+
 ### Constraints
 
 #### Strict-type
@@ -685,4 +717,24 @@ Sage should only be positioned as a data exchange layer, not a wrapper around a 
 
 Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null. It’s not useful to abort and ignore the whole progress.
 
-### 
+## Reference Implementations
+
+To clarify the desired and ideal outcome of this proposal, we built reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu. 
+
+- ### Sage Server
+
+    You can see [here](https://libre.dorkodu.com/sage-php) the reference server implementation written in PHP.
+
+    **`GitHub`** [dorkodu/sage.php](https://github.com/dorkodu/sage.php)
+
+- ### Sage Client
+
+    You can see [here](https://libre.dorkodu.com/sage-js) the reference client implementation written in JavaScript.
+
+    **`GitHub`** [dorkodu/sage.js](https://github.com/dorkodu/sage.js)
+
+    > #### Note
+    >
+    > The Sage Proposal does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
+
+## 
