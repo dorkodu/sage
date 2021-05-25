@@ -566,15 +566,15 @@ This must be handled just like setting optional constraints on attributes. As si
 
 A Sage server supports introspection over its schema. The schema is queried using Sage itself, which makes it easy-to-use and flexible.
 
-Take an example query, there is a User type with three fields: id, name, and birthday.
+Take an example query, there is a User entity with three fields: id, name, and age.
 
 *— for example, given a server with the following type definition :*
 
 ```scss
 entity User {	
-  id: @integer  
-  name: @string
-  birthday: @string
+  id: @integer @nonNull
+  name: @string @nonNull
+  age: @string
 }
 ```
 
@@ -595,9 +595,22 @@ The query
 would return
 
 ```json
-{  "introspectionSample": {    "name": "User",    "attributes": [      {        "name": "id",        "type": {           "name": "String"        }      },    ],    "description": "",    "isDeprecated": ""  }}
+{  
+  "introspectionSample": {    
+    "name": "User",    
+    "attributes": [      
+      {        
+        "name": "id",        
+        "type": "@string",
+        "nonNull": true
+      }    
+    ],
+    "description": "The user entity type.",    
+    "isDeprecated": false
+  }
+}
 ```
 
 ### Reserved Names
 
-Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" (at symbol). We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ (at symbol).
+Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" *(at symbol)*. We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ *(at symbol)*.
