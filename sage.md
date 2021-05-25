@@ -518,3 +518,32 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
     1.  The act must have a unique name within that Entity type; no two acts may share the same name.
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
     3.  The act must be a callable *(function, method, closure etc.)*, and accept at least one parameter, which is the query object. 
+
+### Constraints
+
+#### Strict-type
+
+All attributes are weak-typed by default. This means they can be any type which must be JSON serializable.
+
+But optionally you can set strict-type constraints for an attribute. This means, the resolver function of that attribute must return a value of that specific type you want.
+
+Anyway, Sage will try to coerce the returned value to the desired type if possible.
+
+These are all possible types which you can set as a strict-type constraint **:**
+
+- **boolean**
+- **integer**
+- **string**
+- **float**
+- **entity** (must set a specific entity type)
+- **list** (must set an item type)
+
+#### Non-null
+
+By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+
+> #### Example
+>
+> Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
+>
+> If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
