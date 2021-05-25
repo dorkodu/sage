@@ -571,13 +571,25 @@ Take an example query, there is a User type with three fields: id, name, and bir
 *— for example, given a server with the following type definition :*
 
 ```scss
-entity User {	id: @integer  name: @string  birthday: @string}
+entity User {	
+  id: @integer  
+  name: @string
+  birthday: @string
+}
 ```
 
 The query
 
 ```json
-{  "introspectionSample": {    "type": "@entity",    "attr": ["name", "attributes", "description", "isDeprecated"],    "args": {      "name": "User"    }  }}
+{  
+  "introspectionSample": {    
+    "type": "@entity",
+    "attr": [ "name", "attributes", "description", "isDeprecated" ], 
+    "args": { 
+      "name": "User"
+    }  
+  }
+}
 ```
 
 would return
