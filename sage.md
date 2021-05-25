@@ -547,3 +547,11 @@ By default, all types in Sage are **nullable**; which means the **null** value i
 > Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
 >
 > If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
+
+### Descriptions
+
+Documentation is a boring part of API development. But it turned about to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
+
+To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think it is really useful.
+
+All Sage types, attributes, acts and other definitions which can be described should provide a description unless they are considered self descriptive.
