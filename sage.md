@@ -51,3 +51,28 @@ A conforming implementation of Sage must fulfill all normative requirements. Con
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative portions of this document are to be interpreted as described in [IETF RFC 2119](https://tools.ietf.org/html/rfc2119). These key words may appear in lowercase and still retain their meaning unless explicitly declared as non‐normative.
 
 A conforming implementation of Sage may provide additional functionality, but must not where explicitly disallowed or would otherwise result in non‐conformance.
+
+### Non-normative Portions
+
+All contents of this document are normative except portions explicitly declared as non‐normative.
+
+> This is an example of a non-normative explanation, or author’s opinion.
+
+Examples in this document are non‐normative, and are presented to help understanding of introduced concepts and the behavior of normative portions of the specification. Examples are either introduced explicitly in prose (e.g. “for example”) or are set apart in example or counter‐example blocks, like these :
+
+```js
+// This is an example of a non-normative code sample.
+console.log("Hello, World!");
+```
+
+Code examples in this document are for providing real-life samples, but does not have to be from a real implementation. We created reference implementations, and recommend you checking out them.
+
+> #### Example
+>
+> This is an example of a non-normative example.
+
+Notes in this document are non‐normative, and are presented to clarify intent, draw attention to potential edge‐cases and pit‐falls, and answer common questions that arise during implementation. Notes are either introduced explicitly in prose (e.g. “**Note :**“) or are set apart in a note block, like this:
+
+> #### Note
+> This is an example of a non‐normative note.
+
