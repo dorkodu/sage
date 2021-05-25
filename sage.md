@@ -555,3 +555,9 @@ Documentation is a boring part of API development. But it turned about to be a k
 To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think it is really useful.
 
 All Sage types, attributes, acts and other definitions which can be described should provide a description unless they are considered self descriptive.
+
+### Deprecation
+
+Attributes or acts in an entity may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
+
+This must be handled just like setting optional constraints on attributes. As simple as declaring the ‘**deprecated’** setting as **true**.
