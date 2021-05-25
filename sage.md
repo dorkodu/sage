@@ -561,3 +561,27 @@ All Sage types, attributes, acts and other definitions which can be described sh
 Attributes or acts in an entity may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
 
 This must be handled just like setting optional constraints on attributes. As simple as declaring the ‘**deprecated’** setting as **true**.
+
+## <a name="introspection">5.2</a> Introspection
+
+A Sage server supports introspection over its schema. The schema is queried using Sage itself, which makes it easy-to-use and flexible.
+
+Take an example query, there is a User type with three fields: id, name, and birthday.
+
+*— for example, given a server with the following type definition :*
+
+```scss
+entity User {	id: @integer  name: @string  birthday: @string}
+```
+
+The query
+
+```json
+{  "introspectionSample": {    "type": "@entity",    "attr": ["name", "attributes", "description", "isDeprecated"],    "args": {      "name": "User"    }  }}
+```
+
+would return
+
+```json
+{  "introspectionSample": {    "name": "User",    "attributes": [      {        "name": "id",        "type": {           "name": "String"        }      },    ],    "description": "",    "isDeprecated": ""  }}
+```
