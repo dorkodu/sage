@@ -624,3 +624,43 @@ All types in the introspection system provide a `description` attribute of type 
 To support the effort for backwards compatibility, any piece of Sage type system (entity type, attribute and act) can indicate whether or not they are deprecated (**isDeprecated :** *boolean*) and a description of why it is deprecated (**deprecationReason :** *string*).
 
 Tools built using Sage introspection should respect deprecation by discouraging deprecated use through information hiding or developer‐facing warnings.
+
+### Schema Introspection
+
+The schema introspection system is accessible from the meta‐fields `__schema` and `__type` which are accessible from the type of the root of a query operation.
+
+These fields are implicit and do not appear in the fields list in the root type of the query operation.
+
+The schema of the Sage introspection system **:**
+
+```scss
+entity @schema {  
+  entities: @list("@entity")
+}
+
+entity @entity {  
+  name: @string @nonNull
+  description: @string
+  attributes: @list("@attribute") @nonNull
+  isDeprecated: @boolean
+  deprecationReason: @string
+}
+
+entity @attribute {
+  name: @string @nonNull
+  description: @string
+  type: @typekind
+  nonNull: @boolean
+  isDeprecated: @boolean
+  deprecationReason: @string
+}
+
+entity @act {
+  name: @string @nonNull
+  description: @string
+  isDeprecated: @boolean
+  deprecationReason: @string
+}
+```
+
+#### 
