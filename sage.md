@@ -661,6 +661,12 @@ entity @act {
 }
 ```
 
+# Validation
+
+# Execution
+
+# Response
+
 # Notes
 
 This is the section for notes from author(s). Some non-classified rules, features or philosophy behind Sage are mentioned here. 
