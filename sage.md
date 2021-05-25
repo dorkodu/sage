@@ -231,3 +231,47 @@ Each entity can have any number of attributes and acts. Attributes are **key-val
       ]
     );
     ```
+
+## <a name="4.2">4.2</a> Query
+
+Sage is a query-based approach for data exchange. 
+
+The client requests the data it needs from a Sage service with a structured query document that is created according to certain rules. Basically, a query document contains a list of query items all of which describes an entity instance needed, with no limit on the number of query items. 
+
+But how to query?
+
+> #### Note
+>
+> Sage **does not** have a *special query language*.
+>
+> We think it is *unnecessary* to add this burden while being able to use one of the common formats. So we decided to use ***JSON***, which has advantages such as being *universal, lightweight and easy to use*. Also, JSON is commonly used in the software ecosystem, which means it has wide support *(such as tools, helper libraries)* on different languages and platforms.
+>
+> Thus, the query and the result are expressed using the JSON format. By using a universal format and not inventing a new query language, we keep Sage lightweight, easily approachable and implementable.
+
+Each query item must be identified with a string name which must be unique within the query document, and expressed as a JSON object which the name points to.
+
+*— Below here is an example of a transaction (query and response) requesting a single entity :*
+
+```json
+{
+  "doruk": {
+    "type": "User",
+    "attr": ["name", "email", "age"],
+    "args": {
+      "handle": "@doruk"
+    }
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "doruk": {
+      "name": "Doruk Eray",
+      "email": "doruk@dorkodu.com",
+      "age": 16
+    }
+  }
+}
+```
