@@ -76,3 +76,8 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 > #### Note
 > This is an example of a non‐normative note.
 
+# <a name="overview">2</a> Overview
+
+Sage is a query-based, entity-focused data exchange *(or retrieval)* approach designed to simplify the communication for data interactions between different layers of applications by providing an expressive, intuitive and lightweight way. 
+
+The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
