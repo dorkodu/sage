@@ -4,29 +4,43 @@ May 2021 - Working Draft
 
 **`Author`**<br>  **Doruk Eray**<br>  Founder and Chief @ [Dorkodu](https://dorkodu.com).<br>  Self-taught Software Engineer.
 
-  *Website **:*** [doruk.dorkodu.com](https://doruk.dorkodu.com)<br>  *Email **:*** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
+  Website **:** [doruk.dorkodu.com](https://doruk.dorkodu.com)<br>  Email **:** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
 
 ---
 
 ## Contents
 
 1. **[Introduction](#introduction)**
+
 2. **[Overview](#overview)**
+
 3. **[Principles](#principles)**
+
 4. **[Concepts](#concepts)**
+    
     1. **[Entity](#4.1)**
     2. **[Schema](#4.2)**
     3. **[Query](#4.3)**
-5. **[Components](components)**
+    
+5. **[Components](#components)** (WIP)
+    
     1. **[Type System](#type-system)**
     2. **[Introspection](#introspection)**
     3. **[Validation](#validation)**
     4. **[Execution](#execution)**
     5. **[Response](#response)**
-6. **[Notes](#notes)**
-7. **[Reference Implementations](#implementations)**
+    
+6. **[Notes](#notes)** (WIP)
+
+7. **[Reference Implementations](#reference-implementations)** (WIP)
+
 8. **[Conclusion](#conclusion)**
+
 9. **[References](#references)**
+
+    
+
+*** WIP :** Work in progress.
 
 # <a name="introduction">1</a> Introduction
 
@@ -661,7 +675,7 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be built-in and available.
 
-— The schema of the Sage introspection system, written in our “fictitious” psuedo DSL **:**
+— The schema of the Sage introspection system, written in our “fictitious” pseudo schema definition language **:**
 
 ```scss
 entity @schema {  
@@ -693,31 +707,37 @@ entity @act {
 }
 ```
 
-# Validation
+# <a name="validation">6</a> Validation
 
-# Execution
+— Work in progress.
 
-# Response
+# <a name="execution">7</a> Execution
 
-# Notes
+— Work in progress.
 
-This is the section for notes from author(s). Some non-classified rules, features or philosophy behind Sage are mentioned here. 
+# <a name="response">8</a> Response
+
+— Work in progress.
+
+# <a name="notes">9</a> Notes
+
+This is the notes section for authors’ opinion about non-normative parts of Sage. Some “must” or “must not” have features or the philosophy behind Sage are mentioned here. We will publish a separate notes document once publish this paper.
 
 ### Sage is not a wrapper, but a middle layer.
 
-Sage should only be positioned as a data exchange layer, not a wrapper around a whole application stack.
+Sage should only be positioned as a “middleware” data exchange layer, not a wrapper around a whole service stack.
 
 ### Some Features We Want
 
 - **Declarative :** It must be the data consumer who declares what will they get. It must be the data service (or API) who declares its capability with a data schema.
-- **Graph-like :** Data should be described like a graph. Instead of behaving like a giant data document, Sage behaves like a universal entity graph. Objects *(with properties and methods)* are at the core. You can interact with a Sage server like querying a virtual object data store.
-- **Weak-typed :** Strong type constraints on attributes should be optional, and a decision up to the developer. Not every project needs strict types. With Sage, all attributes are weak-typed by default.
+- **Graph-like :** Data should be described like a graph. Instead of behaving like a giant data document, Sage behaves like a universal entity graph. Objects *(with properties and methods)* are at the core. You can interact with a Sage service like querying a virtual object data store.
+- **Weak-typed :** Type restrictions on attributes should be optional, and a decision up to the developer. Not every definition needs strict types. With Sage, all attributes are weak-typed by default.
 
 ### Nullable Attributes
 
-Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null. It’s not useful to abort and ignore the whole progress.
+Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null and explain what happened in an additional section in response document. It’s not useful to abort and ignore the whole progress. 
 
-## Reference Implementations
+# <a name="reference-implementations">10</a> Reference Implementations
 
 To clarify the desired and ideal outcome of this proposal, we built reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu. 
 
@@ -737,13 +757,13 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
     >
     > The Sage Proposal does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
-## Conclusion
+# <a name="conclusion">11</a> Conclusion
 
-In this paper, we present Sage, in simple terms which is a new way for data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some rules you must follow while implementing specific versions of Sage.
+In this paper, we present Sage, which is in simple terms, a new way for data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some notes you must read and understand before implementing specific versions of Sage.
 
 This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
 
-## References
+# <a name="references">12</a> References
 
 - **[Sage](https://libre.dorkodu.com/sage)**
 
