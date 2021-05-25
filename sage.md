@@ -614,3 +614,13 @@ would return
 ### Reserved Names
 
 Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" *(at symbol)*. We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ *(at symbol)*.
+
+### Documentation
+
+All types in the introspection system provide a `description` attribute of type **string** to allow type designers to publish documentation in addition to data capabilities.
+
+### Deprecation
+
+To support the effort for backwards compatibility, any piece of Sage type system (entity type, attribute and act) can indicate whether or not they are deprecated (**isDeprecated :** *boolean*) and a description of why it is deprecated (**deprecationReason :** *string*).
+
+Tools built using Sage introspection should respect deprecation by discouraging deprecated use through information hiding or developer‐facing warnings.
