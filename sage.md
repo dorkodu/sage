@@ -387,3 +387,48 @@ A Sage server, when retrieving an attribute of a given scalar type, must uphold 
 A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
 
 Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
+
+### Default Scalar Types in Sage
+
+Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and a Sage server which provide a type by these names must adhere to the behavior described below.
+
+> These scalar types are used for strong-type constraints on attributes. Normally attributes are all weak-typed, which means can be any type, provided that they must be JSON serializable.
+
+#### Integer
+
+The integer scalar type represents a signed 32‐bit numeric non‐fractional value. Response formats that support a 32‐bit integer or a number type should use that type to represent this scalar.
+
+**Result Coercion**<br>Attributes returning the **integer** type expect to encounter **32‐bit** integer internal values.
+
+Sage servers may coerce non‐integer internal values to integers when reasonable without losing information, otherwise they must raise an **attribute error**. Examples of this may include returning `1` for the floating‐point number `1.0`, or returning `123` for the string `"123"`. In scenarios where coercion may lose data, raising an attribute error is more appropriate. For example, a floating‐point number `1.2` should raise an attribute error instead of being truncated to `1`.
+
+If the integer internal value represents a value less than **-2^31^** or greater than or equal to **2^31^**, an attribute error should be raised.
+
+>   #### Note
+>
+>   Numeric integer values larger than 32‐bit can use string type, as not all platforms and transports support encoding integer numbers larger than 32‐bit.
+
+#### Float
+
+The Float scalar type represents signed double‐precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). Response formats that support an appropriate double‐precision number type should use that type to represent this scalar.
+
+**Result Coercion**<br>Attributes returning the **float** type expect to encounter double‐precision floating‐point internal values.
+
+Sage servers may coerce non‐floating‐point internal values to **float** when reasonable without losing information, otherwise they must raise an *attribute error*. Examples of this may include returning `1.0` for the integer number `1`, or `123.0` for the string `"123"`.
+
+#### String
+
+The string scalar type represents textual data, represented as UTF‐8 character sequences. The string type is generally used by Sage to represent free‐form human‐readable text. All response formats must support string representations, and that representation must be used here.
+
+**Result Coercion**<br>Attributes returning the string type expect to encounter UTF‐8 string internal values.
+
+Sage servers may coerce non‐string raw values to string when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning the string `"true"` for a boolean true value, or the string `"1"` for the integer `1`.
+
+#### Boolean
+
+The Boolean scalar type represents `true` or `false`. Response formats should use a built‐in boolean type if supported; otherwise, they should use their representation of the integers `1` and `0`.
+
+**Result Coercion**<br>Attributes returning the **boolean** type expect to encounter boolean internal values.
+
+Sage servers may coerce non‐boolean raw values to `boolean` when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
+
