@@ -585,3 +585,7 @@ would return
 ```json
 {  "introspectionSample": {    "name": "User",    "attributes": [      {        "name": "id",        "type": {           "name": "String"        }      },    ],    "description": "",    "isDeprecated": ""  }}
 ```
+
+### Reserved Names
+
+Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" (at symbol). We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ (at symbol).
