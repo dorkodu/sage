@@ -275,3 +275,57 @@ Each query item must be identified with a string name which must be unique withi
   }
 }
 ```
+
+### Query Item Structure
+
+A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
+
+- #### **`type`**
+
+    Entity type. A query item will be executed on its given type. This is the only required attribute.
+
+- #### **`attr`**
+
+    *(optional)* The string array of attribute names you want Sage to return. Each attribute is identified with its own *string name*.
+
+    **You can set *“attr”* to an empty array, or even don’t define *“attr”* attribute.**
+
+    - Empty array means an **empty result** object will be returned.
+    - Not setting the attribute means **no result object** will be returned.
+
+- #### **`act`**
+
+    *(optional)* In addition to an entity’s attribute getters, Sage also can call for an *act* you defined, if you give its name in the query.
+
+    This is an example query of adding a to-do, for the sake of simplicity :
+
+    ```json
+    {
+      "AddToDo:101": {
+        "type": "ToDo",
+        "act": "addToDo",
+        "args": {
+          "userId": 101,
+          "title": "Finish Sage's Whitepaper.",
+          "deadline": "2021-05-20"
+        },
+        "attr": ["id", "user", "title", "isCompleted", "deadline"]
+      }
+    }
+    ```
+
+    This sample will add a to-do with given arguments, then return the desired attributes. Here is the result :
+
+    ```json
+    {  "AddToDo:101": {    "id": 12345,    "user": {      "id": "101",      "username": "doruk",      "name": "Doruk Eray"    },    "title": "Finish Sage's Whitepaper.",    "isCompleted": false,    "deadline": "2021-05-20"  }}
+    ```
+
+    > #### Note
+    >
+    > Sage does not handle these steps automatically. It’s the developer who must write the code required to add this to-do to data storage, also how to retrieve these attributes.
+
+- #### **`args`**
+
+    *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute getters *(and to the act if given in the query.)*
+
+    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, while you are querying you can give an **`id`** argument and set it to **`1234`**. On the other hand, in the resolver you would look for an id argument and fetch the User with the given id from the data source.
