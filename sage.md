@@ -361,3 +361,11 @@ A Sage schema must itself be internally valid.
 All entity types within a Sage schema must have unique, string names. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types (including Scalar and Introspection types).
 
 All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
+
+### Types
+
+The fundamental unit of any Sage schema is the *type*.
+
+The most basic type is a `Scalar`. A scalar represents a primitive value, like a string or an integer.
+
+However, we have a concept called **“constraints”.** The most important constraint is **strict-types**. Oftentimes it is useful to add some constraints to attributes, like **strict-types**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute. With Sage; you can do that, too.
