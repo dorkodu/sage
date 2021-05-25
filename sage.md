@@ -369,3 +369,21 @@ The fundamental unit of any Sage schema is the *type*.
 The most basic type is a `Scalar`. A scalar represents a primitive value, like a string or an integer.
 
 However, we have a concept called **“constraints”.** The most important constraint is **strict-types**. Oftentimes it is useful to add some constraints to attributes, like **strict-types**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute. With Sage; you can do that, too.
+
+### Scalar Types
+
+Scalar types represent primitive values in the Sage type system.
+
+All Sage scalars are representable as strings, though depending on the response format being used, there may be a more appropriate primitive for the given scalar type, and server should use those types when appropriate.
+
+> We prefer **JSON** and suggest you to use JSON if possible, but you can also use another format for query and/or result, *in the same way we use JSON*.
+>
+> In the **“Response”** section, we will mention this topic.
+
+#### Result Coercion
+
+A Sage server, when retrieving an attribute of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
+
+A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
+
+Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
