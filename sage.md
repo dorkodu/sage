@@ -346,4 +346,6 @@ Sage consists from following components :
 - Execution
 - Response
 
-##  
+##  <a name="type-system">5.1</a> Type System
+
+The Sage Type system describes the capabilities of a Sage server and is used to determine if a query is valid. The type system also can be used to add strict type constraints on attributes to determine that values provided at runtime are valid an of a desired.
