@@ -737,4 +737,10 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
     >
     > The Sage Proposal does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
+## Conclusion
+
+In this paper, we present Sage, in simple terms which is a new way for data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some rules you must follow while implementing specific versions of Sage.
+
+This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
+
 ## 
