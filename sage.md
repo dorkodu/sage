@@ -743,4 +743,27 @@ In this paper, we present Sage, in simple terms which is a new way for data retr
 
 This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
 
-## 
+## References
+
+- **[Sage](https://libre.dorkodu.com/sage)**
+
+    Sage’s website on Dorkodu Libre. There you can find more resources about Sage, and also the latest working draft of this paper.
+
+- **[Dorkodu](https://dorkodu.com)**
+
+    Who we are? We want to make human knowledge open, useful and meaningful for everyone. We hope you will hear more about us soon. If you are interested in our work, you should see our website. 
+
+- **[Dorkodu Libre](https://libre.dorkodu.com)**
+
+    Dorkodu Libre, the website for our contributions we make to the software community. You can find other awesome projects we work on. We try to do useful and meaningful things and make them open; then share our humble contributions with the community through open source software.
+
+- **[Dorkodu on GitHub](https://github.com/dorkodu)**
+
+    You can find our open source project repositories on GitHub.
+
+- **[GraphQL](http://graphql.org)**
+
+    I think I owe a thank to the GraphQL community. What they did was really exciting and changed the mindset of the industry about approaching to a fresh way of doing things.
+
+    Also while writing this document, I was *heavily inspired by* their specification, especially for the document structure. I am *literally* just a kid, so it was really hard for me to do these boring paperwork before writing an actual implementation.
+
