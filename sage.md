@@ -155,3 +155,6 @@ Because of these principles, Sage is a simple-to-use, flexible, lightweight but 
 
 > This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this approach. 
 
+# <a name="concepts">4</a> Concepts
+
+Here we introduce some concepts and terms which you will need to understand well in order to understand and learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
