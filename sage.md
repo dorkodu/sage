@@ -627,11 +627,9 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 ### Schema Introspection
 
-The schema introspection system is accessible from the meta‐fields `__schema` and `__type` which are accessible from the type of the root of a query operation.
+The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be built-in and available.
 
-These fields are implicit and do not appear in the fields list in the root type of the query operation.
-
-The schema of the Sage introspection system **:**
+— The schema of the Sage introspection system, written in our “fictitious” psuedo DSL **:**
 
 ```scss
 entity @schema {  
@@ -663,4 +661,22 @@ entity @act {
 }
 ```
 
-#### 
+# Notes
+
+This is the section for notes from author(s). Some non-classified rules, features or philosophy behind Sage are mentioned here. 
+
+### Sage is not a wrapper, but a middle layer.
+
+Sage should only be positioned as a data exchange layer, not a wrapper around a whole application stack.
+
+### Some Features We Want
+
+- **Declarative :** It must be the data consumer who declares what will they get. It must be the data service (or API) who declares its capability with a data schema.
+- **Graph-like :** Data should be described like a graph. Instead of behaving like a giant data document, Sage behaves like a universal entity graph. Objects *(with properties and methods)* are at the core. You can interact with a Sage server like querying a virtual object data store.
+- **Weak-typed :** Strong type constraints on attributes should be optional, and a decision up to the developer. Not every project needs strict types. With Sage, all attributes are weak-typed by default.
+
+### Nullable Attributes
+
+Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null. It’s not useful to abort and ignore the whole progress.
+
+### 
