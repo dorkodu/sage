@@ -17,13 +17,13 @@ May 2021 - Working Draft
 3. **[Principles](#principles)**
 
 4. **[Concepts](#concepts)**
-    
+   
     1. **[Entity](#4.1)**
     2. **[Schema](#4.2)**
     3. **[Query](#4.3)**
     
 5. **[Components](#components)** (WIP)
-    
+   
     1. **[Type System](#type-system)**
     2. **[Introspection](#introspection)**
     3. **[Validation](#validation)**
@@ -96,9 +96,9 @@ Sage is a query-based, entity-focused data exchange *(or retrieval)* approach de
 
 The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
 
-For example, here is a sample Sage transaction *(request and response for a query)* ***:***
+For example, here is a sample Sage transaction *(request and response for a query)* **:**
 
-***— Query :***
+— Query **:**
 
 ```json
 {
@@ -112,7 +112,7 @@ For example, here is a sample Sage transaction *(request and response for a quer
 }
 ```
 
-***— Result :***
+— Result **:**
 
 ```json
 {
@@ -331,7 +331,19 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
     This sample will add a to-do with given arguments, then return the desired attributes. Here is the result :
 
     ```json
-    {  "AddToDo:101": {    "id": 12345,    "user": {      "id": "101",      "username": "doruk",      "name": "Doruk Eray"    },    "title": "Finish Sage's Whitepaper.",    "isCompleted": false,    "deadline": "2021-05-20"  }}
+    {  
+      "AddToDo:101": {    
+        "id": 12345,
+        "user": { 
+          "id": "101",
+          "username": "doruk",
+          "name": "Doruk Eray"
+        },    
+        "title": "Finish Sage's Whitepaper.",
+        "isCompleted": false,    
+        "deadline": "2021-05-20"  
+      }
+    }
     ```
 
     > #### Note
@@ -484,25 +496,50 @@ Only attributes and acts which are declared on that entity type may validly be q
 For example, selecting all the attributes of a `Person` **:**
 
 ```json
-{	"someone": {    "type": "Person",    "attr": ["name", "age"],    "args": {      "id": 10    }  } }
+{
+  "someone": {    
+    "type": "Person",    
+    "attr": ["name", "age"],    
+    "args": {      
+      "id": 10    
+    }  
+  } 
+}
 ```
 
 Would yield the object:
 
 ```json
-{  "someone": {  	"name": "Doruk Eray",  	"age": 17,	}}
+{  
+  "someone": {  	
+    "name": "Doruk Eray",
+    "age": 17,	
+  }
+}
 ```
 
 While selecting a subset of attributes:
 
 ```json
-{	"someone": {    "type": "Person",    "attr": ["name"],    "args": {      "id": 10    }  } }
+{	
+  "someone": {    
+    "type": "Person",    
+    "attr": ["name"],    
+    "args": {      
+    	"id": 10    
+		}  
+  } 
+}
 ```
 
 Must only yield exactly that subset:
 
 ```json
-{  "someone": {  	"name": "Doruk Eray",	}}
+{
+  "someone": {  	
+    "name": "Doruk Eray"	
+  }
+}
 ```
 
 We see that an attribute of an entity type may be a scalar type, but it can also be an **list** or **entity**.
@@ -510,13 +547,26 @@ We see that an attribute of an entity type may be a scalar type, but it can also
 For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
 
 ```scss
-entity Person {  id: @integer  name: @string	age: @integer  occupation: @entity(User)}
+entity Person {  
+  id: @integer  
+  name: @string	
+  age: @integer  
+  occupation: @entity(User)
+}
 ```
 
 And let’s say we only requested for `occupation` attribute. Here it returns an *object* **:**
 
 ```json
-{  "someone": {  	"occupation": {    	"company": "Dorkodu",    	"role": "Founder",    	"startYear": 2017   	}	}}
+{  
+  "someone": {  	
+    "occupation": {    	
+      "company": "Dorkodu",    	
+      "role": "Founder",    	
+      "startYear": 2017   	
+    }	
+  }
+}
 ```
 
 #### Type Validation
