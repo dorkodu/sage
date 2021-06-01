@@ -1,6 +1,6 @@
 # Sage
 
-June 2021 - Working Draft
+May 2021 - Working Draft
 
 **`Author`**<br>  **Doruk Eray**<br>  Founder and Chief @ [Dorkodu](https://dorkodu.com).<br>  Self-taught Software Engineer.
 
@@ -23,13 +23,12 @@ June 2021 - Working Draft
     3. **[Query](#4.3)**
     
 5. **[Components](#components)** (WIP)
-   
-    1. **[Type System](#type-system)**
+   1. **[Type System](#type-system)**
     2. **[Introspection](#introspection)**
     3. **[Validation](#validation)**
     4. **[Execution](#execution)**
     5. **[Response](#response)**
-    
+   
 6. **[Notes](#notes)** (WIP)
 
 7. **[Reference Implementations](#reference-implementations)** (WIP)
@@ -165,7 +164,7 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 
 Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for application-centric data exchange. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be those that build those APIs and tools for the rest to use.
 
-> This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this approach. 
+> This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
 
 # <a name="concepts">4</a> Concepts
 
@@ -290,7 +289,7 @@ Each query item must be identified with a string name which must be unique withi
 
 ### Query Item Structure
 
-A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms**:** **Type, Attributes, Act and Arguments.**
+A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
 
 - #### **`type`**
 
@@ -479,14 +478,12 @@ All attributes and acts defined within an Entity type must not have a name which
 
 For example, a `Person` entity type could be described as **:**
 
-*— just as an example, in a hypothetical format* **:**
+***— Just to give an effective presentation, here we introduce a hypothetical, pseudo SDL* :**<br>
+
+[^SDL]: Schema Definition Language
 
 ```scss
-entity Person {	
-  id: @integer  
-  name: @string
-  age: @integer
-}
+entity Person {	id: @integer  name: @string	age: @integer}
 ```
 
 Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
@@ -544,29 +541,39 @@ Must only yield exactly that subset:
 }
 ```
 
-We see that an attribute of an entity type may be a scalar type, but it can also be an **list** or **entity**.
+We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **entity**.
 
-For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
+For example, the `Person` type might include an `occupation` attribute with the type *entity* **:**
 
 ```scss
-entity Person {  
-  id: @integer  
-  name: @string	
-  age: @integer  
-  occupation: @entity(User)
+entity Person {
+  id: @integer
+  name: @string
+  age: @integer
+  occupation: @entity("Occupation")
 }
 ```
 
-And let’s say we only requested for `occupation` attribute. Here it returns an *object* **:**
+And here is the definition of Occupation entity :
+
+```scss
+entity Occupation {
+  company: @string
+  role: @string
+  startYear: @integer
+}
+```
+
+And let’s say we only requested for `occupation` attribute. Here it returns an *entity* value **:**
 
 ```json
-{  
-  "someone": {  	
-    "occupation": {    	
+{
+  "someone": {
+    "occupation": {
       "company": "Dorkodu",    	
       "role": "Founder",    	
       "startYear": 2017   	
-    }	
+    }
   }
 }
 ```
@@ -583,7 +590,7 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
 3.  For each act of an Entity type :
     1.  The act must have a unique name within that Entity type; no two acts may share the same name.
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
-    3.  The act must be a callable *(function, method, closure etc.)*, and accept at least one parameter, which is the query object. 
+    3.  The act must be a callable *(function, method, closure etc.)*, and must be able to accept at least one parameter, which will be the query object. 
 
 ### List
 
@@ -594,17 +601,17 @@ To denote that a field uses a List type, the item type also must be declared as 
 *— For example, here we define an attribute which is a string list **:***
 
 ```php
-/* 
+/*
  * A psuedo attribute definition, with a list type constraint. 
  */
 // Attribute(<name>, <resolver>, <options>)
-$attribute = new Attribute(  
-  'names',  
-  function ($query) {    
-  	// This will return an array of strings		
-  	return DataSource::getNames();	
+$attribute = new Attribute(
+  'names',
+  function ($query) {
+  	// This will return an array of strings
+  	return ["Forrest", "Jenny", "Bubba", "Dan"];	
 	},  
-	[    
+	[
   	'type'        => Type::listOf( Type::string() ),    
   	'description' => "Names list."  
 	]
@@ -613,13 +620,11 @@ $attribute = new Attribute(
 
 **Result Coercion**<br>Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
 
-If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in a the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
+If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
 
->   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
+For more information on the error handling process, see “Errors and Non‐Nullability” within the Execution section.
 
 ### Constraints
-
-All values in Sage’s type system are *weak-typed* and *nullable* by default. Although this default feature provides a few powerful features for Sage, we also know that oftentimes some restrictions are necessary. So we have a concept called **“constraints”**, which you can set for an attribute, and manipulate the behavior of the type system validation for that attribute.
 
 #### Strict-type
 
@@ -635,20 +640,17 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
+<<<<<<< Updated upstream
+- **entity** (must set a specific entity type)
+=======
+- **entity** (must be represented as a map–a set of key-value pairs.)
 - **object** (must be represented as a map–a set of key-value pairs.)
+>>>>>>> Stashed changes
 - **list** (must set an item type)
 
 #### Non-null
 
-By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐null constraint can be used. This constraint *wraps an underlying type*, and acts *identically* to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
-
-##### **Result Coercion**
-
-In all of the previous result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
-
-##### **Nullable vs. Optional**
-
-Attributes are *always* optional within the context of a query, an attribute may be omitted and the query is still valid. However, attributes that return Non‐Null types will never return the value **null** if queried.
+By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
 
 > #### Example
 >
@@ -656,17 +658,11 @@ Attributes are *always* optional within the context of a query, an attribute may
 >
 > If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
 
-##### Combining List and Non-Null
-
-The List and Non‐Null wrapping types can compose, representing more complex types. The rules for result coercion of Lists and Non‐Null types apply in a recursive fashion.
-
-For example if the inner item type of a List is Non‐Null (e.g. `[T!]`), then that List may not contain any **null** items. However if the inner type of a Non‐Null is a List (e.g. `[T]!`), then **null** is not accepted however an empty list is accepted.
-
 ### Descriptions
 
 Documentation is a boring part of API development. But it turned about to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
 
-To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think it is really useful.
+To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think they are really useful.
 
 All Sage types, attributes, acts and other definitions which can be described should provide a description unless they are considered self descriptive.
 
@@ -710,15 +706,21 @@ would return
 
 ```json
 {  
-  "introspectionSample": {    
+  "introspectionSample": {   
     "name": "User",    
-    "attributes": [      
-      {        
-        "name": "id",        
-        "type": "@string",
+    "attributes": {   
+      "id": {        
+        "type": "int",
         "nonNull": true
-      }    
-    ],
+      },
+      "name": {        
+        "type": "string",
+        "nonNull": true
+      },
+      "age": {        
+        "type": "int",
+      }
+		},
     "description": "The user entity type.",    
     "isDeprecated": false
   }
@@ -731,7 +733,7 @@ Entity types, attributes and acts required by the Sage introspection system are 
 
 ### Documentation
 
-All types in the introspection system provide a `description` attribute of type **string** to allow type designers to publish documentation in addition to data capabilities.
+All types in the introspection system provide a `description` attribute of type **string** to allow type system designers to publish documentation in addition to data capabilities.
 
 ### Deprecation
 
@@ -743,18 +745,23 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
 
-— The schema of the Sage introspection system, written in our **“fictitious”** pseudo *schema definition language* **:**
+<<<<<<< Updated upstream
+
+— The schema of the Sage introspection system, written in our “fictitious” pseudo schema definition language **:**
+=======
+— The schema of the Sage introspection system, written in our **“fictitious”**, pseudo *schema definition language* **:**
+>>>>>>> Stashed changes
 
 ```scss
 entity @Schema {
-  entities: @list("@Entity")
+  entities: @list( @entity("@Entity") )
 }
 
 entity @Entity {
   name: @string @nonNull
   description: @string
-  attributes: @list("@Attribute") @nonNull
-	acts: @list("@Act")
+  attributes: @list( @entity("@Attribute") ) @nonNull
+	acts: @list( @entity("@Act") )
   typekind: @enum("@TypeKind")
   isDeprecated: @boolean
   deprecationReason: @string
@@ -763,7 +770,12 @@ entity @Entity {
 entity @Attribute {
   name: @string @nonNull
   description: @string
+<<<<<<< Updated upstream
   type: @enum("@Type") @nonNull
+=======
+  type: @enum("@Type")
+>>>>>>> Stashed changes
+  nonNull: @boolean
   isDeprecated: @boolean
   typekind: @enum("@TypeKind")
   deprecationReason: @string
@@ -795,17 +807,19 @@ enum @Type {
 
 ### The `@Entity` type
 
-Represents Entity types in Sage.
+Represents Entity types in Sage. Contains a set of defined attributes.
 
-#### Attributes
+#### Attribute
 
--   `typekind` **:** must return the `OBJECT` value of `@TypeKind` enumeration.
 -   `name` **:** must return a *String*.
--   `description` **:** may return a String or **null**.
+-   `description` **:** may return a *String* or **null**.
 -   `attributes` **:** The set of attributes query‐able on this entity type.
     -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
 -   `acts` **:** The set of acts query‐able on this entity type.
     -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
+-   `typekind` **:** must return the `OBJECT` value of `@TypeKind` enumeration.
+-   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
+-   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
 
 ### The `@Attribute` Type
 
@@ -822,9 +836,7 @@ The `@Attribute` type represents each attribute in a specific Entity type.
 
 ### Type Kinds
 
-There are several different kinds of type. In each kind, different fields are actually valid. 
-
-These kinds are listed in the `@TypeKind` enumeration.
+There are several different kinds of type. In each kind, different fields are actually valid. These kinds are listed in the `@TypeKind` enumeration.
 
 #### Scalar
 
@@ -832,46 +844,110 @@ Represents scalar types such as **Int, String, and Boolean**. Scalars cannot hav
 
 A Sage type designer should describe the data format and scalar coercion rules in the description field of any scalar.
 
--   **`typekind`** must return the `SCALAR` value of `@TypeKind` enumeration.
+##### Attributes
+
+-   **`kind`** must return the `SCALAR` value of `@TypeKind` enumeration.
+-   **`name`** must return a *String*.
+-   **`description`** may return a String or **null**.
+-   All other attributes must return **null**.
 
 #### Object
 
 Object types represent concrete instantiations of sets of fields.
 
--   **`typekind`** must return the `OBJECT` value of `@TypeKind` enumeration.
+##### Attributes
+
+-   **`kind`** must return the `OBJECT` value of `@TypeKind` enumeration.
+-   **`name`** must return a *String*.
+-   **`description`** may return a String or **null**.
+-   All other attributes must return **null**.
 
 #### List
 
 Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
 
--   **`kind` :** must return the `LIST` value of `@TypeKind` enumeration.
--   **`ofType` :** Any Sage type.
+##### Attributes
 
-#### Non-Null
+-   **`kind`** must return the `LIST` value of `@TypeKind` enumeration.
+-   **`ofType`** : Any Sage type.
+-   All other attributes must return **null**.
 
-All Sage types are nullable by default. The value **null** is a valid response for any attribute type.
+##### [4.5.2.8](#sec-Type-Kinds.Non-Null)Non-Null
 
-A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response value.
+GraphQL types are nullable. The value **null** is a valid response for field type.
 
--   **`kind` :** must return the `NON_NULL` value of `@TypeKind` enumeration.
--   **`ofType` :** Any type except Non‐null.
+A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response, and indicate required inputs for arguments and input object fields.
+
+-   `kind` must return `__TypeKind.NON_NULL`.
+-   `ofType`: Any type except Non‐null.
 -   All other fields must return **null**.
 
+<<<<<<< Updated upstream
+
+#### [4.5.3](#sec-The-__Field-Type)The __Field Type
+
+The `__Field` type represents each field in an Object or Interface type.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `args` returns a List of `__InputValue` representing the arguments this field accepts.
+-   `type` must return a `__Type` that represents the type of value returned by this field.
+-   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
+-   `deprecationReason` optionally provides a reason why this field is deprecated.
+
+#### [4.5.4](#sec-The-__InputValue-Type) The __InputValue Type
+
+The `__InputValue` type represents field and directive arguments as well as the `inputFields` of an input object.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `type` must return a `__Type` that represents the type this input value expects.
+-   `defaultValue` may return a String encoding (using the GraphQL language) of the default value used by this input value in the condition a value is not provided at runtime. If this input value has no default value, returns **null**.
+
+#### [4.5.5](#sec-The-__EnumValue-Type)The __EnumValue Type
+
+The `__EnumValue` type represents one of possible values of an enum.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
+-   `deprecationReason` optionally provides a reason why this field is deprecated.
+
+#### [4.5.6](#sec-The-__Directive-Type)The __Directive Type
+
+The `__Directive` type represents a Directive that a server supports.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `locations` returns a List of `__DirectiveLocation` representing the valid locations this directive may be placed.
+-   `args` returns a List of `__InputValue` representing the arguments this directive accepts.
+
 # <a name="validation">6</a> Validation
+=======
+
+## <a name="validation">5.3</a> Validation
 
 — Work in progress.
 
-# <a name="execution">7</a> Execution
+## <a name="execution">5.4</a> Execution
 
 — Work in progress.
 
-# <a name="response">8</a> Response
+## <a name="response">5.5</a> Response
 
 — Work in progress.
 
-# <a name="notes">9</a> Notes
+# <a name="notes">6</a> Notes
 
-This is the notes section for authors’ opinion about non-normative parts of Sage. Some “must” or “must not” have features or the philosophy behind Sage are mentioned here. We will publish a separate notes document once publish this paper.
+This is the notes section for authors’ opinion about non-normative parts of Sage. Some “must” or “must not” have features or the philosophy behind Sage are mentioned here. We will publish a separate notes document once we publish this paper.
 
 ### Sage is not a wrapper, but a middle layer.
 
@@ -887,33 +963,35 @@ Sage should only be positioned as a “middleware” data exchange layer, not a 
 
 Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null and explain what happened in an additional section in response document. It’s not useful to abort and ignore the whole progress. 
 
-# <a name="reference-implementations">10</a> Reference Implementations
+# <a name="reference-implementations">7</a> Reference Implementations
 
-To clarify the desired and ideal outcome of this proposal, we built reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu. 
+To clarify the desired and ideal outcome of this proposal, we build reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu.
+
+*– as of June 2, reference implementations are under development, but you can have a look at the links below for the real-time progress.*
 
 - ### Sage Server
 
     You can see [here](https://libre.dorkodu.com/sage-php) the reference server implementation written in PHP.
 
-    **`GitHub`** [dorkodu/sage.php](https://github.com/dorkodu/sage.php)
+    **`GitHub`**  [dorkodu/sage.php](https://github.com/dorkodu/sage.php)
 
 - ### Sage Client
 
     You can see [here](https://libre.dorkodu.com/sage-js) the reference client implementation written in JavaScript.
 
-    **`GitHub`** [dorkodu/sage.js](https://github.com/dorkodu/sage.js)
+    **`GitHub`**  [dorkodu/sage.js](https://github.com/dorkodu/sage.js)
 
     > #### Note
     >
     > The Sage Proposal does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
-# <a name="conclusion">11</a> Conclusion
+# <a name="conclusion">8</a> Conclusion
 
-In this paper, we present Sage, which is in simple terms, a new way for data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some notes you must read and understand before implementing specific versions of Sage.
+In this paper, we present Sage, which is in simple terms, a new way of data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some notes you must read and understand before implementing specific versions of Sage.
 
 This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
 
-# <a name="references">12</a> References
+# <a name="references">9</a> References
 
 - **[Sage](https://libre.dorkodu.com/sage)**
 
@@ -935,5 +1013,4 @@ This paper can be interpreted as a whitepaper, or a proposal for the idea, or a 
 
     I think I owe a thank to the GraphQL community. What they did was really exciting and changed the mindset of the industry about approaching to a fresh way of doing things.
 
-    Also while writing this document, I was *heavily inspired by* their specification, especially for the document structure. I am *literally* just a kid, so it was really hard for me to do these boring paperwork before writing an actual implementation.
-
+    Also while writing this document, I was *heavily inspired by* their specification, especially for the document structure. I am *literally* just a kid, so it was really hard for me to do boring paperwork to publish an open standard before writing an actual implementation.
