@@ -36,9 +36,7 @@ May 2021 - Working Draft
 
 8. **[Conclusion](#conclusion)**
 
-9. **[References](#references)**
-
-    
+9. **[References](#references)** 
 
 *** WIP :** Work in progress.
 
@@ -660,14 +658,14 @@ This must be handled just like setting optional constraints on attributes. As si
 
 ## <a name="introspection">5.2</a> Introspection
 
-A Sage server supports introspection over its schema. The schema is queried using Sage itself, which makes it easy-to-use and flexible.
+A Sage server supports introspection over its schema. The schema is queried using Sage itself, which makes introspection easy-to-use.
 
 Take an example query, there is a User entity with three fields: id, name, and age.
 
 *— for example, given a server with the following type definition :*
 
 ```scss
-entity User {	
+entity User {
   id: @integer @nonNull
   name: @string @nonNull
   age: @string
@@ -677,13 +675,13 @@ entity User {
 The query
 
 ```json
-{  
-  "introspectionSample": {    
+{
+  "introspectionSample": {
     "type": "@entity",
     "attr": [ "name", "attributes", "description", "isDeprecated" ], 
-    "args": { 
+    "args": {
       "name": "User"
-    }  
+    }
   }
 }
 ```
@@ -723,39 +721,166 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 ### Schema Introspection
 
-The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be built-in and available.
+The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
 
 — The schema of the Sage introspection system, written in our “fictitious” pseudo schema definition language **:**
 
 ```scss
-entity @schema {  
-  entities: @list("@entity")
+entity @Schema {
+  entities: @list("@Entity")
 }
 
-entity @entity {  
+entity @Entity {
   name: @string @nonNull
   description: @string
-  attributes: @list("@attribute") @nonNull
+  attributes: @list("@Attribute") @nonNull
+	acts: @list("@Act")
+  typekind: @enum("@TypeKind")
   isDeprecated: @boolean
   deprecationReason: @string
 }
 
-entity @attribute {
+entity @Attribute {
   name: @string @nonNull
   description: @string
-  type: @typekind
+  type: @enum("@Type") @nonNull
   nonNull: @boolean
   isDeprecated: @boolean
+  typekind: @enum("@TypeKind")
   deprecationReason: @string
 }
 
-entity @act {
+entity @Act {
   name: @string @nonNull
   description: @string
   isDeprecated: @boolean
   deprecationReason: @string
 }
+
+enum @TypeKind {
+	SCALAR,
+  OBJECT,
+  LIST
+}
+
+enum @Type {
+	ENTITY,
+  INT,
+  STRING,
+  FLOAT,
+  BOOLEAN,
+  OBJECT,
+  LIST
+}
 ```
+
+### The `@Entity` type
+
+Represents Entity types in Sage. Contains a set of defined attributes.
+
+#### Attribute
+
+-   **`kind`** must return the `OBJECT` value of `@TypeKind` enumeration.
+-   **`name`** must return a *String*.
+-   **`description`** may return a String or **null**.
+-   **`attribute`**
+    -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
+-   `interfaces`: The set of interfaces that an object implements.
+-   All other fields must return **null**.
+
+### Type Kinds
+
+There are several different kinds of type. In each kind, different fields are actually valid. These kinds are listed in the `@TypeKind` enumeration.
+
+#### Scalar
+
+Represents scalar types such as **Int, String, and Boolean**. Scalars cannot have any fields or items.
+
+A Sage type designer should describe the data format and scalar coercion rules in the description field of any scalar.
+
+##### Attributes
+
+-   **`kind`** must return the `SCALAR` value of `@TypeKind` enumeration.
+-   **`name`** must return a *String*.
+-   **`description`** may return a String or **null**.
+-   All other attributes must return **null**.
+
+#### Object
+
+Object types represent concrete instantiations of sets of fields.
+
+##### Attributes
+
+-   **`kind`** must return the `OBJECT` value of `@TypeKind` enumeration.
+-   **`name`** must return a *String*.
+-   **`description`** may return a String or **null**.
+-   All other attributes must return **null**.
+
+#### List
+
+Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
+
+##### Attributes
+
+-   **`kind`** must return the `LIST` value of `@TypeKind` enumeration.
+-   **`ofType`** : Any Sage type.
+-   All other attributes must return **null**.
+
+##### [4.5.2.8](#sec-Type-Kinds.Non-Null)Non-Null
+
+GraphQL types are nullable. The value **null** is a valid response for field type.
+
+A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response, and indicate required inputs for arguments and input object fields.
+
+-   `kind` must return `__TypeKind.NON_NULL`.
+-   `ofType`: Any type except Non‐null.
+-   All other fields must return **null**.
+
+#### [4.5.3](#sec-The-__Field-Type)The __Field Type
+
+The `__Field` type represents each field in an Object or Interface type.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `args` returns a List of `__InputValue` representing the arguments this field accepts.
+-   `type` must return a `__Type` that represents the type of value returned by this field.
+-   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
+-   `deprecationReason` optionally provides a reason why this field is deprecated.
+
+#### [4.5.4](#sec-The-__InputValue-Type) The __InputValue Type
+
+The `__InputValue` type represents field and directive arguments as well as the `inputFields` of an input object.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `type` must return a `__Type` that represents the type this input value expects.
+-   `defaultValue` may return a String encoding (using the GraphQL language) of the default value used by this input value in the condition a value is not provided at runtime. If this input value has no default value, returns **null**.
+
+#### [4.5.5](#sec-The-__EnumValue-Type)The __EnumValue Type
+
+The `__EnumValue` type represents one of possible values of an enum.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
+-   `deprecationReason` optionally provides a reason why this field is deprecated.
+
+#### [4.5.6](#sec-The-__Directive-Type)The __Directive Type
+
+The `__Directive` type represents a Directive that a server supports.
+
+Fields
+
+-   `name` must return a String
+-   `description` may return a String or **null**
+-   `locations` returns a List of `__DirectiveLocation` representing the valid locations this directive may be placed.
+-   `args` returns a List of `__InputValue` representing the arguments this directive accepts.
 
 # <a name="validation">6</a> Validation
 
