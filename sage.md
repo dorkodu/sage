@@ -570,9 +570,9 @@ And let’s say we only requested for `occupation` attribute. Here it returns an
 {
   "someone": {
     "occupation": {
-      "company": "Dorkodu",    	
-      "role": "Founder",    	
-      "startYear": 2017   	
+      "company": "Dorkodu",
+      "role": "Founder",
+      "startYear": 2017
     }
   }
 }
@@ -640,12 +640,8 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
-<<<<<<< Updated upstream
-- **entity** (must set a specific entity type)
-=======
-- **entity** (must be represented as a map–a set of key-value pairs.)
+- **entity**
 - **object** (must be represented as a map–a set of key-value pairs.)
->>>>>>> Stashed changes
 - **list** (must set an item type)
 
 #### Non-null
@@ -745,12 +741,7 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
 
-<<<<<<< Updated upstream
-
-— The schema of the Sage introspection system, written in our “fictitious” pseudo schema definition language **:**
-=======
-— The schema of the Sage introspection system, written in our **“fictitious”**, pseudo *schema definition language* **:**
->>>>>>> Stashed changes
+— The schema of the Sage introspection system, written in our **“fictitious”** pseudo *schema definition language* **:**
 
 ```scss
 entity @Schema {
@@ -770,11 +761,7 @@ entity @Entity {
 entity @Attribute {
   name: @string @nonNull
   description: @string
-<<<<<<< Updated upstream
-  type: @enum("@Type") @nonNull
-=======
   type: @enum("@Type")
->>>>>>> Stashed changes
   nonNull: @boolean
   isDeprecated: @boolean
   typekind: @enum("@TypeKind")
@@ -834,6 +821,19 @@ The `@Attribute` type represents each attribute in a specific Entity type.
 -   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
 -   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
 
+### The `@Act` Type
+
+The `@Act` type represents each attribute in a specific Entity type.
+
+#### Attributes
+
+-   `name` **:** must return a *String*
+-   `description` **:** may return a *String* or **null**
+-   `type` **:** must return a value of  `@Type` enum that represents the type of value returned by this attribute.
+-   `typekind` **:** must return a value of `@TypeKind` enum that represents the type kind of value returned by this attribute.
+-   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
+-   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
+
 ### Type Kinds
 
 There are several different kinds of type. In each kind, different fields are actually valid. These kinds are listed in the `@TypeKind` enumeration.
@@ -871,67 +871,6 @@ Lists represent sequences of values in Sage. A List type is a type modifier: it 
 -   **`kind`** must return the `LIST` value of `@TypeKind` enumeration.
 -   **`ofType`** : Any Sage type.
 -   All other attributes must return **null**.
-
-##### [4.5.2.8](#sec-Type-Kinds.Non-Null)Non-Null
-
-GraphQL types are nullable. The value **null** is a valid response for field type.
-
-A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response, and indicate required inputs for arguments and input object fields.
-
--   `kind` must return `__TypeKind.NON_NULL`.
--   `ofType`: Any type except Non‐null.
--   All other fields must return **null**.
-
-<<<<<<< Updated upstream
-
-#### [4.5.3](#sec-The-__Field-Type)The __Field Type
-
-The `__Field` type represents each field in an Object or Interface type.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `args` returns a List of `__InputValue` representing the arguments this field accepts.
--   `type` must return a `__Type` that represents the type of value returned by this field.
--   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
--   `deprecationReason` optionally provides a reason why this field is deprecated.
-
-#### [4.5.4](#sec-The-__InputValue-Type) The __InputValue Type
-
-The `__InputValue` type represents field and directive arguments as well as the `inputFields` of an input object.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `type` must return a `__Type` that represents the type this input value expects.
--   `defaultValue` may return a String encoding (using the GraphQL language) of the default value used by this input value in the condition a value is not provided at runtime. If this input value has no default value, returns **null**.
-
-#### [4.5.5](#sec-The-__EnumValue-Type)The __EnumValue Type
-
-The `__EnumValue` type represents one of possible values of an enum.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
--   `deprecationReason` optionally provides a reason why this field is deprecated.
-
-#### [4.5.6](#sec-The-__Directive-Type)The __Directive Type
-
-The `__Directive` type represents a Directive that a server supports.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `locations` returns a List of `__DirectiveLocation` representing the valid locations this directive may be placed.
--   `args` returns a List of `__InputValue` representing the arguments this directive accepts.
-
-# <a name="validation">6</a> Validation
-=======
 
 ## <a name="validation">5.3</a> Validation
 
