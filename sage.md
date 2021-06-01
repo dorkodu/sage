@@ -29,8 +29,6 @@ May 2021 - Working Draft
     4. **[Execution](#execution)**
     5. **[Response](#response)**
    
-6. **[Notes](#notes)** (WIP)
-
 7. **[Reference Implementations](#reference-implementations)** (WIP)
 
 8. **[Conclusion](#conclusion)**
@@ -41,7 +39,7 @@ May 2021 - Working Draft
 
 # <a name="introduction">1</a> Introduction
 
-<img src="assets/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 0 auto;"/>
+<img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 0 auto;"/>
 
 This is the proposal for Sage; a query-based, entity-focused data exchange approach originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications. The development of this open standard started in 2020.
 
@@ -701,7 +699,7 @@ The query
 would return
 
 ```json
-{  
+{
   "introspectionSample": {   
     "name": "User",    
     "attributes": {   
@@ -792,7 +790,9 @@ enum @Type {
 }
 ```
 
-### The `@Entity` type
+### The `@Schema` Type
+
+### The `@Entity` Type
 
 Represents Entity types in Sage. Contains a set of defined attributes.
 
@@ -807,6 +807,7 @@ Represents Entity types in Sage. Contains a set of defined attributes.
 -   `typekind` **:** must return the `OBJECT` value of `@TypeKind` enumeration.
 -   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
 -   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
+-   All other attributes must return **null**.
 
 ### The `@Attribute` Type
 
@@ -820,27 +821,27 @@ The `@Attribute` type represents each attribute in a specific Entity type.
 -   `typekind` **:** must return a value of `@TypeKind` enum that represents the type kind of value returned by this attribute.
 -   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
 -   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
+-   All other attributes must return **null**.
 
 ### The `@Act` Type
 
-The `@Act` type represents each attribute in a specific Entity type.
+The `@Act` type represents an act in a specific Entity type.
 
 #### Attributes
 
 -   `name` **:** must return a *String*
 -   `description` **:** may return a *String* or **null**
--   `type` **:** must return a value of  `@Type` enum that represents the type of value returned by this attribute.
--   `typekind` **:** must return a value of `@TypeKind` enum that represents the type kind of value returned by this attribute.
 -   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
 -   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
+-   All other attributes must return **null**.
 
 ### Type Kinds
 
-There are several different kinds of type. In each kind, different fields are actually valid. These kinds are listed in the `@TypeKind` enumeration.
+There are several different kinds of type. These kinds are listed in the `@TypeKind` enumeration.
 
 #### Scalar
 
-Represents scalar types such as **Int, String, and Boolean**. Scalars cannot have any fields or items.
+Represents scalar types such as **Int, String, Float and Boolean**. Scalars cannot have any fields or items.
 
 A Sage type designer should describe the data format and scalar coercion rules in the description field of any scalar.
 
@@ -872,6 +873,18 @@ Lists represent sequences of values in Sage. A List type is a type modifier: it 
 -   **`ofType`** : Any Sage type.
 -   All other attributes must return **null**.
 
+#### Non-Null
+
+All Sage values are nullable. The value **null** is a valid response for field type.
+
+A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response, and indicate required inputs for arguments and input object fields.
+
+##### Attributes
+
+-   **`kind`** must return the `LIST` value of `@TypeKind` enumeration.
+-   `ofType`: Any type except Non‐null.
+-   All other fields must return **null**.
+
 ## <a name="validation">5.3</a> Validation
 
 — Work in progress.
@@ -884,29 +897,11 @@ Lists represent sequences of values in Sage. A List type is a type modifier: it 
 
 — Work in progress.
 
-# <a name="notes">6</a> Notes
+# <a name="reference-implementations">6</a> Reference Implementations
 
-This is the notes section for authors’ opinion about non-normative parts of Sage. Some “must” or “must not” have features or the philosophy behind Sage are mentioned here. We will publish a separate notes document once we publish this paper.
+To clarify the desired and ideal outcome of this proposal, we built reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu.
 
-### Sage is not a wrapper, but a middle layer.
-
-Sage should only be positioned as a “middleware” data exchange layer, not a wrapper around a whole service stack.
-
-### Some Features We Want
-
-- **Declarative :** It must be the data consumer who declares what will they get. It must be the data service (or API) who declares its capability with a data schema.
-- **Graph-like :** Data should be described like a graph. Instead of behaving like a giant data document, Sage behaves like a universal entity graph. Objects *(with properties and methods)* are at the core. You can interact with a Sage service like querying a virtual object data store.
-- **Weak-typed :** Type restrictions on attributes should be optional, and a decision up to the developer. Not every definition needs strict types. With Sage, all attributes are weak-typed by default.
-
-### Nullable Attributes
-
-Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null and explain what happened in an additional section in response document. It’s not useful to abort and ignore the whole progress. 
-
-# <a name="reference-implementations">7</a> Reference Implementations
-
-To clarify the desired and ideal outcome of this proposal, we build reference server and client implementations. Both of them should be ready-to-go and will be (or is) used on the production at Dorkodu.
-
-*– as of June 2, reference implementations are under development, but you can have a look at the links below for the real-time progress.*
+*– as of June 2, reference implementations are under development, but you should have a look at the links below for the real-time development progress.*
 
 - ### Sage Server
 
@@ -922,15 +917,15 @@ To clarify the desired and ideal outcome of this proposal, we build reference se
 
     > #### Note
     >
-    > The Sage Proposal does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
+    > This document does not focus on the client, and dictates no certain rules. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
-# <a name="conclusion">8</a> Conclusion
+# <a name="conclusion">7</a> Conclusion
 
 In this paper, we present Sage, which is in simple terms, a new way of data retrieval. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, then share some notes you must read and understand before implementing specific versions of Sage.
 
 This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
 
-# <a name="references">9</a> References
+# <a name="references">8</a> References
 
 - **[Sage](https://libre.dorkodu.com/sage)**
 

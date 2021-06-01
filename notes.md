@@ -1,5 +1,21 @@
 # Notes
 
+This is the notes section for authors’ opinion about non-normative parts of Sage. Some “must” or “must not” have features or the philosophy behind Sage are mentioned here. We will publish a separate notes document once we publish this paper.
+
+### Sage is not a wrapper, but a middle layer.
+
+Sage should only be positioned as a “middleware” data exchange layer, not a wrapper around a whole service stack.
+
+### Some Features We Want
+
+- **Declarative :** It must be the data consumer who declares what will they get. It must be the data service (or API) who declares its capability with a data schema.
+- **Graph-like :** Data should be described like a graph. Instead of behaving like a giant data document, Sage behaves like a universal entity graph. Objects *(with properties and methods)* are at the core. You can interact with a Sage service like querying a virtual object data store.
+- **Weak-typed :** Type restrictions on attributes should be optional, and a decision up to the developer. Not every definition needs strict types. With Sage, all attributes are weak-typed by default.
+
+### Nullable Attributes
+
+Any attribute is nullable by default. This is a golden rule which gives Sage one of its key strengths. When something goes wrong while retrieving an attribute, just return null and explain what happened in an additional section in response document. It’s not useful to abort and ignore the whole progress.
+
 ### Developing APIs with Sage
 
 You can develop awesome HTTP based APIs using Sage. This was our goal while designing the Sage.
