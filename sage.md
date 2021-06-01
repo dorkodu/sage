@@ -17,8 +17,7 @@ May 2021 - Working Draft
 3. **[Principles](#principles)**
 
 4. **[Concepts](#concepts)**
-   
-    1. **[Entity](#4.1)**
+   1. **[Entity](#4.1)**
     2. **[Schema](#4.2)**
     3. **[Query](#4.3)**
     
@@ -49,7 +48,7 @@ May 2021 - Working Draft
 
 # <a name="introduction">1</a> Introduction
 
-<img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 0 auto;"/>
+<img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 30px auto;"/>
 
 This is the proposal for Sage; a query-based, entity-focused data exchange approach originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications. The development of this open standard started in 2020.
 
@@ -866,7 +865,66 @@ Lists represent sequences of values in Sage. A List type is a type modifier: it 
 
 ## <a name="validation">5.3</a> Validation
 
-— Work in progress.
+Sage does not just verify if a request is structurally correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
+
+An invalid request is still technically executable, and will always produce a stable result as defined by the algorithms in the Execution section, however that result may be ambiguous, surprising, or unexpected relative to a request containing validation errors, so execution should only occur for valid requests.
+
+Typically validation is performed in the context of a request immediately before execution, however a GraphQL service may execute a request without explicitly validating it if that exact same request is known to have been validated before. For example: the request may be validated during development, provided it does not later change, or a service may validate a request once and memoize the result to avoid validating the same request again in the future. Any client‐side or development‐time tool should report validation errors and not allow the formulation or execution of requests known to be invalid at that given point in time.
+
+**Type system evolution**
+
+As GraphQL type system schema evolve over time by adding new types and new fields, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. GraphQL services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated GraphQL systems may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
+
+**Examples**
+
+For this section of this schema, we will assume the following type system in order to demonstrate examples:
+
+```scss
+Example № 90type Query {
+  dog: Dog
+}
+
+enum DogCommand { SIT, DOWN, HEEL }
+
+type Dog implements Pet {
+  name: String!
+  nickname: String
+  barkVolume: Int
+  doesKnowCommand(dogCommand: DogCommand!): Boolean!
+  isHousetrained(atOtherHomes: Boolean): Boolean!
+  owner: Human
+}
+
+interface Sentient {
+  name: String!
+}
+
+interface Pet {
+  name: String!
+}
+
+type Alien implements Sentient {
+  name: String!
+  homePlanet: String
+}
+
+type Human implements Sentient {
+  name: String!
+}
+
+enum CatCommand { JUMP }
+
+type Cat implements Pet {
+  name: String!
+  nickname: String
+  doesKnowCommand(catCommand: CatCommand!): Boolean!
+  meowVolume: Int
+}
+
+union CatOrDog = Cat | Dog
+union DogOrHuman = Dog | Human
+union HumanOrAlien = Human | Alien
+```
 
 ## <a name="execution">5.4</a> Execution
 
