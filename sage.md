@@ -1,6 +1,6 @@
 # Sage
 
-May 2021 - Working Draft
+June 2021 - Working Draft
 
 **`Author`**<br>  **Doruk Eray**<br>  Founder and Chief @ [Dorkodu](https://dorkodu.com).<br>  Self-taught Software Engineer.
 
@@ -290,7 +290,7 @@ Each query item must be identified with a string name which must be unique withi
 
 ### Query Item Structure
 
-A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
+A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms**:** **Type, Attributes, Act and Arguments.**
 
 - #### **`type`**
 
@@ -482,7 +482,11 @@ For example, a `Person` entity type could be described as **:**
 *— just as an example, in a hypothetical format* **:**
 
 ```scss
-entity Person {	id: @integer  name: @string	age: @integer}
+entity Person {	
+  id: @integer  
+  name: @string
+  age: @integer
+}
 ```
 
 Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
@@ -611,9 +615,11 @@ $attribute = new Attribute(
 
 If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in a the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
 
-For more information on the error handling process, see “Errors and Non‐Nullability” within the Execution section.
+>   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
 ### Constraints
+
+All values in Sage’s type system are *weak-typed* and *nullable* by default. Although this default feature provides a few powerful features for Sage, we also know that oftentimes some restrictions are necessary. So we have a concept called **“constraints”**, which you can set for an attribute, and manipulate the behavior of the type system validation for that attribute.
 
 #### Strict-type
 
@@ -629,18 +635,32 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
-- **entity** (must set a specific entity type)
+- **object** (must be represented as a map–a set of key-value pairs.)
 - **list** (must set an item type)
 
 #### Non-null
 
-By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐null constraint can be used. This constraint *wraps an underlying type*, and acts *identically* to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+
+##### **Result Coercion**
+
+In all of the previous result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
+
+##### **Nullable vs. Optional**
+
+Attributes are *always* optional within the context of a query, an attribute may be omitted and the query is still valid. However, attributes that return Non‐Null types will never return the value **null** if queried.
 
 > #### Example
 >
 > Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
 >
 > If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
+
+##### Combining List and Non-Null
+
+The List and Non‐Null wrapping types can compose, representing more complex types. The rules for result coercion of Lists and Non‐Null types apply in a recursive fashion.
+
+For example if the inner item type of a List is Non‐Null (e.g. `[T!]`), then that List may not contain any **null** items. However if the inner type of a Non‐Null is a List (e.g. `[T]!`), then **null** is not accepted however an empty list is accepted.
 
 ### Descriptions
 
@@ -723,7 +743,7 @@ Tools built using Sage introspection should respect deprecation by discouraging 
 
 The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
 
-— The schema of the Sage introspection system, written in our “fictitious” pseudo schema definition language **:**
+— The schema of the Sage introspection system, written in our **“fictitious”** pseudo *schema definition language* **:**
 
 ```scss
 entity @Schema {
@@ -744,7 +764,6 @@ entity @Attribute {
   name: @string @nonNull
   description: @string
   type: @enum("@Type") @nonNull
-  nonNull: @boolean
   isDeprecated: @boolean
   typekind: @enum("@TypeKind")
   deprecationReason: @string
@@ -776,21 +795,36 @@ enum @Type {
 
 ### The `@Entity` type
 
-Represents Entity types in Sage. Contains a set of defined attributes.
+Represents Entity types in Sage.
 
-#### Attribute
+#### Attributes
 
--   **`kind`** must return the `OBJECT` value of `@TypeKind` enumeration.
--   **`name`** must return a *String*.
--   **`description`** may return a String or **null**.
--   **`attribute`**
+-   `typekind` **:** must return the `OBJECT` value of `@TypeKind` enumeration.
+-   `name` **:** must return a *String*.
+-   `description` **:** may return a String or **null**.
+-   `attributes` **:** The set of attributes query‐able on this entity type.
     -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
--   `interfaces`: The set of interfaces that an object implements.
--   All other fields must return **null**.
+-   `acts` **:** The set of acts query‐able on this entity type.
+    -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
+
+### The `@Attribute` Type
+
+The `@Attribute` type represents each attribute in a specific Entity type.
+
+#### Attributes
+
+-   `name` **:** must return a *String*
+-   `description` **:** may return a *String* or **null**
+-   `type` **:** must return a value of  `@Type` enum that represents the type of value returned by this attribute.
+-   `typekind` **:** must return a value of `@TypeKind` enum that represents the type kind of value returned by this attribute.
+-   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
+-   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
 
 ### Type Kinds
 
-There are several different kinds of type. In each kind, different fields are actually valid. These kinds are listed in the `@TypeKind` enumeration.
+There are several different kinds of type. In each kind, different fields are actually valid. 
+
+These kinds are listed in the `@TypeKind` enumeration.
 
 #### Scalar
 
@@ -798,89 +832,30 @@ Represents scalar types such as **Int, String, and Boolean**. Scalars cannot hav
 
 A Sage type designer should describe the data format and scalar coercion rules in the description field of any scalar.
 
-##### Attributes
-
--   **`kind`** must return the `SCALAR` value of `@TypeKind` enumeration.
--   **`name`** must return a *String*.
--   **`description`** may return a String or **null**.
--   All other attributes must return **null**.
+-   **`typekind`** must return the `SCALAR` value of `@TypeKind` enumeration.
 
 #### Object
 
 Object types represent concrete instantiations of sets of fields.
 
-##### Attributes
-
--   **`kind`** must return the `OBJECT` value of `@TypeKind` enumeration.
--   **`name`** must return a *String*.
--   **`description`** may return a String or **null**.
--   All other attributes must return **null**.
+-   **`typekind`** must return the `OBJECT` value of `@TypeKind` enumeration.
 
 #### List
 
 Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
 
-##### Attributes
+-   **`kind` :** must return the `LIST` value of `@TypeKind` enumeration.
+-   **`ofType` :** Any Sage type.
 
--   **`kind`** must return the `LIST` value of `@TypeKind` enumeration.
--   **`ofType`** : Any Sage type.
--   All other attributes must return **null**.
+#### Non-Null
 
-##### [4.5.2.8](#sec-Type-Kinds.Non-Null)Non-Null
+All Sage types are nullable by default. The value **null** is a valid response for any attribute type.
 
-GraphQL types are nullable. The value **null** is a valid response for field type.
+A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response value.
 
-A Non‐null type is a type modifier: it wraps another type instance in the `ofType` field. Non‐null types do not allow **null** as a response, and indicate required inputs for arguments and input object fields.
-
--   `kind` must return `__TypeKind.NON_NULL`.
--   `ofType`: Any type except Non‐null.
+-   **`kind` :** must return the `NON_NULL` value of `@TypeKind` enumeration.
+-   **`ofType` :** Any type except Non‐null.
 -   All other fields must return **null**.
-
-#### [4.5.3](#sec-The-__Field-Type)The __Field Type
-
-The `__Field` type represents each field in an Object or Interface type.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `args` returns a List of `__InputValue` representing the arguments this field accepts.
--   `type` must return a `__Type` that represents the type of value returned by this field.
--   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
--   `deprecationReason` optionally provides a reason why this field is deprecated.
-
-#### [4.5.4](#sec-The-__InputValue-Type) The __InputValue Type
-
-The `__InputValue` type represents field and directive arguments as well as the `inputFields` of an input object.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `type` must return a `__Type` that represents the type this input value expects.
--   `defaultValue` may return a String encoding (using the GraphQL language) of the default value used by this input value in the condition a value is not provided at runtime. If this input value has no default value, returns **null**.
-
-#### [4.5.5](#sec-The-__EnumValue-Type)The __EnumValue Type
-
-The `__EnumValue` type represents one of possible values of an enum.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `isDeprecated` returns **true** if this field should no longer be used, otherwise **false**.
--   `deprecationReason` optionally provides a reason why this field is deprecated.
-
-#### [4.5.6](#sec-The-__Directive-Type)The __Directive Type
-
-The `__Directive` type represents a Directive that a server supports.
-
-Fields
-
--   `name` must return a String
--   `description` may return a String or **null**
--   `locations` returns a List of `__DirectiveLocation` representing the valid locations this directive may be placed.
--   `args` returns a List of `__InputValue` representing the arguments this directive accepts.
 
 # <a name="validation">6</a> Validation
 
