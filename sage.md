@@ -1,6 +1,6 @@
 # Sage
 
-May 2021 - Working Draft
+June 2021 - Working Draft
 
 **`Author`**<br>  **Doruk Eray**<br>  Founder and Chief @ [Dorkodu](https://dorkodu.com).<br>  Self-taught Software Engineer.
 
@@ -23,19 +23,19 @@ May 2021 - Working Draft
         -   **[5.1.2 Types](#5.1.2)**
         -   **[5.1.3 Scalar Types](#5.1.3)**
         -   **[5.1.4 Default Scalar Types in Sage](#5.1.4)**
-        -   **[5.1.5 Entity](#5.1.5)**
-        -   **[5.1.6 List](#5.1.6)**
-        -   **[5.1.7 Constraints](#5.1.7)**
+        -   **[5.1.5 Constraints](#5.1.7)**
+        -   **[5.1.6 Entity](#5.1.5)**
+        -   **[5.1.7 List](#5.1.6)**
         -   **[5.1.8 Descriptions](#5.1.8)**
         -   **[5.1.9 Deprecation](#5.1.9)**
      -   **[5.2 Introspection](#introspection)**
          -   **[5.2.1 Schema Introspection](#5.2.1)**
-     -   **[5.3 Validation](#validation)**
-     -   **[5.4 Execution](#execution)**
-     -   **[5.5 Response](#response)**
--   **[6 Reference Implementations](#reference-implementations)** (WIP)
+     -   **[5.3 Validation](#validation)** (WIP)
+     -   **[5.4 Execution](#execution)** (WIP)
+     -   **[5.5 Response](#response)** (WIP)
+-   **[6 Reference Implementations](#reference-implementations)**
 -   **[7 Conclusion](#conclusion)**
--   **[8 References](#references)** 
+-   **[8 References](#references)**
 
 [^WIP]: Work in progress.
 
@@ -76,7 +76,7 @@ Examples in this document are non‐normative, and are presented to help underst
 console.log("Hello, World!");
 ```
 
-Code examples in this document are for providing real-life samples, but does not have to be from a real implementation. We created reference implementations, and recommend you checking out them.
+Code examples in this document are for providing real-life samples, but does not have to be from a real implementation. We created reference implementations, and highly recommend you checking out them.
 
 > #### Example
 >
@@ -89,7 +89,7 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 
 # <a name="overview">2</a> Overview
 
-Sage is a query-based, entity-focused data exchange *(or retrieval)* approach designed to simplify the communication for data interactions between different layers of applications by providing an expressive, intuitive and lightweight way. 
+Sage is a query-based, entity-focused data exchange *(or retrieval)* approach designed to simplify the communication for data interactions between different layers, sides of applications by providing a simple & lightweight but expressive and intuitive way. 
 
 The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
 
@@ -455,7 +455,45 @@ The Boolean scalar type represents `true` or `false`. Response formats should us
 
 Sage servers may coerce non‐boolean raw values to `boolean` when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
 
-### <a name="5.1.5">5.1.5</a> Entity
+### <a name="5.1.5">5.1.5</a> Constraints
+
+#### Strict-type
+
+All attributes are weak-typed by default. This means they can be any type which is output-able JSON serializable.
+
+But optionally you can set strict-type constraints for an attribute. This means, the resolver function of that attribute must return a value of that specific type you want.
+
+Anyway, Sage will try to coerce the returned value to the desired type if possible.
+
+These are all possible types which you can set as a strict-type constraint **:**
+
+- **boolean**
+- **integer**
+- **string**
+- **float**
+- **entity**
+- **object** (must be represented as a map–a set of key-value pairs.)
+- **list** (must set an item type)
+
+#### Non-Null
+
+By default, all values in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐Null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+
+> #### Example
+>
+> Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
+>
+> If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
+
+##### **Nullable vs. Optional**
+
+Attributes are *always* optional within the context of a query, an attribute may be omitted and the query is still valid. However attributes that return Non‐Null types will never return the value **null** if queried.
+
+##### **Result Coercion**
+
+In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
+
+### <a name="5.1.5">5.1.6</a> Entity
 
 Sage Entities represent…
 
@@ -474,7 +512,7 @@ All attributes and acts defined within an Entity type must not have a name which
 >
 > We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. 
 >
-> We want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as 
+> We want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as the Web3 vision 
 
 For example, a `Person` entity type could be described as **:**
 
@@ -483,7 +521,7 @@ For example, a `Person` entity type could be described as **:**
 [^SDL]: Schema Definition Language
 
 ```scss
-entity Person {	
+entity Person {
   id: @integer
   name: @string
   age: @integer
@@ -558,7 +596,7 @@ entity Person {
 }
 ```
 
-And here is the definition of `Occupation` type :
+And here is the definition of `Occupation` type**:**
 
 ```scss
 entity Occupation {
@@ -568,7 +606,7 @@ entity Occupation {
 }
 ```
 
-And let’s say we only requested for the `occupation` attribute. Here it returns an *entity* value **:**
+And let’s say we only requested for the `occupation` attribute. Here it returns an *entity* value**:**
 
 ```json
 {
@@ -597,7 +635,7 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
     3.  The act must be a callable *(function, method, closure etc.)*, and must be able to accept at least one parameter, which will be the query object. 
 
-### <a name="5.1.6">5.1.6</a> List
+### <a name="5.1.6">5.1.7</a> List
 
 A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type. 
 
@@ -611,47 +649,9 @@ If a list’s item type is nullable, then errors occuring during preparation or 
 
 >   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
-### <a name="5.1.7">5.1.7</a> Constraints
-
-#### Strict-type
-
-All attributes are weak-typed by default. This means they can be any type which is output-able JSON serializable.
-
-But optionally you can set strict-type constraints for an attribute. This means, the resolver function of that attribute must return a value of that specific type you want.
-
-Anyway, Sage will try to coerce the returned value to the desired type if possible.
-
-These are all possible types which you can set as a strict-type constraint **:**
-
-- **boolean**
-- **integer**
-- **string**
-- **float**
-- **entity**
-- **object** (must be represented as a map–a set of key-value pairs.)
-- **list** (must set an item type)
-
-#### Non-Null
-
-By default, all values in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐Null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
-
-> #### Example
->
-> Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
->
-> If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
-
-##### **Nullable vs. Optional**
-
-Attributes are *always* optional within the context of a query, an attribute may be omitted and the query is still valid. However attributes that return Non‐Null types will never return the value **null** if queried.
-
-##### **Result Coercion**
-
-In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
-
 ### <a name="5.1.8">5.1.8</a> Descriptions
 
-Documentation is a boring part of API development. But it turned about to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
+Documentation is a boring part of API development. But it turned out to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
 
 To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think they are really useful.
 
@@ -659,7 +659,7 @@ All Sage types, attributes, acts and other definitions which can be described sh
 
 ### <a name="5.1.9">5.1.9</a> Deprecation
 
-Attributes or acts in an entity may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
+Entities, attributes or acts may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
 
 This must be handled just like setting optional constraints on attributes. As simple as declaring the ‘**deprecated’** setting as **true**.
 
@@ -787,6 +787,24 @@ enum @Type {
 }
 ```
 
+### Type Kinds
+
+There are three different kinds of types. These kinds are listed in the `@TypeKind` enumeration.
+
+#### Scalar
+
+Represents scalar types such as **Int, String, Float and Boolean**. Scalars cannot have any fields or items.
+
+A Sage type designer should describe the data format and scalar coercion rules in the description attribute of any scalar.
+
+#### Object
+
+Object types represent concrete instantiations of sets of fields.
+
+#### List
+
+Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
+
 ### The `@Schema` Type
 
 Represents the Sage schema. Contains only a single attribute, “entities”.
@@ -838,86 +856,9 @@ The `@Act` type represents an act in a specific Entity type.
 -   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
 -   All other attributes must return **null**.
 
-### Type Kinds
-
-There are three different kinds of types. These kinds are listed in the `@TypeKind` enumeration.
-
-#### Scalar
-
-Represents scalar types such as **Int, String, Float and Boolean**. Scalars cannot have any fields or items.
-
-A Sage type designer should describe the data format and scalar coercion rules in the description attribute of any scalar.
-
-#### Object
-
-Object types represent concrete instantiations of sets of fields.
-
-#### List
-
-Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
-
 ## <a name="validation">5.3</a> Validation
 
-Sage does not just verify if a request is structurally correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
 
-An invalid request is still technically executable, and will always produce a stable result as defined by the algorithms in the Execution section, however that result may be ambiguous, surprising, or unexpected relative to a request containing validation errors, so execution should only occur for valid requests.
-
-Typically validation is performed in the context of a request immediately before execution, however a GraphQL service may execute a request without explicitly validating it if that exact same request is known to have been validated before. For example: the request may be validated during development, provided it does not later change, or a service may validate a request once and memoize the result to avoid validating the same request again in the future. Any client‐side or development‐time tool should report validation errors and not allow the formulation or execution of requests known to be invalid at that given point in time.
-
-**Type system evolution**
-
-As GraphQL type system schema evolve over time by adding new types and new fields, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. GraphQL services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated GraphQL systems may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
-
-**Examples**
-
-For this section of this schema, we will assume the following type system in order to demonstrate examples:
-
-```scss
-Example № 90type Query {
-  dog: Dog
-}
-
-enum DogCommand { SIT, DOWN, HEEL }
-
-type Dog implements Pet {
-  name: String!
-  nickname: String
-  barkVolume: Int
-  doesKnowCommand(dogCommand: DogCommand!): Boolean!
-  isHousetrained(atOtherHomes: Boolean): Boolean!
-  owner: Human
-}
-
-interface Sentient {
-  name: String!
-}
-
-interface Pet {
-  name: String!
-}
-
-type Alien implements Sentient {
-  name: String!
-  homePlanet: String
-}
-
-type Human implements Sentient {
-  name: String!
-}
-
-enum CatCommand { JUMP }
-
-type Cat implements Pet {
-  name: String!
-  nickname: String
-  doesKnowCommand(catCommand: CatCommand!): Boolean!
-  meowVolume: Int
-}
-
-union CatOrDog = Cat | Dog
-union DogOrHuman = Dog | Human
-union HumanOrAlien = Human | Alien
-```
 
 ## <a name="execution">5.4</a> Execution
 
