@@ -884,15 +884,6 @@ Arguments are provided to your Sage service to specify the parameters of your qu
     -   Let *argumentValue* be the value provided by the client in the query.
     -   Arguments are treated as a mapping of argument name to value. More than one argument with the same name in an argument set is ambiguous and invalid.
 
-##### **Formal Specification**
-
--   For each argument in the Document.
--   Let argumentName be the Name of argument.
--   Let arguments be all Arguments named argumentName in the Argument Set which contains argument.
--   arguments must be the set containing only argument.
-
-1.  [Variable Uniqueness](#sec-Variable-Uniqueness)
-
 ## <a name="execution">5.4</a> Execution
 
 — Work in progress.
