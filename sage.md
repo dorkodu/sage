@@ -23,11 +23,13 @@ June 2021 - Working Draft
         -   **[5.1.2 Types](#5.1.2)**
         -   **[5.1.3 Scalar Types](#5.1.3)**
         -   **[5.1.4 Default Scalar Types in Sage](#5.1.4)**
-        -   **[5.1.5 Constraints](#5.1.7)**
-        -   **[5.1.6 Entity](#5.1.5)**
-        -   **[5.1.7 List](#5.1.6)**
-        -   **[5.1.8 Descriptions](#5.1.8)**
-        -   **[5.1.9 Deprecation](#5.1.9)**
+        -   **[5.1.5 Constraints](#5.1.5)**
+        -   **[5.1.6 Enum](#5.1.6)**
+        -   **[5.1.7 Object](#5.1.7)**
+        -   **[5.1.8 Entity](#5.1.8)**
+        -   **[5.1.9 List](#5.1.9)**
+        -   **[5.1.10 Descriptions](#5.1.10)**
+        -   **[5.1.11 Deprecation](#5.1.11)**
      -   **[5.2 Introspection](#introspection)**
          -   **[5.2.1 Schema Introspection](#5.2.1)**
      -   **[5.3 Validation](#validation)** (WIP)
@@ -89,7 +91,7 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 
 # <a name="overview">2</a> Overview
 
-Sage is a query-based, entity-focused data exchange *(or retrieval)* approach designed to simplify the communication for data interactions between different layers, sides of applications by providing a simple & lightweight but expressive and intuitive way. 
+Sage is a query-based, entity-focused data exchange approach designed to simplify the communication for data interactions between different layers, sides of applications by providing a simple & lightweight but expressive and intuitive way.
 
 The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
 
@@ -127,7 +129,7 @@ In this example, we requested for a **Movie** entity with the argument **id: 5**
 
 # <a name="principles">3</a> Principles
 
-Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving data exchange problems efficiently. Here are some of our design principles :
+Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving data exchange problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
 
 ## Some of Our Design Principles
 
@@ -139,13 +141,13 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 
 - ### Query-based Data Exchange
 
-    Most problems in data exchange is experienced in the retrieval process between layers. *(e.g. client-server applications & APIs)* In order to solve this, Sage is ***query-based***, which is the ideal way. You can query your data, by *giving the desired attributes, and arguments for conditions*, and get only what you want. Even you can call remotely your Sage instance to do some work, by adding an **act** to your query item.
+    Most problems in data exchange is experienced in the retrieval process between layers. *(e.g. client-server applications & APIs)* In order to solve this, Sage is ***query-based***, which is the ideal way. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can even call remotely your Sage service to do some work, by adding an **act** to your query item.
 
-    Any data fetching and modification process imaginable can be developed with Sage. Especially in the product-side client applications, it would be a mindful choice to consume a Sage based API.
+    Any data retrieval and modification process imaginable will be able to developed with Sage. Especially in the product-side client applications, it would be a mindful choice to consume a Sage based API.
 
 - ### Entity-focused Type System
 
-    In modern software world, using data structurally as an “object” is the most common way, so Sage performs operations (e.g. data retrieval or modification) on a specific *“entity type”* . This entity type can be thought as a kind of "class" in OOP, with attributes (= properties) and acts (= methods) are defined and used on this entity type. You query for an object
+    In modern software world, using data structurally as an object is the most common way, so Sage performs operations (e.g. data retrieval or modification) on a specific *“entity type”* . This entity type can be thought as a kind of "class" in *OOP*, with attributes (= properties) and acts (= methods) are defined on this *entity type*, and you query for an instance of *entity type*. 
 
 - ### Product-centric
 
@@ -174,11 +176,11 @@ Here we introduce some concepts and terms which you will need to understand well
 
 Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP. 
 
-Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **remote-callable methods** (which you can trigger them to do something, like updating the database).
+Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **methods/functions** (which you can remotely call them in your query to do something, like updating the database).
 
 - ### Attribute
 
-    An attribute describes a property of this entity type. An attribute can be *any type* which **must be JSON serializable** *(a scalar, or an array/object following this rule).*
+    An attribute describes a property of this entity type. An attribute can be *any type* which must be **JSON serializable** *(will talk about this later).*
 
     An attribute will be retrieved by a resolver/retriever function defined by user, which Sage will pass the query object as a parameter.
 
@@ -471,7 +473,6 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
-- **entity**
 - **object** (must be represented as a map–a set of key-value pairs.)
 - **list** (must set an item type)
 
@@ -493,7 +494,35 @@ Attributes are *always* optional within the context of a query, an attribute may
 
 In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
 
-### <a name="5.1.5">5.1.6</a> Entity
+### <a name="5.1.6">5.1.6</a> Enums
+
+Sage Enum types –like scalar types– also represent leaf values in the Sage type system. However, Enum types describe the set of possible values.
+
+Enums are not references for a numeric value, but are unique values in their own right. They may serialize as a string: the name of the represented value.
+
+In this example, an Enum type called `Direction` is defined **:**
+
+```scss
+enum Direction [ NORTH, EAST, SOUTH, WEST ]
+```
+
+#### **Result Coercion**
+
+GraphQL servers must return one of the defined set of possible values. If a reasonable coercion is not possible they must raise a field error.
+
+#### **Type Validation**
+
+Enum types have the potential to be invalid if incorrectly defined.
+
+1.  An Enum type must define one or more unique enum values.
+
+### [5.1.6](#5.1.6) Objects
+
+Sage objects represent a list of named fields, each of which yield a value of an output-able type. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
+
+A field of an object may be any type which is **JSON serializable.**
+
+### <a name="5.1.7">5.1.7</a> Entity
 
 Sage Entities represent…
 
@@ -530,7 +559,7 @@ entity Person {
 
 Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
 
-> Do not forget that strict-types are optional. You don’t need to set a type constraint for each attribute you define.
+> Do not forget that **strict-types are optional**. You don’t need to set a type constraint for each attribute you define.
 
 Only attributes and acts which are declared on that entity type may validly be queried on that entity.
 
@@ -562,7 +591,7 @@ Would yield the object:
 While selecting a subset of attributes:
 
 ```json
-{	
+{
   "someone": {    
     "type": "Person",    
     "attr": ["name"],    
@@ -583,30 +612,20 @@ Must only yield exactly that subset:
 }
 ```
 
-We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **entity**.
+We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **object**.
 
-For example, the `Person` type might include an `occupation` attribute with the type *entity* **:**
+For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
 
 ```scss
 entity Person {
   id: @integer
   name: @string
   age: @integer
-  occupation: @entity("Occupation")
+  occupation: @object
 }
 ```
 
-And here is the definition of `Occupation` type**:**
-
-```scss
-entity Occupation {
-  company: @string
-  role: @string
-  startYear: @integer
-}
-```
-
-And let’s say we only requested for the `occupation` attribute. Here it returns an *entity* value**:**
+And let’s say we only requested for the `occupation` attribute. Here it returns an *object* value**:**
 
 ```json
 {
@@ -619,6 +638,14 @@ And let’s say we only requested for the `occupation` attribute. Here it return
   }
 }
 ```
+
+#### **Attribute Ordering**
+
+When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution, This ordering is correctly produced when using the [CollectFields](#CollectFields())() algorithm.
+
+Response serialization formats capable of representing ordered maps should maintain this ordering. Serialization formats which can only represent unordered maps (such as JSON) should retain this order textually. That is, if two fields `{foo, bar}` were queried in that order, the resulting JSON serialization should contain `{"foo": "...", "bar": "..."}` in the same order.
+
+Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated.
 
 #### Type Validation
 
@@ -635,7 +662,7 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
     3.  The act must be a callable *(function, method, closure etc.)*, and must be able to accept at least one parameter, which will be the query object. 
 
-### <a name="5.1.6">5.1.7</a> List
+### <a name="5.1.8">5.1.8</a> List
 
 A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type. 
 
@@ -649,7 +676,9 @@ If a list’s item type is nullable, then errors occuring during preparation or 
 
 >   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
-### <a name="5.1.8">5.1.8</a> Descriptions
+
+
+### <a name="5.1.9">5.1.9</a> Descriptions
 
 Documentation is a boring part of API development. But it turned out to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
 
@@ -657,7 +686,7 @@ To allow Sage service designers easily write documentation alongside the capabil
 
 All Sage types, attributes, acts and other definitions which can be described should provide a description unless they are considered self descriptive.
 
-### <a name="5.1.9">5.1.9</a> Deprecation
+### <a name="5.1.10">5.1.10</a> Deprecation
 
 Entities, attributes or acts may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
 
@@ -858,7 +887,39 @@ The `@Act` type represents an act in a specific Entity type.
 
 ## <a name="validation">5.3</a> Validation
 
+Sage does not just verify if a request is structurally and syntactically correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
 
+**An invalid request is still technically executable**, and will always produce a stable result as defined by the algorithms in the Execution section, however that result may be ambiguous, surprising, or unexpected relative to a request containing validation errors, **so execution should only occur for valid requests.**
+
+Typically validation is performed in the context of a request immediately before execution, however a Sage service may execute a request without explicitly validating it if that exact same request is known to have been validated before.
+
+>   #### **Example** 
+>
+>   A request may be validated during development, provided it does not later change, or a service may validate a request once and memoize the result to avoid validating the same request again in the future. Any client‐side or development‐time tool should report validation errors and not allow the formulation or execution of requests known to be invalid at that given point in time.
+
+**Type system evolution**
+
+As Sage type system schema evolve over time by adding new entities, attributes or acts, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
+
+**Examples**
+
+For this section of this schema, we will assume the following type system in order to demonstrate examples:
+
+```scss
+enum DogCommand { SIT, DOWN, HEEL }
+
+entity Dog {
+  name: @string @nonNull
+  nickname: @string
+  barkVolume: @int
+  isHousetrained: @boolean
+  owner: @entity("Human")
+}
+
+entity Human {
+  name: @string
+}
+```
 
 ## <a name="execution">5.4</a> Execution
 
