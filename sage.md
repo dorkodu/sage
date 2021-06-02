@@ -8,47 +8,40 @@ May 2021 - Working Draft
 
 ---
 
-## Contents
+### Contents
 
-1. **[Introduction](#introduction)**
-
-2. **[Overview](#overview)**
-
-3. **[Principles](#principles)**
-
-4. **[Concepts](#concepts)**
-   1. **[Entity](#4.1)**
-    2. **[Schema](#4.2)**
-    3. **[Query](#4.3)**
-    
-5. **[Components](#components)** (WIP)
-   1. **[Type System](#type-system)**
-       1. **[Schema](#5.1.1)**
-       2. **[Types](#5.1.2)**
-       3. **[Scalar Types](#5.1.3)**
-       4. **[Default Scalar Types in Sage](#5.1.4)**
-       5. **[Entity](#5.1.5)**
-       6. **[List](#5.1.6)**
-       7. **[Constraints](#5.1.7)**
-       8. **[Descriptions](#5.1.8)**
-       9. **[Deprecation](#5.1.9)**
-    2. **[Introspection](#introspection)**
-        1. **[Schema Introspection](#5.2.1)**
-    3. **[Validation](#validation)**
-    4. **[Execution](#execution)**
-    5. **[Response](#response)**
-   
-7. **[Reference Implementations](#reference-implementations)** (WIP)
-
-8. **[Conclusion](#conclusion)**
-
-9. **[References](#references)** 
+-   **[1 Introduction](#introduction)**
+-   **[2 Overview](#overview)**
+-   **[3 Principles](#principles)**
+-   **[4 Concepts](#concepts)**
+    -   **[4.1 Entity](#4.1)**
+     -   **[4.2 Schema](#4.2)**
+     -   **[4.3 Query](#4.3)**
+-   **[5 Components](#components)** (WIP)
+    -   **[5.1 Type System](#type-system)**
+        -   **[5.1.1 Schema](#5.1.1)**
+        -   **[5.1.2 Types](#5.1.2)**
+        -   **[5.1.3 Scalar Types](#5.1.3)**
+        -   **[5.1.4 Default Scalar Types in Sage](#5.1.4)**
+        -   **[5.1.5 Entity](#5.1.5)**
+        -   **[5.1.6 List](#5.1.6)**
+        -   **[5.1.7 Constraints](#5.1.7)**
+        -   **[5.1.8 Descriptions](#5.1.8)**
+        -   **[5.1.9 Deprecation](#5.1.9)**
+     -   **[5.2 Introspection](#introspection)**
+         -   **[5.2.1 Schema Introspection](#5.2.1)**
+     -   **[5.3 Validation](#validation)**
+     -   **[5.4 Execution](#execution)**
+     -   **[5.5 Response](#response)**
+-   **[6 Reference Implementations](#reference-implementations)** (WIP)
+-   **[7 Conclusion](#conclusion)**
+-   **[8 References](#references)** 
 
 [^WIP]: Work in progress.
 
 # <a name="introduction">1</a> Introduction
 
-<img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 30px auto;"/>
+<img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 20px auto;"/>
 
 This is the proposal for Sage; a query-based, entity-focused data exchange approach originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications. The development of this open standard started in 2020.
 
