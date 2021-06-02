@@ -174,13 +174,13 @@ Here we introduce some concepts and terms which you will need to understand well
 
 ## <a name="4.1">4.1</a> Entity
 
-Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP. 
+Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
 
 Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **methods/functions** (which you can remotely call them in your query to do something, like updating the database).
 
 - ### Attribute
 
-    An attribute describes a property of this entity type. An attribute can be *any type* which must be **JSON serializable** *(will talk about this later).*
+    An attribute describes a property of this entity type. An attribute can be *any type* which must be **JSON serializable** *(We will explain this in following sections).*
 
     An attribute will be retrieved by a resolver/retriever function defined by user, which Sage will pass the query object as a parameter.
 
@@ -192,58 +192,11 @@ Each entity can have any number of attributes and acts. Attributes are **key-val
     >
     > **For example:** In our PHP implementation, you can define an optional ‘context’ array which you can use as a simple dependency container. Sage will pass that context value to resolver and act functions.
 
-    *— Here is a pseudo example for defining attributes, in PHP :*
-
-    ```php
-    /*
-     * A psuedo attribute definition, with a string type constraint.
-     *
-     * Description, constraints and other optional settings should be expressed as a 
-     * map if possible. Like object literals in JS, or assoc arrays in PHP.
-     */
-    
-    // Attribute(<name>, <resolver>, <options>)
-    $attribute = new Attribute(
-      'name',
-      function ($query) {
-    		$id = $query->argument('id');
-      	$person = DataSource::getPersonById($id);
-    		return $person->name;
-    	},
-      [
-        'type'        => Type::string(),
-        'description' => "Name of a person."
-        'nonNull'     => true
-      ]
-    );
-    ```
-
 - ### Act
 
     An act is a function *(like a method)* that can be added to an entity type. An act is called in a query with *(optional)* arguments.
 
     An act is identified by a string name. It takes the query as a parameter. You can write your business logic code as acts and run any of them by calling it from a query.
-
-    *— Here is a pseudo example for defining acts, in PHP :*
-
-    ```php
-    /*
-     * A psuedo act definition.
-     * Options should be expressed as a map, if possible.
-     */
-    
-    // Act(<name>, <closure>, <options>)
-    $act = new Act(
-      "greet",
-      function($query) {
-    		$name = $query->argument('name');
-        say("Hi, " . $name);
-    	},
-      [
-        'description' => "Greets someone, takes 'name' as argument."
-      ]
-    );
-    ```
 
 ## <a name="4.2">4.2</a> Query
 

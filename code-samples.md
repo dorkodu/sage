@@ -1,8 +1,8 @@
 # Code Samples
 
-Here we provide severe code samples which can help you better understand some concepts of Sage.
+Here we share the code samples which can help you better understand some concepts of Sage. All of them are fictitious and do not have a reference status for the community. 
 
-## Sage Service Example in Sage
+## Sage Service in PHP
 
 ### Attribute definition :
 
@@ -14,7 +14,7 @@ Here we provide severe code samples which can help you better understand some co
  * map if possible. Like object literals in JS, or assoc arrays in PHP.
  */
 
-// Attribute(<name>, <resolver>, <options>)
+# Attribute(<name>, <resolver>, <options>)
 $attribute = new Attribute(
   'name',
   function ($query) {
@@ -30,4 +30,25 @@ $attribute = new Attribute(
 );
 ```
 
-## Sage Client Example in Sage
+### Act definition :
+
+```php
+/*
+ * A psuedo act definition.
+ * Options should be expressed as a map, if possible.
+ */
+
+# Act(<name>, <closure>, <options>)
+$act = new Act(
+  "greet",
+  function($query) {
+    $name = $query->argument('name');
+    say("Hi, " . $name);
+  },
+  [
+    'description' => "Greets someone, takes 'name' as argument."
+  ]
+);
+```
+
+## Sage Client in JS
