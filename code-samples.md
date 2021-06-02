@@ -1,6 +1,6 @@
 # Code Samples
 
-Here we share the code samples which can help you better understand some concepts of Sage. All of them are fictitious and do not have a reference status for the community. 
+Here we share the code samples which can help you better understand some concepts of Sage. All of them are fictitious and do not have to be taken from a reference implementation. 
 
 ## Sage Service in PHP
 
@@ -50,5 +50,3 @@ $act = new Act(
   ]
 );
 ```
-
-## Sage Client in JS
