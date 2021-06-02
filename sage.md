@@ -24,7 +24,6 @@ June 2021 - Working Draft
         -   **[5.1.3 Scalar Types](#5.1.3)**
         -   **[5.1.4 Default Scalar Types in Sage](#5.1.4)**
         -   **[5.1.5 Constraints](#5.1.5)**
-        -   **[5.1.6 Enum](#5.1.6)**
         -   **[5.1.7 Object](#5.1.7)**
         -   **[5.1.8 Entity](#5.1.8)**
         -   **[5.1.9 List](#5.1.9)**
@@ -244,7 +243,7 @@ Each query item must be identified with a string name which must be unique withi
 
 ### Query Item Structure
 
-A query item contains at most 4 attributes. To have lightweight, compact query documents, attribute names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
+A query item contains at most 4 fields. To have lightweight, compact query documents, field names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
 
 - #### **`type`**
 
@@ -261,7 +260,7 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
 
 - #### **`act`**
 
-    *(optional)* In addition to an entity’s attribute getters, Sage also can call for an *act* you defined, if you give its name in the query.
+    *(optional)* In addition to an entity’s attribute resolvers, Sage also can call for an *act* you defined, if you give its name in the query.
 
     This is an example query of adding a to-do, for the sake of simplicity :
 
@@ -270,12 +269,12 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
       "AddToDo:101": {
         "type": "ToDo",
         "act": "addToDo",
+        "attr": ["id", "user", "title", "isCompleted", "deadline"],
         "args": {
           "userId": 101,
           "title": "Finish Sage's Whitepaper.",
           "deadline": "2021-05-20"
-        },
-        "attr": ["id", "user", "title", "isCompleted", "deadline"]
+        }
       }
     }
     ```
@@ -298,21 +297,19 @@ A query item contains at most 4 attributes. To have lightweight, compact query d
     }
     ```
 
-    > #### Note
-    >
     > Sage does not handle these steps automatically. It’s the developer who must write the code required to add this to-do to data storage, also how to retrieve these attributes.
-
+    
 - #### **`args`**
 
-    *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute getters *(and to the act if given in the query.)*
+    *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute resolvers *(and to the act if given in the query.)*
 
-    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, while you are querying you can give an **`id`** argument and set it to **`1234`**. On the other hand, in the resolver you would look for an id argument and fetch the User with the given id from the data source.
+    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, while you are querying you can give an **`id`** argument and set it to **`1234`**. On the server side, in the resolver you would look for an id argument and fetch the User with the given id from the data source.
 
 ## <a name="4.3">4.3</a> Schema
 
 Your Sage server’s data capability is defined by its data schema, which is just a list of entity types. That’s it. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
 
-In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document. 
+In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
 
 # <a name="components">5</a> Components
 
@@ -326,7 +323,7 @@ Sage consists from following components :
 
 ##  <a name="type-system">5.1</a> Type System
 
-The Sage Type system describes the capabilities of a Sage server and is used to determine if a query is valid. The type system also can be used to add strict type constraints on attributes to determine that values provided at runtime are valid an of a desired.
+The Sage type system describes the capabilities of a Sage service and is used to determine if a query and its response are valid.
 
 ### <a name="5.1.1">5.1.1</a> Schema
 
@@ -336,7 +333,7 @@ A schema is defined as a list of entity types it supports.
 
 A Sage schema must itself be internally valid.
 
-All entity types within a Sage schema must have unique, string names. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types (including Scalar and Introspection types).
+All entity types within a Sage schema must have unique, string names. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
 All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
 
@@ -346,7 +343,7 @@ The fundamental unit of any Sage schema is the *type*.
 
 The most basic type is a `Scalar`. A scalar represents a primitive value, like a string or an integer.
 
-However, we have a concept called **“constraints”.** The most important constraint is **strict-types**. Oftentimes it is useful to add some constraints to attributes, like **strict-types**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute. With Sage; you can do that, too.
+However, we have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute.
 
 ### <a name="5.1.3">5.1.3</a> Scalar Types
 
@@ -356,13 +353,13 @@ All Sage scalars are representable as strings, though depending on the response 
 
 > We prefer **JSON** and suggest you to use JSON if possible, but you can also use another format for query and/or result, *in the same way we use JSON*.
 >
-> In the **“Response”** section, we will mention this topic.
+> In the **[Response](#response)** section, we will talk about this.
 
 #### Result Coercion
 
 A Sage server, when retrieving an attribute of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
 
-A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
+A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` , or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
 
 Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
 
@@ -447,54 +444,32 @@ Attributes are *always* optional within the context of a query, an attribute may
 
 In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
 
-### <a name="5.1.6">5.1.6</a> Enums
-
-Sage Enum types –like scalar types– also represent leaf values in the Sage type system. However, Enum types describe the set of possible values.
-
-Enums are not references for a numeric value, but are unique values in their own right. They may serialize as a string: the name of the represented value.
-
-In this example, an Enum type called `Direction` is defined **:**
-
-```scss
-enum Direction [ NORTH, EAST, SOUTH, WEST ]
-```
-
-#### **Result Coercion**
-
-GraphQL servers must return one of the defined set of possible values. If a reasonable coercion is not possible they must raise a field error.
-
-#### **Type Validation**
-
-Enum types have the potential to be invalid if incorrectly defined.
-
-1.  An Enum type must define one or more unique enum values.
-
 ### [5.1.6](#5.1.6) Objects
 
-Sage objects represent a list of named fields, each of which yield a value of an output-able type. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
+Sage object type represent a list of named fields, each of which yield a value of a valid type. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
 
-A field of an object may be any type which is **JSON serializable.**
+A field of an object may be any type which must be **JSON serializable.**
 
 ### <a name="5.1.7">5.1.7</a> Entity
 
 Sage Entities represent…
 
-- a list of named attributes *(= fields, properties)*, each of which yield a value *(optionally, a value of a specific type)* 
-- a list of named acts (= methods) each of which are functions that you can call from your query item *(and optionally with the arguments you give)*.
+- a list of attributes *(= fields, properties)*, each of which is a named key and yield a value *(optionally, a value of a specific type you desire)* 
+- a list of acts (= methods) each of which is a named function that you can call in your query item *(and optionally with the arguments you give)*.
 
-Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
+Entity values should be serialized as ordered maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
 
 All attributes and acts defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
 
 > #### Note
 >
-> Sage queries are not hierarchical. You request for entities individually, but you can also compose different entity types in one manually. It’s completely up to the end user who will develop a Sage service.
+> Sage queries are not hierarchical. You request for entities individually.
 >
 > We wanted to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just link to them. 
 >
 > We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. 
 >
-> We want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as the Web3 vision 
+> We want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
 
 For example, a `Person` entity type could be described as **:**
 
@@ -594,7 +569,7 @@ And let’s say we only requested for the `occupation` attribute. Here it return
 
 #### **Attribute Ordering**
 
-When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution, This ordering is correctly produced when using the [CollectFields](#CollectFields())() algorithm.
+When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
 
 Response serialization formats capable of representing ordered maps should maintain this ordering. Serialization formats which can only represent unordered maps (such as JSON) should retain this order textually. That is, if two fields `{foo, bar}` were queried in that order, the resulting JSON serialization should contain `{"foo": "...", "bar": "..."}` in the same order.
 
@@ -613,11 +588,13 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
 3.  For each act of an Entity type :
     1.  The act must have a unique name within that Entity type; no two acts may share the same name.
     2.  The act must not have a name which begins with the character "**@**" *(at)*.
-    3.  The act must be a callable *(function, method, closure etc.)*, and must be able to accept at least one parameter, which will be the query object. 
+    3.  The act must be 
+        1.  a function
+        2.  able to accept at least one parameter, which will be the query object. 
 
 ### <a name="5.1.8">5.1.8</a> List
 
-A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type. 
+A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type.
 
 To denote that a field uses a List type, the item type also must be declared as a type constraint.
 
@@ -629,15 +606,13 @@ If a list’s item type is nullable, then errors occuring during preparation or 
 
 >   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
-
-
 ### <a name="5.1.9">5.1.9</a> Descriptions
 
 Documentation is a boring part of API development. But it turned out to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
 
 To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think they are really useful.
 
-All Sage types, attributes, acts and other definitions which can be described should provide a description unless they are considered self descriptive.
+All Sage type definitions which can be described should provide a description unless they are considered self descriptive.
 
 ### <a name="5.1.10">5.1.10</a> Deprecation
 
@@ -647,9 +622,9 @@ This must be handled just like setting optional constraints on attributes. As si
 
 ## <a name="introspection">5.2</a> Introspection
 
-A Sage server supports introspection over its schema. The schema is queried using Sage itself, which makes introspection easy-to-use.
+A Sage server supports introspection over its schema. The schema is queried using Sage itself.
 
-Take an example query, there is a User entity with three fields: id, name, and age.
+Take an example query, there is a User entity with three fields: *id*, *name*, and *age*.
 
 *— for example, given a server with the following type definition :*
 
@@ -850,29 +825,73 @@ Typically validation is performed in the context of a request immediately before
 >
 >   A request may be validated during development, provided it does not later change, or a service may validate a request once and memoize the result to avoid validating the same request again in the future. Any client‐side or development‐time tool should report validation errors and not allow the formulation or execution of requests known to be invalid at that given point in time.
 
-**Type system evolution**
+#### **Type system evolution**
 
 As Sage type system schema evolve over time by adding new entities, attributes or acts, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
 
-**Examples**
+#### **Examples**
 
-For this section of this schema, we will assume the following type system in order to demonstrate examples:
+For this section of this document, we will assume the following type system in order to demonstrate examples**:**
 
 ```scss
-enum DogCommand { SIT, DOWN, HEEL }
-
-entity Dog {
+entity Person {
   name: @string @nonNull
-  nickname: @string
-  barkVolume: @int
-  isHousetrained: @boolean
-  owner: @entity("Human")
-}
-
-entity Human {
-  name: @string
+  nickname
+  age: @int
 }
 ```
+
+`Person` entity type has attributes : 
+
+-   `name` : **string** and **non-null**
+-   `nickname` –no constraint–
+-   `age` : **integer**
+
+### <a name="5.3.1">5.3.1</a> Query
+
+— Work in progress.
+
+### <a name="5.3.2">5.3.2</a> Schema
+
+— Work in progress.
+
+### <a name="5.3.3">5.3.3</a> Attributes
+
+#### Attribute Selection
+
+##### **Formal Specification**
+
+-   Let *attributeName* be the desired attribute.
+    -   *attributeName* must be defined in the schema as an attribute of the entity type wanted in the query item.
+
+##### — This is a valid 
+
+```json
+{
+  "person": {
+    "type": "Person",
+    "attr": [ "name", "nickname", "age" ]
+  }
+}
+```
+
+### <a name="5.3.5">5.3.5</a> Arguments
+
+Arguments are provided to your Sage service to specify the parameters of your query.
+
+-   For each argument in a query document :
+    -   Let *argumentName* be the Name of argument.
+    -   Let *argumentValue* be the value provided by the client in the query.
+    -   Arguments are treated as a mapping of argument name to value. More than one argument with the same name in an argument set is ambiguous and invalid.
+
+##### **Formal Specification**
+
+-   For each argument in the Document.
+-   Let argumentName be the Name of argument.
+-   Let arguments be all Arguments named argumentName in the Argument Set which contains argument.
+-   arguments must be the set containing only argument.
+
+1.  [Variable Uniqueness](#sec-Variable-Uniqueness)
 
 ## <a name="execution">5.4</a> Execution
 
