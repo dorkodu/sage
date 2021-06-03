@@ -15,8 +15,8 @@ June 2021 - Working Draft
 -   **[3 Principles](#principles)**
 -   **[4 Concepts](#concepts)**
     -   **[4.1 Entity](#4.1)**
-     -   **[4.2 Schema](#4.2)**
-     -   **[4.3 Query](#4.3)**
+     -   **[4.2 Query](#4.2)**
+     -   **[4.3 Schema](#4.3)**
 -   **[5 Components](#components)** (WIP)
     -   **[5.1 Type System](#type-system)**
         -   **[5.1.1 Schema](#5.1.1)**
@@ -24,11 +24,11 @@ June 2021 - Working Draft
         -   **[5.1.3 Scalar Types](#5.1.3)**
         -   **[5.1.4 Default Scalar Types in Sage](#5.1.4)**
         -   **[5.1.5 Constraints](#5.1.5)**
-        -   **[5.1.7 Object](#5.1.7)**
-        -   **[5.1.8 Entity](#5.1.8)**
-        -   **[5.1.9 List](#5.1.9)**
-        -   **[5.1.10 Descriptions](#5.1.10)**
-        -   **[5.1.11 Deprecation](#5.1.11)**
+        -   **[5.1.6 Object](#5.1.6)**
+        -   **[5.1.7 Entity](#5.1.7)**
+        -   **[5.1.8 List](#5.1.8)**
+        -   **[5.1.9 Descriptions](#5.1.9)**
+        -   **[5.1.10 Deprecation](#5.1.10)**
      -   **[5.2 Introspection](#introspection)**
          -   **[5.2.1 Schema Introspection](#5.2.1)**
      -   **[5.3 Validation](#validation)** (WIP)
@@ -44,7 +44,7 @@ June 2021 - Working Draft
 
 <img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 20px auto;"/>
 
-This is the proposal for Sage; a query-based, entity-focused data exchange approach originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications. The development of this open standard started in 2020.
+This is the proposal for Sage; a query-based, entity-focused data exchange protocol originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications and APIs. The development of this open standard started in 2020.
 
 The latest working draft release can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
 
@@ -92,7 +92,7 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 
 Sage is a query-based, entity-focused data exchange approach designed to simplify the communication for data interactions between different layers, sides of applications by providing a simple & lightweight but expressive and intuitive way.
 
-The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as an isolated data exchange layer, which can also play an **API** role in your architecture.
+The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as a data exchange layer, or **API**.
 
 For example, here is a sample Sage transaction *(request and response for a query)* **:**
 
@@ -130,7 +130,7 @@ In this example, we requested for a **Movie** entity with the argument **id: 5**
 
 Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving data exchange problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
 
-## Some of Our Design Principles
+## Our Design Principles
 
 - ### Agnostic About Your Application and Technology Stack
 
@@ -146,15 +146,15 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 
 - ### Entity-focused Type System
 
-    In modern software world, using data structurally as an object is the most common way, so Sage performs operations (e.g. data retrieval or modification) on a specific *“entity type”* . This entity type can be thought as a kind of "class" in *OOP*, with attributes (= properties) and acts (= methods) are defined on this *entity type*, and you query for an instance of *entity type*. 
+    In modern software world, using data structurally as an object is the most common way, so Sage performs operations (e.g. data retrieval or modification) on a specific *“entity type”* . An entity type can be thought as a kind of "class" in *OOP*, with attributes (or properties) and acts (or methods) are defined on this *entity type*.
+
+    Through its simple but effective type system, a Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
 - ### Product-centric
 
     Sage was primarily designed to solve the problems of the data consumer, front-end application developers. The main goal was to provide an *intuitive, neat, lightweight and easily applicable framework for simplifying the data exchange process* and ease the burden on developers and their software architecture. For this reason, Sage offers a naturally appropriate way for both client and server sides of your application.
 
 - ### Client-first
-
-    Through its simple but effective type system, a Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
     In the majority of client‐server applications written without a similar way to Sage, most of which use REST, the server itself determines the data returned in its endpoints. But a Sage API, on the other hand, returns exactly what a client asks for and no more.
 
@@ -171,15 +171,19 @@ Because of these principles, Sage is a simple-to-use, flexible, lightweight but 
 
 Here we introduce some concepts and terms which you will need to understand well in order to understand and learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
 
+>   #### What sort of protocol is Sage?
+>
+>   Simply a protocol is a set of agreements about how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing a data exchange layer *(like an API)*.
+
 ## <a name="4.1">4.1</a> Entity
 
 Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
 
-Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **methods/functions** (which you can remotely call them in your query to do something, like updating the database).
+Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **methods/functions** (which you can remotely call in your query to do something, e.g. updating the database).
 
 - ### Attribute
 
-    An attribute describes a property of this entity type. An attribute can be *any type* which must be **JSON serializable** *(We will explain this in following sections).*
+    An attribute describes a property of an entity. An attribute can be *any type* which must be **JSON serializable** *(We will explain this in following sections).*
 
     An attribute will be retrieved by a resolver/retriever function defined by user, which Sage will pass the query object as a parameter.
 
@@ -201,7 +205,7 @@ Each entity can have any number of attributes and acts. Attributes are **key-val
 
 Sage is a query-based approach for data exchange. 
 
-The client requests the data it needs from a Sage service with a structured query document that is created according to certain rules. Basically, a query document contains a list of query items all of which describes an entity instance needed, with no limit on the number of query items. 
+The client requests the data it needs from a Sage service with a structured query document that is created according to certain rules. Basically, a query document contains a list of queries all of which describes an entity instance needed, with no limit on the number of queries.
 
 But how to query?
 
@@ -213,7 +217,7 @@ But how to query?
 >
 > Thus, the query and the result are expressed using the JSON format. By using a universal format and not inventing a new query language, we keep Sage lightweight, easily approachable and implementable.
 
-Each query item must be identified with a string name which must be unique within the query document, and expressed as a JSON object which the name points to.
+Each query must be identified with a string name which must be unique within the query document, and expressed as a JSON object which the name points to.
 
 *— Below here is an example of a transaction (query and response) requesting a single entity :*
 
@@ -241,9 +245,9 @@ Each query item must be identified with a string name which must be unique withi
 }
 ```
 
-### Query Item Structure
+### Query Structure
 
-A query item contains at most 4 fields. To have lightweight, compact query documents, field names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
+A query is described as an object, and contains some pre-defined fields. To have lightweight, compact query documents, field names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
 
 - #### **`type`**
 
@@ -297,13 +301,13 @@ A query item contains at most 4 fields. To have lightweight, compact query docum
     }
     ```
 
-    > Sage does not handle these steps automatically. It’s the developer who must write the code required to add this to-do to data storage, also how to retrieve these attributes.
+    > Sage does not handle these steps automatically. It’s the developer who writes the code required to add this to-do to data storage, also how to retrieve these attributes.
     
 - #### **`args`**
 
     *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute resolvers *(and to the act if given in the query.)*
 
-    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, while you are querying you can give an **`id`** argument and set it to **`1234`**. On the server side, in the resolver you would look for an id argument and fetch the User with the given id from the data source.
+    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, in your query, you can give an **`id`** argument and set it to **`1234`**. On the server side, in the attribute resolver function you would look for an id argument and fetch the `User` with the given id from the data source.
 
 ## <a name="4.3">4.3</a> Schema
 
@@ -333,7 +337,7 @@ A schema is defined as a list of entity types it supports.
 
 A Sage schema must itself be internally valid.
 
-All entity types within a Sage schema must have unique, string names. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
+All entity types within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
 All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
 
@@ -886,7 +890,68 @@ Arguments are provided to your Sage service to specify the parameters of your qu
 
 ## <a name="execution">5.4</a> Execution
 
-— Work in progress.
+Sage generates a response from a request via execution.
+
+A request for execution consists of a few pieces of information **:**
+
+-   The [*Schema*](#5.1.1) to use, typically solely provided by the Sage service.
+
+-   A valid *[Query Document](#Document)*.
+
+-   An initial value corresponding to the root type being executed. Conceptually, an initial value represents the “universe” of data available via a Sage service. It is common for a Sage service to always use the same initial value for every request.
+
+    [^WHY]: Why there is an initial value?
+
+Given this information, the result of [ExecuteRequest](#ExecuteRequest())() produces the response, to be formatted according to the [Response](#response) section below.
+
+### <a name="5.4.1">5.4.1</a> Executing Requests
+
+To execute a request, the executor must have a parsed a [Query Document](#).
+
+[^TODO]: Write the algorithm for request execution.
+
+**ExecuteRequest (** *schema, query* **)** **:**
+
+  * For every query item found in *query* **ExecuteQueryItem**( *schema, queryItem* ).
+
+#### Validating Requests
+
+As explained in the Validation section, only requests which pass all validation rules should be executed. If validation errors are known, they should be reported in the list of "**errors**" in the response and the request must fail without execution.
+
+Typically validation is performed in the context of a request immediately before execution, however a Sage service may execute a request without immediately validating it if that exact same request is known to have been
+validated before. A Sage service should only execute requests which *at some point* were known to be free of any validation errors, and have since not changed.
+
+>   The request may be validated during development, provided it does not later change, or a service may validate a request **once** and **memoize** the result to avoid validating the same request again in the future.
+
+### <a name="5.4.2">5.4.2</a> Executing Query Items
+
+The type system, as described in the “Type System” section of this document, must provide a query root object type. If mutations or subscriptions are supported, it must also provide a mutation or subscription root object type, respectively.
+
+An initial value may be provided when executing a query.
+
+[**ExecuteQuery**](#5.4.1) **(** *query **,** schema* **)**
+
+1.  Let queryType be the root Query type in schema.
+2.  Assert: queryType is an Object type.
+3.  Let selectionSet be the top level Selection Set in query.
+4.  Let data be the result of running [ExecuteSelectionSet](#ExecuteSelectionSet())(selectionSet, queryType, initialValue, variableValues) *normally* (allowing parallelization).
+5.  Let errors be any *field errors* produced while executing the selection set.
+6.  Return an unordered map containing data and errors.
+
+#### [6.2.2](#sec-Mutation)Mutation
+
+If the operation is a mutation, the result of the operation is the result of executing the mutation’s top level selection set on the mutation root object type. This selection set should be executed serially.
+
+It is expected that the top level fields in a mutation operation perform side‐effects on the underlying data system. Serial execution of the provided mutations ensures against race conditions during these side‐effects.
+
+[ExecuteMutation](#ExecuteMutation())(mutation, schema, variableValues, initialValue)
+
+1.  Let mutationType be the root Mutation type in schema.
+2.  Assert: mutationType is an Object type.
+3.  Let selectionSet be the top level Selection Set in mutation.
+4.  Let data be the result of running [ExecuteSelectionSet](#ExecuteSelectionSet())(selectionSet, mutationType, initialValue, variableValues) *serially*.
+5.  Let errors be any *field errors* produced while executing the selection set.
+6.  Return an unordered map containing data and errors.
 
 ## <a name="response">5.5</a> Response
 
