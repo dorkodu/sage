@@ -90,7 +90,7 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 
 # <a name="overview">2</a> Overview
 
-Sage is a query-based, entity-focused data exchange approach designed to simplify the communication for data interactions between different layers, sides of applications by providing a simple & lightweight but expressive and intuitive way.
+Sage is a query-based, entity-focused data exchange approach designed to simplify the communication for data interactions between different layers of software by providing a simple & lightweight but expressive and intuitive way.
 
 The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as a data exchange layer, or **API**.
 
@@ -100,7 +100,7 @@ For example, here is a sample Sage transaction *(request and response for a quer
 
 ```json
 {
-  "forrest": {
+  "matrix": {
   	"type": "Movie",
   	"attr": ["name", "starring", "releaseYear"],
   	"args": {
@@ -115,10 +115,10 @@ For example, here is a sample Sage transaction *(request and response for a quer
 ```json
 {
   "data": {
-    "forrest": {
-      "name": "Forrest Gump",
-      "starring": "Tom Hanks",
-      "relaseYear": 1994
+    "matrix": {
+      "name": "The Matrix",
+      "starring": "Keanu Reeves",
+      "relaseYear": 1999
     }
   }
 }
