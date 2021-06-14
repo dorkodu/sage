@@ -2,7 +2,7 @@
 
 Here we share the code samples which can help you better understand some concepts of Sage. All of them are fictitious and do not have to be taken from a reference implementation. 
 
-## Sage Service in PHP
+## Sage Server in PHP
 
 ### Attribute definition :
 
@@ -14,9 +14,8 @@ Here we share the code samples which can help you better understand some concept
  * map if possible. Like object literals in JS, or assoc arrays in PHP.
  */
 
-# Attribute(<name>, <resolver>, <options>)
-$attribute = new Attribute(
-  'name',
+# Attribute(resolver, options[])
+$Name = new Attribute(
   function ($query) {
 		$id = $query->argument('id');
   	$person = DataSource::getPersonById($id);
@@ -38,9 +37,8 @@ $attribute = new Attribute(
  * Options should be expressed as a map, if possible.
  */
 
-# Act(<name>, <closure>, <options>)
-$act = new Act(
-  "greet",
+# Act(closure, options[])
+$Greet = new Act(
   function($query) {
     $name = $query->argument('name');
     say("Hi, " . $name);
@@ -50,3 +48,30 @@ $act = new Act(
   ]
 );
 ```
+
+### Entity definition :
+
+```php
+/*
+ * A psuedo entity definition.
+ * Options should be expressed as a map, if possible.
+ */
+
+
+
+# Entity(attributes[], acts[], relationships[], options[])
+$user = new Entity(
+	[
+    'name' => $Name,
+    ...
+  ],
+  [
+    
+  ],
+  [],
+  [
+    'description' => "Greets someone, takes 'name' as argument."
+  ]
+);
+```
+
