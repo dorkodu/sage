@@ -8,7 +8,7 @@ June 2021 - Working Draft
 
 ---
 
-### Contents
+## Contents
 
 -   **[1 Introduction](#introduction)**
 -   **[2 Overview](#overview)**
@@ -26,6 +26,7 @@ June 2021 - Working Draft
         -   **[5.1.5 Constraints](#5.1.5)**
         -   **[5.1.6 Object](#5.1.6)**
         -   **[5.1.7 Entity](#5.1.7)**
+        -   **[5.1.7 Entity Collection](#5.1.7)**
         -   **[5.1.8 List](#5.1.8)**
         -   **[5.1.9 Descriptions](#5.1.9)**
         -   **[5.1.10 Deprecation](#5.1.10)**
@@ -44,9 +45,9 @@ June 2021 - Working Draft
 
 <img src="resources/sage-dark.png" alt="Sage Logo" style="width: 70%; margin: 20px auto;"/>
 
-This is the proposal for Sage; a query-based, entity-focused data exchange protocol originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially built for client-server applications and APIs. The development of this open standard started in 2020.
+This is the proposal for Sage; a query-based, entity-focused data exchange protocol originally created at Dorkodu to simplify the communication for data interactions between different layers of software, especially designed for APIs. The development of this open standard started in 2020.
 
-The latest working draft release can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
+The latest working draft of this protocol can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
 
 ### Copyright Notice
 
@@ -63,6 +64,14 @@ A conforming implementation of Sage must fulfill all normative requirements. Con
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative portions of this document are to be interpreted as described in [IETF RFC 2119](https://tools.ietf.org/html/rfc2119). These key words may appear in lowercase and still retain their meaning unless explicitly declared as non‐normative.
 
 A conforming implementation of Sage may provide additional functionality, but must not where explicitly disallowed or would otherwise result in non‐conformance.
+
+### Conforming Algorithms
+
+Algorithm steps phrased in imperative grammar (e.g. “Return the result of calling resolver”) are to be interpreted with the same level of requirement as the algorithm it is contained within. Any algorithm referenced within an algorithm step (e.g. “Let completedResult be the result of calling CompleteValue()”) is to be interpreted as having at least the same level of requirement as the algorithm containing that step.
+
+Conformance requirements expressed as algorithms can be fulfilled by an implementation of this specification in any way as long as the perceived result is equivalent. Algorithms described in this document are written to be easy to understand. Implementers are encouraged to include equivalent but optimized implementations.
+
+See [Appendix A](https://spec.graphql.org/draft/#sec-Appendix-Notation-Conventions) for more details about the definition of algorithms and other notational conventions used in this document.
 
 ### Non-normative Portions
 
@@ -90,9 +99,9 @@ Notes in this document are non‐normative, and are presented to clarify intent,
 
 # <a name="overview">2</a> Overview
 
-Sage is a query-based, entity-focused data exchange approach designed to simplify the communication for data interactions between different layers of software by providing a simple & lightweight but expressive and intuitive way.
+Sage is a query-based, entity-focused data exchange protocol designed to simplify the communication for data interactions between different layers of software by providing a simple & lightweight but efficient, expressive and intuitive way.
 
-The primary goal was to develop a simpler way for inter-layer data interactions, but Sage is designed to be implemented as a data exchange layer, or **API**.
+The primary goal was to develop a simpler way for designing and building powerful **APIs**.
 
 For example, here is a sample Sage transaction *(request and response for a query)* **:**
 
@@ -102,9 +111,9 @@ For example, here is a sample Sage transaction *(request and response for a quer
 {
   "matrix": {
   	"type": "Movie",
-  	"attr": ["name", "starring", "releaseYear"],
+  	"attr": ["name", "starring", "duration", "directedBy", "releaseYear"],
   	"args": {
- 			"id": 5
+ 			"id": "tt0133093"
   	}
 	}
 }
@@ -117,49 +126,65 @@ For example, here is a sample Sage transaction *(request and response for a quer
   "data": {
     "matrix": {
       "name": "The Matrix",
-      "starring": "Keanu Reeves",
+      "starring": [
+        "Keanu Reeves",
+        "Laurence Fishburne",
+        "Carrie-Anne Moss",
+        "Hugo Weaving"
+      ],
+      "duration": 136,
+      "directedBy": "The Wachowksi Brothers",
       "relaseYear": 1999
     }
   }
 }
 ```
 
-In this example, we requested for a **Movie** entity with the argument **id: 5** and wanted attributes of **name**, **starring** and **releaseYear**. And as a result you got an object which contains only what you wanted.
+In this example, we requested for a **Movie** entity with the argument **id: “*tt0133093*”** and asked for the attributes **name**, **starring**, **duration**, **directedBy** and **releaseYear**. And as a result you got an object which contains only what you wanted.
 
 # <a name="principles">3</a> Principles
 
-Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving data exchange problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
+Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving the major problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
 
-## Our Design Principles
+- #### Platform Agnostic
 
-- ### Agnostic About Your Application and Technology Stack
+- Sage is completely platform agnostic  **never dictates** the use of *any programming language, platform, storage technique or even a query language like SQL or GraphQL*. Instead, focuses on concepts and patterns that are achievable **no matter how you're building a Sage server. **Every language and every Sage implementation does things slightly differently. 
 
-    Sage **never dictates** the use of *any programming language, platform, storage technique or even a query language like SQL or GraphQL*. It should be independent from other layers, also directly based on your business logic. 
+    Think of it as a complete guide of what goes into building an powerful API, from design, to architectures, to implementation, and even documentation.
+
+- Sage It should be independent from other layers, also directly based on your business logic. 
 
     If we simplify how Sage works, it is like a middleware for data exchange between the layers of consumer (client) and service (server).
 
-- ### Query-based Data Exchange
+- #### Query-based Data Exchange
 
-    Most problems in data exchange is experienced in the retrieval process between layers. *(e.g. client-server applications & APIs)* In order to solve this, Sage is ***query-based***, which is the ideal way. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can even call remotely your Sage service to do some work, by adding an **act** to your query item.
+    Most problems in data interactions is experienced in the retrieval process. *(e.g. client-server applications & APIs)* In order to solve this, Sage is ***query-based***, which is the ideal way. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can even call remotely your Sage service to do some work, by adding an **act** to your query item.
 
     Any data retrieval and modification process imaginable will be able to developed with Sage. Especially in the product-side client applications, it would be a mindful choice to consume a Sage based API.
 
-- ### Entity-focused Type System
+- #### Entity-focused Type System
 
-    In modern software world, using data structurally as an object is the most common way, so Sage performs operations (e.g. data retrieval or modification) on a specific *“entity type”* . An entity type can be thought as a kind of "class" in *OOP*, with attributes (or properties) and acts (or methods) are defined on this *entity type*.
+    Every Sage server defines an application‐specific type system. Queries are executed within the context of that type system. A Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
-    Through its simple but effective type system, a Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
+    Sage performs operations *(e.g. data retrieval or modification)* on a specific *“entity type”* . An entity type can be considered like a "class" in *OOP*, with attributes *(or properties)* and acts *(or methods)* are defined on this *entity type*.
 
-- ### Product-centric
+- #### Flexible Types and Constraints 
 
-    Sage was primarily designed to solve the problems of the data consumer, front-end application developers. The main goal was to provide an *intuitive, neat, lightweight and easily applicable framework for simplifying the data exchange process* and ease the burden on developers and their software architecture. For this reason, Sage offers a naturally appropriate way for both client and server sides of your application.
+    Sage is *flex-typed*. By default, all attributes are
 
-- ### Client-first
+    
 
-    In the majority of client‐server applications written without a similar way to Sage, most of which use REST, the server itself determines the data returned in its endpoints. But a Sage API, on the other hand, returns exactly what a client asks for and no more.
+- #### Application-Layer Protocol
 
-    An addition to that, with Sage, you can also define acts on an entity type, which can be called in a query. This is useful when you want to make changes on your data, or trigger your API to do something.
+    Sage is an application-layer protocol and does not require or dictate a particular transport. It is a standard about how to exchange data, in a query-based way.
 
+- #### Product-centric
+
+    Sage was primarily designed to solve the problems of the *data consumption*, product engineering. The main goal was to provide an ***intuitive**, **neat**, **lightweight** and **easily applicable framework** for **simplifying the data exchange process** and ease the burden on developers and their application architectures. For this reason, Sage offers a natural way for **describing** *data requirements* and **consuming** *data capabilities*.
+
+- #### Graph-like Structure
+
+    Most data-driven apps today focus on creation and manipulation of their data. So with Sage you can describe your data as **entities**–with their ***attributes***, ***acts***– and their **relationships**, which is like a *graph*. To achieve harmony with the structure of these applications, a Sage query itself is a set of descriptions with high granularity, which you can determine the exact attributes, acts and relationships of an entity.
 
 ## So…
 
@@ -173,7 +198,7 @@ Here we introduce some concepts and terms which you will need to understand well
 
 >   #### What sort of protocol is Sage?
 >
->   Simply a protocol is a set of agreements about how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing a data exchange layer *(like an API)*.
+>   Simply a protocol is a set of agreements about how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing APIs.
 
 ## <a name="4.1">4.1</a> Entity
 
@@ -209,8 +234,6 @@ The client requests the data it needs from a Sage service with a structured quer
 
 But how to query?
 
-> #### Note
->
 > Sage **does not** have a *special query language*.
 >
 > We think it is *unnecessary* to add this burden while being able to use one of the common formats. So we decided to use ***JSON***, which has advantages such as being *universal, lightweight and easy to use*. Also, JSON is commonly used in the software ecosystem, which means it has wide support *(such as tools, helper libraries)* on different languages and platforms.
@@ -245,73 +268,9 @@ Each query must be identified with a string name which must be unique within the
 }
 ```
 
-### Query Structure
-
-A query is described as an object, and contains some pre-defined fields. To have lightweight, compact query documents, field names are used in their shortened forms. **Type, Attributes, Act and Arguments.**
-
-- #### **`type`**
-
-    Entity type. A query item will be executed on its given type. This is the only required attribute.
-
-- #### **`attr`**
-
-    *(optional)* The string array of attribute names you want Sage to return. Each attribute is identified with its own *string name*.
-
-    **You can set *“attr”* to an empty array, or even don’t define *“attr”* attribute.**
-
-    - Empty array means an **empty result** object will be returned.
-    - Not setting the attribute means **no result object** will be returned.
-
-- #### **`act`**
-
-    *(optional)* In addition to an entity’s attribute resolvers, Sage also can call for an *act* you defined, if you give its name in the query.
-
-    This is an example query of adding a to-do, for the sake of simplicity :
-
-    ```json
-    {
-      "AddToDo:101": {
-        "type": "ToDo",
-        "act": "addToDo",
-        "attr": ["id", "user", "title", "isCompleted", "deadline"],
-        "args": {
-          "userId": 101,
-          "title": "Finish Sage's Whitepaper.",
-          "deadline": "2021-05-20"
-        }
-      }
-    }
-    ```
-
-    This sample will add a to-do with given arguments, then return the desired attributes. Here is the result :
-
-    ```json
-    {  
-      "AddToDo:101": {    
-        "id": 12345,
-        "user": { 
-          "id": "101",
-          "username": "doruk",
-          "name": "Doruk Eray"
-        },    
-        "title": "Finish Sage's Whitepaper.",
-        "isCompleted": false,    
-        "deadline": "2021-05-20"  
-      }
-    }
-    ```
-
-    > Sage does not handle these steps automatically. It’s the developer who writes the code required to add this to-do to data storage, also how to retrieve these attributes.
-    
-- #### **`args`**
-
-    *(optional)* Arguments, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute resolvers *(and to the act if given in the query.)*
-
-    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, in your query, you can give an **`id`** argument and set it to **`1234`**. On the server side, in the attribute resolver function you would look for an id argument and fetch the `User` with the given id from the data source.
-
 ## <a name="4.3">4.3</a> Schema
 
-Your Sage server’s data capability is defined by its data schema, which is just a list of entity types. That’s it. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
+Your Sage server’s data capability is defined by its data schema, which is just a list of defined types. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
 
 In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
 
@@ -333,7 +292,7 @@ The Sage type system describes the capabilities of a Sage service and is used to
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
 
-A schema is defined as a list of entity types it supports.
+A schema is defined as a set of entity types it supports.
 
 A Sage schema must itself be internally valid.
 
@@ -458,10 +417,11 @@ A field of an object may be any type which must be **JSON serializable.**
 
 Sage Entities represent…
 
-- a list of attributes *(= fields, properties)*, each of which is a named key and yield a value *(optionally, a value of a specific type you desire)* 
-- a list of acts (= methods) each of which is a named function that you can call in your query item *(and optionally with the arguments you give)*.
+- a list of *Attributes*, each of which is a named key and yield a value *(optionally, a value of a specific type you desire)*
+- a list of *Acts*, each of which is a named function that you can call in your query item *(and optionally with the arguments you give)*.
+- a list *Relationships*, each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* links between two entity types.
 
-Entity values should be serialized as ordered maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
+Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
 
 All attributes and acts defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
 
@@ -471,13 +431,11 @@ All attributes and acts defined within an Entity type must not have a name which
 >
 > We wanted to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just link to them. 
 >
-> We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. 
->
-> We want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
+> We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. So we want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
 
 For example, a `Person` entity type could be described as **:**
 
-***— Just to give an effective presentation, here we introduce a hypothetical, pseudo SDL* :**<br>
+***— Just to make it easily undestandable, here we use a hypothetical, pseudo SDL* :**<br>
 
 [^SDL]: Schema Definition Language
 
@@ -491,7 +449,7 @@ entity Person {
 
 Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
 
-> Do not forget that **strict-types are optional**. You don’t need to set a type constraint for each attribute you define.
+> Do not forget that **strict-types or any constraints are optional**. You don’t need to set a type constraint for each attribute you define.
 
 Only attributes and acts which are declared on that entity type may validly be queried on that entity.
 
@@ -571,32 +529,36 @@ And let’s say we only requested for the `occupation` attribute. Here it return
 }
 ```
 
-#### **Attribute Ordering**
+#### Attribute Ordering
 
 When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
 
 Response serialization formats capable of representing ordered maps should maintain this ordering. Serialization formats which can only represent unordered maps (such as JSON) should retain this order textually. That is, if two fields `{foo, bar}` were queried in that order, the resulting JSON serialization should contain `{"foo": "...", "bar": "..."}` in the same order.
 
-Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated.
+Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated. 
 
 #### Type Validation
 
 Entity types can be invalid if incorrectly defined. These set of rules must be adhered to by every Entity type in a Sage schema.
 
-1.  An Entity type must define one or more attributes.
-2.  For each attribute of an Entity type :
-    1.  The attribute must have a unique name within that Entity type; no two attributes may share the same name.
-    2.  The attribute must not have a name which begins with the character "**@**" *(at)*.
+1.  Anything defined on the schema must not have a name which begins with the character "**@**" *(commercial at)*.
+2.  An Entity type must define one or more attributes.
+3.  For each **attribute** of an Entity type :
+    1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
     3.  The attribute must return a type which must be **output-able**. We will talk about this later.
     4.  If any constraints have been set for an attribute, it must return a type which is **valid** for that constraint.
-3.  For each act of an Entity type :
+4.  For each **act** of an Entity type :
     1.  The act must have a unique name within that Entity type; no two acts may share the same name.
-    2.  The act must not have a name which begins with the character "**@**" *(at)*.
-    3.  The act must be 
+    3.  The act must be :
         1.  a function
         2.  able to accept at least one parameter, which will be the query object. 
+5.  For each **relationship** of an Entity type :
+    1.  The relationship must have a unique string name within that Entity type; no two relationships may share the same name.
+    2.  The relationship must point to a specific Entity/EntityCollection type.
 
-### <a name="5.1.8">5.1.8</a> List
+### <a name="5.1.8">5.1.8</a> Entity Collection
+
+### <a name="5.1.9">5.1.9</a> List
 
 A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type.
 
@@ -853,7 +815,107 @@ entity Person {
 
 ### <a name="5.3.1">5.3.1</a> Query
 
-— Work in progress.
+#### Document Structure
+
+This section describes the structure of a Sage document, which are defined in *JavaScript Object Notation (JSON)* [[RFC7159](http://tools.ietf.org/html/rfc7159)]. Although the same media type is used for both request and response documents, certain aspects are only applicable to one or the other. These differences are called out below.
+
+Unless otherwise noted, objects defined by this specification MUST NOT contain any additional members. Client and server implementations MUST ignore members not recognized by this specification.
+
+#### Query Object Structure
+
+A query is described as an object, and contains some pre-defined fields. To have lightweight, compact query documents, field names are used in their shortened forms. **Type, Attributes, Acts, Arguments and Relationships.**
+
+- #### **`type`**
+
+    **Entity Type**. A query item will be executed on its given type. This is the only required attribute.
+
+- #### **`attr`**
+
+    *(optional)* **Attributes**, which determines the attributes you want Sage to return. Each attribute is identified with its own *string name*.
+
+    **You can set *“attr”* to an empty array, or even don’t define *“attr”* attribute.**
+
+    - Empty array means an **empty result** object will be returned.
+    - Not setting the attribute means **no result object** will be returned.
+    - A string with inside a star means **“*”**
+
+- #### **`act`**
+
+    *(optional)* **Acts**, which in addition to an entity’s attribute resolvers, Sage also can call for an *act* you defined, if you give its name in the query.
+
+    This is an example query of adding a to-do, for the sake of simplicity :
+
+    ```json
+    {
+      "AddToDo:101": {
+        "type": "ToDo",
+        "act": "addToDo",
+        "attr": ["id", "user", "title", "isCompleted", "deadline"],
+        "args": {
+          "userId": 101,
+          "title": "Finish Sage's Whitepaper.",
+          "deadline": "2021-05-20"
+        }
+      }
+    }
+    ```
+
+    This sample will add a to-do with given arguments, then return the desired attributes. Here is the result :
+
+    ```json
+    {  
+      "AddToDo:101": {    
+        "id": 12345,
+        "user": { 
+          "id": "101",
+          "username": "doruk",
+          "name": "Doruk Eray"
+        },    
+        "title": "Finish Sage's Whitepaper.",
+        "isCompleted": false,    
+        "deadline": "2021-05-20"  
+      }
+    }
+    ```
+
+    > Sage does not handle these steps automatically. It’s the developer who writes the code required to add this to-do to data storage, also how to retrieve these attributes.
+
+- #### **`args`**
+
+    *(optional)* **Arguments**, a list of key-value pairs. They are no different than passing parameters to a function. You are providing arguments to your Sage API to specify “how” you want the data. They will be passed to all attribute resolvers *(and to the act if given in the query.)*
+
+    > #### Example
+    >
+    > Let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, in your query, you can give an **`id`** argument and set it to **`1234`**. On the server side, in the attribute resolver function you would look for an id argument and fetch the `User` with the given id from the data source.
+
+- #### **`rel`**
+
+    *(optional)* **Relationships**, a list of named and typed links to other entity types. They are like edges in a graph, where entity types are nodes. You can describe relationships between different entities.
+
+    ```crystal
+    (User)--[owner]-->(ToDo)
+    ```
+
+    > #### Example
+    >
+    > For example, let’s say you want the **`ToDo`** with the **`id`** of **`1234`**. If so, in your query, you can give an **`id`** argument and set it to **`1234`**. On the server side, in the attribute resolver function you would look for an id argument and fetch the `User` with the given id from the data source.
+    >
+    > ```json
+    > {
+    >   "doruk": {
+    >     "type": "User",
+    >     "attr": ["name", "email", "age"],
+    >     "rel": {
+    >       "todos": []
+    >     },
+    >     "args": {
+    >       "handle": "@doruk"
+    >     }
+    >   }
+    > }
+    > ```
+
+    
 
 ### <a name="5.3.2">5.3.2</a> Schema
 
