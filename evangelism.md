@@ -1,16 +1,16 @@
 # Evangelism
 
-This document is for the marketing messages of the Sage protocol, in which we aim promoting widespread adoption of Sage and accelerating development of its surrounding ecosystem.
+This document is for the marketing messages of the Sage protocol, in which we aim promoting and widespread awareness and adoption of Sage.
 
 ## Key Messages
 
 ### Get only what you want
 
-Send a Sage query to your API and get exactly what you need, nothing more and nothing less. Sage queries always return predictable results. Apps using Sage are fast and stable because they control the data they get, not the server. Consciously
+Send a Sage query to your API and get exactly what you need, nothing more and nothing less. Sage queries always return predictable results. Apps using Sage are fast and stable because they control the data they get, not the server.
 
 ### Get many resources in a single request
 
-Sage queries are composed into a single query document and sent once. While typical REST APIs require loading resources from multiple URLs, with Sage you can fetch all the data your app needs in a single request. You can scale your apps using a Sage API are quick even on poor network conditions.
+Sage queries are described as separate objects and composed into a single query document and sent once. While typical REST APIs require loading resources from multiple URLs, with Sage you can fetch all the data your app needs in a single request. You can scale your apps using a Sage API are quick even on poor network conditions.
 
 ### Describe your data with a schema
 
@@ -34,7 +34,7 @@ We are working to make Sage the industry-standard data exchange protocol for the
 
 ## Features
 
--   **Graph-like:** Most data-driven apps today focus on creation and manipulation of their data as entities and their relationships, which is like the *graph* structure. To achieve congruence with the structure of these applications, a Sage query itself is a set of entity descriptions with their attributes, acts and relationships. The query determines the data it returns. It is a natural way for product engineers to describe data requirements.
+-   **Graph-like:** Most data-driven apps today focus on creation and manipulation of their data as entities and their relationships,  which is like the *graph* structure. To achieve congruence with the structure of these applications, a Sage query itself is a set of entity descriptions with their attributes, acts and relationships. The query determines the data it returns. It is a natural way for product engineers to describe data requirements.
 
 -   **Product-centric:** Sage is driven by the requirements of front-end, product engineering. We start with their way of thinking and build the protocol necessary to enable that.
 
@@ -88,6 +88,15 @@ This is a liberating platform for product developers. With Sage, no more contend
 
 Product developers are free to focus on their client software and requirements while rarely leaving their development environment; they can more confidently support shipped clients as a system evolves; and they are using a protocol designed to operate well within the constraints of mobile applications. Product developers can query for exactly what they want, in the way they think about it, across their entire application’s data model.
 
+### Why not GraphQL?
+
+1.  [GraphQL queries could cause performance issues](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#1)
+2.  [REST can do much of what GraphQL does](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#2)
+3.  [GraphQL makes some tasks more complex](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#3)
+4.  [It’s easier to use a web cache with REST than with GraphQL](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#4)
+5.  [The way GraphQL schemas work could be a problem](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#5)
+6.  [REST is better for error handling and tooling](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#6)
+
 ## What’s next?
 
 Over the coming months, we will share more technical details about Sage, including additional language features, tools that support it, and how it is built and used at Dorkodu. These posts will culminate in a formal specification of Sage to guide implementors across various languages and platforms. We also plan on releasing a reference implementation in the summer, in order to provide a basis for custom deployments and a platform for experimentation. We’re incredibly excited to share this system and work with the open source community to improve it.
@@ -135,12 +144,6 @@ The simplicity with which clients can consume use cases using Sage is often bala
 Sage is completely language agnostic and instead focuses on concepts and patterns that are achievable **no matter how you're building a Sage server. **Every language and every Sage implementation does things slightly differently. 
 
 Think of it as a complete journey of what goes into building a Sage API, from design, to architectures, to implementation, and even documentation.
-
-### Is it for me?
-
-I decided to write this book after seeing how much interest there was in pushing Sage implementations to the **next level.** The book starts with an introduction to Sage, its history, and basic concepts. It then quickly ramps up to more intermediate and advanced concepts that will allow you to deeply understand the tradeoffs involved in building Sage APIs.
-
-You'll get the most out of the book if you've dabbled with Sage already and are ready to learn to take it to the next level and learn about what is coming as you implement it in your organizations.
 
 ### So what is Sage? 
 
