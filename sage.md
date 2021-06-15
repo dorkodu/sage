@@ -290,19 +290,13 @@ The fundamental unit of any Sage schema is the *type*.
 
 The most basic type is a `Scalar`. A scalar represents a primitive value, like a string or an integer.
 
-However, we have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute.
-
 ### <a name="5.2.1">5.2.1</a> Scalar Types
 
 Scalar types represent primitive values in the Sage type system.
 
 All Sage scalars are representable as strings, though depending on the response format being used, there may be a more appropriate primitive for the given scalar type, and server should use those types when appropriate.
 
-> We prefer **JSON** and suggest you to use JSON if possible, but you can also use another format for query and/or result, *in the same way we use JSON*.
->
-> In the **[Response](#response)** section, we will talk about this.
-
-##### **Result Coercion**
+##### Result Coercion
 
 A Sage server, when retrieving an attribute of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
 
@@ -312,7 +306,7 @@ Since this coercion behavior is not observable to clients of a Sage service, the
 
 Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and a Sage server which provide a type by these names must adhere to the behavior described below.
 
-> These scalar types are used for strong-type constraints on attributes. Normally attributes are all weak-typed, which means can be any type, provided that they must be JSON serializable.
+> In Sage, scalar types are used for **strict-type constraints** on attributes. By default, all attributes are **flex-typed**, which means can be any type, provided that they are valid within the output response format. We have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute.
 
 #### Integer
 
@@ -354,11 +348,177 @@ Sage servers may coerce non‐string raw values to string when reasonable withou
 
 The Boolean scalar type represents `true` or `false`. Response formats should use a built‐in boolean type if supported; otherwise, they should use their representation of the integers `1` and `0`.
 
-**Result Coercion**<br>Attributes returning the **boolean** type expect to encounter boolean internal values.
+##### **Result Coercion**
+
+Attributes returning the **boolean** type expect to encounter boolean internal values.
 
 Sage servers may coerce non‐boolean raw values to `boolean` when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
 
-### <a name="5.1.5">5.1.5</a> Constraints
+### [5.2.2](#5.2.2) Objects
+
+Sage object type represent a set of named fields, each of which yield a value of a valid type. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
+
+A field of an object may be any type which must be **JSON serializable.**
+
+### <a name="5.2.3">5.2.3</a> Entity
+
+Sage Entities represent…
+
+- a set of *Attributes*, each of which is a named key and yield a value *(optionally, a value of a specific type you desire)*
+- a set of *Acts*, each of which is a named function that you can call in your query item *(and optionally with the arguments you give)*.
+- a set of *Relationships*, each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* links between two entity types.
+
+Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
+
+All attributes and acts defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
+
+> #### Note
+>
+> Sage queries are **not hierarchical**. You request for entities individually.
+>
+> We want to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just link to them. This is why Sage also has *relationships*. 
+>
+> We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu, our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. So we want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
+
+For example, a `Person` entity type could be described as **:**
+
+***— Just to make our examples easily understandable, here we assume this hypothetical, pseudo SDL* :**<br>
+
+[^SDL]: Schema Definition Language
+
+```css
+entity Person {
+  id;
+  name @string;
+  age @integer;
+}
+```
+
+Where `name` is an attribute that will yield a **string** value, while `age` will yield an **integer** value. And `id` is a flex-typed attribute, which means there is not any constraints.
+
+> Do not forget that **strict-types or any constraints are optional**. You don’t need to set a type constraint for each attribute you define.
+
+Only attributes and acts which are declared on that entity type may validly be queried.
+
+For example, selecting all the attributes of a `Person` **:**
+
+```json
+{
+  "someone": {    
+    "type": "Person",    
+    "attr": "*",   
+    "args": {   
+      "id": 10
+    }
+  } 
+}
+```
+
+Would yield the object:
+
+```json
+{  
+  "someone": {  	
+    "name": "Doruk Eray",
+    "age": 16,	
+  }
+}
+```
+
+While selecting a subset of attributes:
+
+```json
+{
+  "someone": {    
+    "type": "Person",    
+    "attr": ["name"],    
+    "args": {      
+    	"id": 10    
+		}  
+  } 
+}
+```
+
+Must only yield exactly that subset:
+
+```json
+{
+  "someone": {  	
+    "name": "Doruk Eray"	
+  }
+}
+```
+
+We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **object**.
+
+For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
+
+```css
+entity Person {
+  id @integer;
+  name @string;
+  age @integer;
+  occupation @object;
+}
+```
+
+And let’s say we only requested for the `occupation` attribute. Here it returns an *object* value**:**
+
+```json
+{
+  "someone": {
+    "occupation": {
+      "company": "Dorkodu",
+      "role": "Founder",
+      "startYear": 2017
+    }
+  }
+}
+```
+
+#### Attribute Ordering
+
+When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
+
+Response serialization formats capable of representing ordered maps should maintain this ordering. Serialization formats which can only represent unordered maps (such as JSON) should retain this order textually. That is, if two fields `["foo", "bar"]` were queried in that order, the resulting JSON serialization should contain `{"foo": "...", "bar": "..."}` in the same order.
+
+Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated. 
+
+#### Type Validation
+
+Entity types can be invalid if incorrectly defined. These set of rules must be adhered to by every Entity type in a Sage schema.
+
+1.  An Entity type must define one or more attributes.
+2.  For each **attribute** of an Entity type :
+    1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
+    2.  The attribute must return a type which must be **output-able**. We will talk about this later.
+    3.  If any constraints have been set for an attribute, it must return a type which is **valid** for that constraint.
+3.  For each **act** of an Entity type :
+    1.  The act must have a unique name within that Entity type; no two acts may share the same name.
+    2.  The act must be :
+        1.  a function
+        2.  able to accept at least one parameter, which will be the query object. 
+4.  For each **relationship** of an Entity type :
+    1.  The relationship must have a unique string name within that Entity type; no two relationships may share the same name.
+    2.  The relationship must point to a specific Entity/EntityCollection type.
+
+### <a name="5.1.8">5.1.8</a> Entity Collection
+
+### <a name="5.1.9">5.1.9</a> List
+
+A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type.
+
+To denote that a field uses a List type, the item type also must be declared as a type constraint.
+
+#### **Result Coercion**
+
+Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
+
+If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
+
+>   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
+
+## <a name="5.3">5.3</a> Constraints
 
 #### Strict-type
 
@@ -394,171 +554,6 @@ Attributes are *always* optional within the context of a query, an attribute may
 ##### **Result Coercion**
 
 In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
-
-### [5.1.6](#5.1.6) Objects
-
-Sage object type represent a list of named fields, each of which yield a value of a valid type. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
-
-A field of an object may be any type which must be **JSON serializable.**
-
-### <a name="5.1.7">5.1.7</a> Entity
-
-Sage Entities represent…
-
-- a list of *Attributes*, each of which is a named key and yield a value *(optionally, a value of a specific type you desire)*
-- a list of *Acts*, each of which is a named function that you can call in your query item *(and optionally with the arguments you give)*.
-- a list *Relationships*, each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* links between two entity types.
-
-Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
-
-All attributes and acts defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
-
-> #### Note
->
-> Sage queries are not hierarchical. You request for entities individually.
->
-> We wanted to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just link to them. 
->
-> We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. So we want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
-
-For example, a `Person` entity type could be described as **:**
-
-***— Just to make it easily undestandable, here we use a hypothetical, pseudo SDL* :**<br>
-
-[^SDL]: Schema Definition Language
-
-```scss
-entity Person {
-  id: @integer
-  name: @string
-  age: @integer
-}
-```
-
-Where `name` is an attribute that will yield a **string** value, while `age` and `id` are attributes that each will yield an **integer** value.
-
-> Do not forget that **strict-types or any constraints are optional**. You don’t need to set a type constraint for each attribute you define.
-
-Only attributes and acts which are declared on that entity type may validly be queried on that entity.
-
-For example, selecting all the attributes of a `Person` **:**
-
-```json
-{
-  "someone": {    
-    "type": "Person",    
-    "attr": ["name", "age"],    
-    "args": {      
-      "id": 10    
-    }  
-  } 
-}
-```
-
-Would yield the object:
-
-```json
-{  
-  "someone": {  	
-    "name": "Doruk Eray",
-    "age": 17,	
-  }
-}
-```
-
-While selecting a subset of attributes:
-
-```json
-{
-  "someone": {    
-    "type": "Person",    
-    "attr": ["name"],    
-    "args": {      
-    	"id": 10    
-		}  
-  } 
-}
-```
-
-Must only yield exactly that subset:
-
-```json
-{
-  "someone": {  	
-    "name": "Doruk Eray"	
-  }
-}
-```
-
-We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **object**.
-
-For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
-
-```scss
-entity Person {
-  id: @integer
-  name: @string
-  age: @integer
-  occupation: @object
-}
-```
-
-And let’s say we only requested for the `occupation` attribute. Here it returns an *object* value**:**
-
-```json
-{
-  "someone": {
-    "occupation": {
-      "company": "Dorkodu",
-      "role": "Founder",
-      "startYear": 2017
-    }
-  }
-}
-```
-
-#### Attribute Ordering
-
-When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
-
-Response serialization formats capable of representing ordered maps should maintain this ordering. Serialization formats which can only represent unordered maps (such as JSON) should retain this order textually. That is, if two fields `{foo, bar}` were queried in that order, the resulting JSON serialization should contain `{"foo": "...", "bar": "..."}` in the same order.
-
-Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated. 
-
-#### Type Validation
-
-Entity types can be invalid if incorrectly defined. These set of rules must be adhered to by every Entity type in a Sage schema.
-
-1.  Anything defined on the schema must not have a name which begins with the character "**@**" *(commercial at)*.
-2.  An Entity type must define one or more attributes.
-3.  For each **attribute** of an Entity type :
-    1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
-    3.  The attribute must return a type which must be **output-able**. We will talk about this later.
-    4.  If any constraints have been set for an attribute, it must return a type which is **valid** for that constraint.
-4.  For each **act** of an Entity type :
-    1.  The act must have a unique name within that Entity type; no two acts may share the same name.
-    3.  The act must be :
-        1.  a function
-        2.  able to accept at least one parameter, which will be the query object. 
-5.  For each **relationship** of an Entity type :
-    1.  The relationship must have a unique string name within that Entity type; no two relationships may share the same name.
-    2.  The relationship must point to a specific Entity/EntityCollection type.
-
-### <a name="5.1.8">5.1.8</a> Entity Collection
-
-### <a name="5.1.9">5.1.9</a> List
-
-A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type.
-
-To denote that a field uses a List type, the item type also must be declared as a type constraint.
-
-#### **Result Coercion**
-
-Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
-
-If a list’s item type is nullable, then errors occuring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occuring at an individual item in the list must result in an attribute error for the entire list.
-
->   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
 ### <a name="5.1.9">5.1.9</a> Descriptions
 
@@ -920,6 +915,8 @@ A query is described as an object, and contains some pre-defined fields. To have
 
 — Work in progress.
 
+Anything defined on the Sage schema must not have a name which begins with the character "**@**" *(commercial at)*.
+
 ### <a name="5.3.3">5.3.3</a> Attributes
 
 #### Attribute Selection
@@ -1049,30 +1046,33 @@ The `data` entry in the response will be a map of directive names pointing to di
 
 If an error was encountered before execution begins, the `data` entry should not be present in the result.
 
-If an error was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
+If an error favorite was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
 
-— Here is a sample Sage transaction, in JSON **:**
+Here is a valid Sage transaction, in JSON **:**
+
+— Query **:**
 
 ```json
 {
-  "matrix": {
+  "myFavoriteMovie": {
     "type": "Movie",
     "attr": ["name", "releaseYear"],
     "args": {
-      
+      "id": "tt0133093";
     }
   }
 }	
 ```
 
-
+— Response **:**
 
 ```json
 {
   "data": {
-		"matrix": {
-      
-    }    
+		"myFavoriteMovie": {
+ 			"name": "The Matrix",
+      "releaseYear": 1999
+    }
   }
 }
 ```
