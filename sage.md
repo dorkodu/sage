@@ -146,41 +146,37 @@ In this example, we requested for a **Movie** entity with the argument **id: “
 
 Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving the major problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
 
-- #### Platform Agnostic
+- ### Platform Agnostic
 
-- Sage is completely platform agnostic  **never dictates** the use of *any programming language, platform, storage technique or even a query language like SQL or GraphQL*. Instead, focuses on concepts and patterns that are achievable **no matter how you're building a Sage server. **Every language and every Sage implementation does things slightly differently. 
+    Sage is completely platform agnostic, it **never dictates** the use of *any programming language, storage technique or even a query language like SQL or GraphQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service. **Every language and every Sage implementation does things slightly differently. 
 
-    Think of it as a complete guide of what goes into building an powerful API, from design, to architectures, to implementation, and even documentation.
+    Think of it as a complete specification about what goes into building an powerful API, from design, to architectures, to implementation, and even documentation.
 
-    Sage It should be independent from other layers, also directly based on your business logic. 
+- ### Query-based Data Exchange
 
-    If we simplify how Sage works, it is like a middleware for data exchange between the layers of consumer (client) and service (server).
-
-- #### Query-based Data Exchange
-
-    Most problems in data interactions is experienced in the retrieval process. *(e.g. client-server applications & APIs)* In order to solve this, Sage is ***query-based***, which is the ideal way. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can even call remotely your Sage service to do some work, by adding an **act** to your query item.
+    Sage is ***query-based***, which is the ideal way for data interactions. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can even call remotely your Sage service to do some work, by adding an **act** to your query item.
 
     Any data retrieval and modification process imaginable will be able to developed with Sage. Especially in the product-side client applications, it would be a mindful choice to consume a Sage based API.
 
-- #### Entity-focused Type System
+- ### Entity-focused Type System
 
     Every Sage server defines an application‐specific type system. Queries are executed within the context of that type system. A Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
     Sage performs operations *(e.g. data retrieval or modification)* on a specific *“entity type”* . An entity type can be considered like a "class" in *OOP*, with attributes *(or properties)* and acts *(or methods)* are defined on this *entity type*.
 
-- #### Flexible Types and Constraints 
+- ### Flexible Types and Constraints 
 
     Sage is *flex-typed*. By default, all attributes are
 
-- #### Application-Layer Protocol
+- ### Application-Layer Protocol
 
     Sage is an application-layer protocol and does not require or dictate a particular transport. It is a standard about how to exchange data, in a query-based way.
 
-- #### Product-centric
+- ### Product-centric
 
     Sage was primarily designed to solve the problems of the *data consumption*, product engineering. The main goal was to provide an ***intuitive**, **neat**, **lightweight** and **easily applicable framework** for **simplifying the data exchange process** and ease the burden on developers and their application architectures. For this reason, Sage offers a natural way for **describing** *data requirements* and **consuming** *data capabilities*.
 
-- #### Graph-like Structure
+- ### Graph-like Structure
 
     Most data-driven apps today focus on creation and manipulation of their data. So with Sage you can describe your data as **entities**–with their ***attributes***, ***acts***– and their **relationships**, which is like a *graph*. To achieve harmony with the structure of these applications, a Sage query itself is a set of descriptions with high granularity, which you can determine the exact attributes, acts and relationships of an entity.
 
@@ -1107,7 +1103,7 @@ For example, if fetching one of the friends’ names fails in the following quer
 
 To clarify the desired and ideal outcome of this proposal, we built reference server and client implementations. Both of them should be ready-to-go and is used on the production at Dorkodu.
 
-*— As of June 2, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback.*
+*— As of June 16, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback.*
 
 - ### Sage Server
 
@@ -1123,17 +1119,17 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
 
     > #### Note
     >
-    > This document does not focus on and dictate any certain rules about the client. However, we have built a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
+    > This document does NOT focus on and specify any certain rules about the client. However, we are creating a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
 # <a name="conclusion">7</a> Conclusion
 
-In this paper, we present Sage, which is in simple terms, a new way of data exchange and API design. We first give an overview, then introduce principles, concepts behind Sage; after that we dive deeply into its components. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
+In this paper, we present Sage, which is a new way of data exchange and API design. We first give an overview, then introduce principles, concepts behind Sage; after that we dive deeply into its components. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
 
 # <a name="references">8</a> References
 
 - **[Sage](https://libre.dorkodu.com/sage)**
 
-    Sage’s website on Dorkodu Libre. There you can find more resources about Sage, and also the latest working draft of this paper.
+    Sage’s website on Dorkodu Libre. There you can find more resources for learning and using Sage, and also the latest working draft of this paper.
 
 - **[Dorkodu](https://dorkodu.com)**
 
@@ -1147,7 +1143,7 @@ In this paper, we present Sage, which is in simple terms, a new way of data exch
 
     You can find our open source project repositories on GitHub.
 
-Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* just a kid (at the time I am writing this, at least), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
+Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* just a kid (at least, when I am writing this), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
 
 Here they are **:**
 
