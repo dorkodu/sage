@@ -152,7 +152,7 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 
     Think of it as a complete guide of what goes into building an powerful API, from design, to architectures, to implementation, and even documentation.
 
-- Sage It should be independent from other layers, also directly based on your business logic. 
+    Sage It should be independent from other layers, also directly based on your business logic. 
 
     If we simplify how Sage works, it is like a middleware for data exchange between the layers of consumer (client) and service (server).
 
@@ -171,8 +171,6 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 - #### Flexible Types and Constraints 
 
     Sage is *flex-typed*. By default, all attributes are
-
-    
 
 - #### Application-Layer Protocol
 
@@ -274,21 +272,11 @@ Your Sage server’s data capability is defined by its data schema, which is jus
 
 In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
 
-# <a name="components">5</a> Components
-
-Sage consists from following components :
-
-- Type System
-- Introspection
-- Validation
-- Execution
-- Response
-
-##  <a name="type-system">5.1</a> Type System
+#  <a name="type-system">5</a> Type System
 
 The Sage type system describes the capabilities of a Sage service and is used to determine if a query and its response are valid.
 
-### <a name="5.1.1">5.1.1</a> Schema
+## <a name="5.1">5.1</a> Schema
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
 
@@ -300,7 +288,7 @@ All entity types within a Sage schema must have *unique, string names*. No two p
 
 All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
 
-### <a name="5.1.2">5.1.2</a> Types
+## <a name="5.2">5.2</a> Types
 
 The fundamental unit of any Sage schema is the *type*.
 
@@ -308,7 +296,7 @@ The most basic type is a `Scalar`. A scalar represents a primitive value, like a
 
 However, we have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is expected from a specific attribute.
 
-### <a name="5.1.3">5.1.3</a> Scalar Types
+### <a name="5.2.1">5.2.1</a> Scalar Types
 
 Scalar types represent primitive values in the Sage type system.
 
@@ -318,15 +306,13 @@ All Sage scalars are representable as strings, though depending on the response 
 >
 > In the **[Response](#response)** section, we will talk about this.
 
-#### Result Coercion
+##### **Result Coercion**
 
 A Sage server, when retrieving an attribute of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
 
 A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` , or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
 
 Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
-
-### <a name="5.1.4">5.1.4</a> Default Scalar Types in Sage
 
 Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and a Sage server which provide a type by these names must adhere to the behavior described below.
 
@@ -336,7 +322,9 @@ Sage supports a basic set of well‐defined Scalar types. A Sage server should s
 
 The integer scalar type represents a signed 32‐bit numeric non‐fractional value. Response formats that support a 32‐bit integer or a number type should use that type to represent this scalar.
 
-**Result Coercion**<br>Attributes returning the **integer** type expect to encounter **32‐bit** integer internal values.
+##### **Result Coercion**
+
+Attributes returning the **integer** type expect to encounter **32‐bit** integer internal values.
 
 Sage servers may coerce non‐integer internal values to integers when reasonable without losing information, otherwise they must raise an **attribute error**. Examples of this may include returning `1` for the floating‐point number `1.0`, or returning `123` for the string `"123"`. In scenarios where coercion may lose data, raising an attribute error is more appropriate. For example, a floating‐point number `1.2` should raise an attribute error instead of being truncated to `1`.
 
@@ -350,7 +338,9 @@ If the integer internal value represents a value less than **-2^31^** or greater
 
 The Float scalar type represents signed double‐precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). Response formats that support an appropriate double‐precision number type should use that type to represent this scalar.
 
-**Result Coercion**<br>Attributes returning the **float** type expect to encounter double‐precision floating‐point internal values.
+##### **Result Coercion**
+
+Attributes returning the **float** type expect to encounter double‐precision floating‐point internal values.
 
 Sage servers may coerce non‐floating‐point internal values to **float** when reasonable without losing information, otherwise they must raise an *attribute error*. Examples of this may include returning `1.0` for the integer number `1`, or `123.0` for the string `"123"`.
 
@@ -358,7 +348,9 @@ Sage servers may coerce non‐floating‐point internal values to **float** when
 
 The string scalar type represents textual data, represented as UTF‐8 character sequences. The string type is generally used by Sage to represent free‐form human‐readable text. All response formats must support string representations, and that representation must be used here.
 
-**Result Coercion**<br>Attributes returning the string type expect to encounter UTF‐8 string internal values.
+##### **Result Coercion**
+
+Attributes returning the string type expect to encounter UTF‐8 string internal values.
 
 Sage servers may coerce non‐string raw values to string when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning the string `"true"` for a boolean true value, or the string `"1"` for the integer `1`.
 
@@ -387,7 +379,7 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **string**
 - **float**
 - **object** (must be represented as a map–a set of key-value pairs.)
-- **list** (must set an item type)
+- **list** (must be represented as a list of a specific typed item)
 
 #### Non-Null
 
@@ -815,11 +807,15 @@ entity Person {
 
 ### <a name="5.3.1">5.3.1</a> Query
 
-#### Document Structure
+#### Query Document Structure
 
-This section describes the structure of a Sage document, which are defined in *JavaScript Object Notation (JSON)* [[RFC7159](http://tools.ietf.org/html/rfc7159)]. Although the same media type is used for both request and response documents, certain aspects are only applicable to one or the other. These differences are called out below.
+This section describes the structure of a Sage document, which is defined in *JavaScript Object Notation (JSON)* — [RFC7159](http://tools.ietf.org/html/rfc7159). 
 
-Unless otherwise noted, objects defined by this specification MUST NOT contain any additional members. Client and server implementations MUST ignore members not recognized by this specification.
+Unless otherwise noted, objects defined by this specification shouldn’t contain any additional properties. Client and server implementations must ignore properties not recognized by this specification.
+
+A JSON object must be at the root of every Sage request and response containing data. This object defines a document’s “top level”.
+
+A query document must be a single JSON object, which contains a list of named query object. 
 
 #### Query Object Structure
 
@@ -827,7 +823,7 @@ A query is described as an object, and contains some pre-defined fields. To have
 
 - #### **`type`**
 
-    **Entity Type**. A query item will be executed on its given type. This is the only required attribute.
+    Entity **Type**. A query item will be executed on its given type. This is the only required attribute.
 
 - #### **`attr`**
 
@@ -835,13 +831,13 @@ A query is described as an object, and contains some pre-defined fields. To have
 
     **You can set *“attr”* to an empty array, or even don’t define *“attr”* attribute.**
 
-    - Empty array means an **empty result** object will be returned.
-    - Not setting the attribute means **no result object** will be returned.
-    - A string with inside a star means **“*”**
+    - Empty array means you want an **empty result object** to be returned.
+    - Not setting the attribute means you want **no result object** to be returned.
+    - A string containing only “asterisk” (*****) means you want **all attributes** to be returned.
 
 - #### **`act`**
 
-    *(optional)* **Acts**, which in addition to an entity’s attribute resolvers, Sage also can call for an *act* you defined, if you give its name in the query.
+    *(optional)* **Act**, which can be called with the given arguments, just like attribute resolvers, with the exception that acts don’t return data.
 
     This is an example query of adding a to-do, for the sake of simplicity :
 
@@ -855,7 +851,10 @@ A query is described as an object, and contains some pre-defined fields. To have
           "userId": 101,
           "title": "Finish Sage's Whitepaper.",
           "deadline": "2021-05-20"
-        }
+        },
+        "rel": {
+        	"user": ["id", "username", "name"]
+     		}
       }
     }
     ```
@@ -863,22 +862,26 @@ A query is described as an object, and contains some pre-defined fields. To have
     This sample will add a to-do with given arguments, then return the desired attributes. Here is the result :
 
     ```json
-    {  
-      "AddToDo:101": {    
-        "id": 12345,
-        "user": { 
-          "id": "101",
-          "username": "doruk",
-          "name": "Doruk Eray"
-        },    
-        "title": "Finish Sage's Whitepaper.",
-        "isCompleted": false,    
-        "deadline": "2021-05-20"  
+    {
+      "AddToDo:101": {
+        "attr": {
+        	"id": 12345,
+        	"title": "Finish Sage's Whitepaper.",
+        	"isCompleted": false,
+        	"deadline": "2021-05-20"    
+        },
+        "rel": {
+          "user": {
+          	"id": "101",
+          	"username": "doruk",
+          	"name": "Doruk Eray"
+        	},
+        }
       }
     }
     ```
 
-    > Sage does not handle these steps automatically. It’s the developer who writes the code required to add this to-do to data storage, also how to retrieve these attributes.
+    > Sage does not handle these steps automatically. It’s the developer who writes the code required to save this To-do to data storage, also how to retrieve these attributes.
 
 - #### **`args`**
 
@@ -1017,7 +1020,88 @@ It is expected that the top level fields in a mutation operation perform side‐
 
 ## <a name="response">5.5</a> Response
 
-— Work in progress.
+When a Sage server receives a request, it must return a well‐formed response. The server’s response describes the result of executing the requested directives if successful, and describes any errors encountered during the request.
+
+A response may contain both a partial response as well as encountered errors in the case that an attribute error occurred on a attribute which was replaced with **null**.
+
+### <a name="5.5.1">5.5.1</a> Response Format
+
+A response to a Sage query directive must be a map.
+
+If the query directive (shortly, directive) encountered any errors, the response map must contain an entry with key `errors`. The value of this entry is described in the “Errors” section. If the operation completed without encountering any errors, this entry must not be present.
+
+If a directive which requested for any is executed, the response map must contain an entry with key `data`. The value of this entry is described in the “Data” section. If the directive failed before execution, (e.g. due to a syntax error, missing information, or validation error) this entry must not be present.
+
+The response map may also contain an entry with key `meta`. This entry, if set, must have a map as its value. This entry is reserved for implementors to extend the protocol however they see fit, and hence there are no additional restrictions on its contents.
+
+To ensure future changes to the protocol do not break existing servers and clients, the top level response map must not contain any entries other than the three described above.
+
+```json
+{
+	"data": {
+    "doruk": {
+      "attributes": {···},
+      "relationships": {···}
+    }
+  }
+}
+```
+
+### <a name="5.5.1.1">5.5.1.1</a> Data
+
+The `data` entry in the response will be a map of directive names pointing to directives’ execution result objects. If a directive requested for any attributes, its output will be an object of the schema’s specified entity type.
+
+If an error was encountered before execution begins, the `data` entry should not be present in the result.
+
+If an error was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
+
+— Here is a sample Sage transaction, in JSON **:**
+
+```json
+{
+  "matrix": {
+    "type": "Movie",
+    "attr": ["name", "releaseYear"],
+    "args": {
+      
+    }
+  }
+}	
+```
+
+
+
+```json
+{
+  "data": {
+		"matrix": {
+      
+    }    
+  }
+}
+```
+
+### <a name="5.5.1.2">5.5.1.2</a> Errors
+
+The `errors` entry in the response is a non‐empty list of errors, where each error is a map.
+
+If no errors were encountered during the requested operation, the `errors` entry should not be present in the result.
+
+If the `data` entry in the response is not present, the `errors` entry in the response must not be empty. It must contain at least one error. The errors it contains should indicate why no data was able to be returned.
+
+If the `data` entry in the response is present (including if it is the value **null**), the `errors` entry in the response may contain any errors that occurred during execution. If errors occurred during execution, it should contain those errors.
+
+#### Error result format
+
+Every error must contain an entry with the key `message` with a string description of the error intended for the developer as a guide to understand and correct the error.
+
+If an error can be associated to a particular point in the requested GraphQL document, it should contain an entry with the key `locations` with a list of locations, where each location is a map with the keys `line` and `column`, both positive numbers starting from `1` which describe the beginning of an associated syntax element.
+
+If an error can be associated to a particular field in the GraphQL result, it must contain an entry with the key `path` that details the path of the response field which experienced the error. This allows clients to identify whether a `null` result is intentional or caused by a runtime error.
+
+This field should be a list of path segments starting at the root of the response and ending with the field associated with the error. Path segments that represent fields should be strings, and path segments that represent list indices should be 0‐indexed integers. If the error happens in an aliased field, the path to the error should use the aliased name, since it represents a path in the response, not in the query.
+
+For example, if fetching one of the friends’ names fails in the following query:
 
 # <a name="reference-implementations">6</a> Reference Implementations
 
@@ -1043,9 +1127,7 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
 
 # <a name="conclusion">7</a> Conclusion
 
-In this paper, we present Sage, which is in simple terms, a new way of data retrieval and API design. We first give an overview, then introduce our design principles, concepts behind Sage; after that we dive deeply into the components, type system, introspection, validation, execution and response. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
-
-This paper can be interpreted as a whitepaper, or a proposal for the idea, or a not-officially-standardized specification.
+In this paper, we present Sage, which is in simple terms, a new way of data exchange and API design. We first give an overview, then introduce principles, concepts behind Sage; after that we dive deeply into its components. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
 
 # <a name="references">8</a> References
 
@@ -1055,19 +1137,24 @@ This paper can be interpreted as a whitepaper, or a proposal for the idea, or a 
 
 - **[Dorkodu](https://dorkodu.com)**
 
-    Who we are? We want to make human knowledge open, useful and meaningful for everyone. We hope you will hear more about us soon. If you are interested in our work, see our website. 
+    Who we are? We want to purify and liberate the human knowledge by making it open, useful and meaningful for everyone. We hope you will hear more about us soon. If you are interested in our work, see our website. 
 
 - **[Dorkodu Libre](https://libre.dorkodu.com)**
 
-    Dorkodu Libre, the website for our contributions we make to the software community. You can find other awesome projects we work on. We try to do useful and meaningful things and make them open; then share our humble contributions with the community through open source software.
+    Dorkodu Libre, the website where we present the contributions we make to the open source software community. You can find other awesome projects we work on. We try to do useful and meaningful things and make them open; then share our humble contributions with the community through open source software.
 
 - **[Dorkodu on GitHub](https://github.com/dorkodu)**
 
     You can find our open source project repositories on GitHub.
 
+Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* just a kid (at the time I am writing this, at least), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
+
+Here they are **:**
+
 - **[GraphQL](http://graphql.org)**
 
     I think I owe a thank to the GraphQL community. What they did was really exciting and changed the mindset of the industry about approaching to a fresh way of doing things.
 
-    Also while writing this document, I was *heavily inspired by* their specification, especially for the document structure. I am *literally* just a kid, so it was really hard for me to do boring paperwork to publish an open standard before writing an actual implementation.
+- **[JSON:API](http://jsonapi.org)**
 
+    JSON:API is really a great choice, if you are planning to choose the REST way. I am impressed by their efforts in which they still work to standardize and make it easy to use REST APIs with JSON.  
