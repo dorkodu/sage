@@ -1,12 +1,12 @@
 # Sage
 
-<img alt="Sage Logo" src="resources/sage-dark.png" width="70%" />
+<img alt="Sage Logo" src="resources/sage-dark.png" width="70%; margin: 0 auto;" />
 
-The Sage proposal/specification is edited in the [sage.md](./sage.md) markdown file, the release of which is published at [the website of Sage at Dorkodu Libre.](https://libre.dorkodu.com/sage/paper)
+The Sage specification is edited in the [sage.md](./sage.md) markdown file, the release of which is published at [the website of Sage at Dorkodu Libre.](https://libre.dorkodu.com/sage/paper/)
 
-The latest draft whitepaper can be found at https://libre.dorkodu.com/sage/draft.
+The latest draft whitepaper can be found at https://libre.dorkodu.com/sage/paper/draft.
 
-All releases of the Sage specification can be found on https://libre.dorkodu.com/sage/releases. If you are linking directly to the Sage specification, it's best to link to the particular referenced version.
+All releases of the Sage specification can be found on https://libre.dorkodu.com/sage/paper. If you are linking directly to the Sage specification, it's best to link to the particular referenced version.
 
 ## Overview
 
