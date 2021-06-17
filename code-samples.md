@@ -4,7 +4,9 @@ Here we share the code samples which can help you better understand some concept
 
 ## Sage Server in PHP
 
-### Attribute definition :
+### Attribute
+
+`Attribute(resolver, settings[])`
 
 ```php
 /*
@@ -14,7 +16,7 @@ Here we share the code samples which can help you better understand some concept
  * map if possible. Like object literals in JS, or assoc arrays in PHP.
  */
 
-# Attribute(resolver, options[])
+# 
 $Name = new Attribute(
   function ($query) {
 		$id = $query->argument('id');
@@ -29,7 +31,9 @@ $Name = new Attribute(
 );
 ```
 
-### Act definition :
+### Act
+
+`Act(closure, settings[])`
 
 ```php
 /*
@@ -37,9 +41,8 @@ $Name = new Attribute(
  * Options should be expressed as a map, if possible.
  */
 
-# Act(closure, options[])
 $Greet = new Act(
-  function($query) {
+  function($query, $context) {
     $name = $query->argument('name');
     say("Hi, " . $name);
   },
@@ -49,7 +52,33 @@ $Greet = new Act(
 );
 ```
 
-### Entity definition :
+### Link
+
+`Link(typeLinkedTo, resolver)`
+
+— Different from previous examples, here Sage also passes the entity value as a parameter, which means that it resolves attributes in advance to resolving links : 
+
+```php
+/*
+ * A psuedo link definition.
+ */
+
+# We define the 
+$Book = new Entity(···);
+
+$favoriteBook = new Link(
+ $Book,
+ function ($query, $context, $entity) {
+   return [
+     'id' => $entity['id']
+   ];
+ }
+);
+```
+
+### Entity
+
+`Entity(attributes[], acts[], links[], settings[])`
 
 ```php
 /*
@@ -57,21 +86,70 @@ $Greet = new Act(
  * Options should be expressed as a map, if possible.
  */
 
-
-
-# Entity(attributes[], acts[], relationships[], options[])
-$user = new Entity(
+$ToDo = new Entity(
 	[
-    'name' => $Name,
+    'id' => new Attribute(···),
+    'name' => new Attribute(···)
+  ],
+  [
+    'checkDone' => new Act(···),
     ...
   ],
   [
-    
+    'owner' => new Link(···),
+    ...
   ],
-  [],
   [
-    'description' => "Greets someone, takes 'name' as argument."
+    'description' => "A to-do item.",
+    ...
   ]
 );
+```
+
+### Entity Collection
+
+`EntityCollection(entityType, attributeResolvers[])`
+
+```php
+# We defined 'ToDo' entity in the previous example
+$ToDo = new Entity(···);
+
+$ToDoList = new EntityCollection(
+	$ToDo,
+	[
+    'id' => function($query, $context) {
+      return [1, 2, 3];
+    },
+    'title' => function($query, $context) {
+      return [
+        'Do this, do that',
+        'Eat something',
+        'Go to sleep'
+      ];
+    }
+    ...
+  ]
+);
+```
+
+
+
+```json
+{
+  'todoList': [
+    {
+      'id': 1,
+      'title': "Do this, do that"
+    },
+    {
+      'id': 2,
+      'title': "Eat something"
+    },
+    {
+      'id': 3,
+      'title': "Go to sleep"
+    }
+  ]
+}
 ```
 
