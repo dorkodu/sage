@@ -56,6 +56,8 @@ We are working to make Sage the industry-standard data exchange protocol for the
 
 Obviously Sage is not the first system to manage client-server interactions. In today’s world there are two dominant architectural styles for client-server interaction: REST and GraphQL.
 
+>   We develop Sage with the future of Web in mind, not just for today’s hot fashions. As Dorkodu, our primary interests are *Web 3.0 (Semantic Web), Information Science and Linked Data*. So we want Sage to be the data exchange protocol of future. Although we keep it simple now, we will add more features as new requirements come out.
+
 ### REST
 
 REST, an acronym for Representational State Transfer, is an architectural style rather than a formal protocol. There is actually much debate about what exactly REST is and is not. We wish to avoid such debates. We are interested in the typical attributes of systems that *self-identify* as REST, rather than systems which are formally REST.
