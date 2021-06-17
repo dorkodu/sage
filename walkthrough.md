@@ -12,7 +12,59 @@ Sage provides a **simple** & **lightweight** but also **efficient, expressive** 
 
 ## How?
 
-A Sage service is created by defining the data **schema** as **entities** with their **attributes**, **acts** and **relationships**, then writing the code which maps your schema to your existing business logic. You describe and consume data more realistically with Sage, as how it is in the real world.   
+A Sage service is created by defining the data **schema** as **entities** with their **attributes**, **acts** and **relationships**, then writing the code which maps your schema to your existing business logic. You describe and consume data more realistically with Sage, as how it is in the real world.
+
+### Let’s hit the road!
+
+For example, let’s assume that you want a Sage service which tells you about movies. You need to define your schema first. We use a **hypothetical, pseudo SDL** *(schema definition language)* in our examples, but you will write real code to define your schema :
+
+```css
+entity Movie {
+  name @string;
+  starring @list( @string );
+  duration @integer;
+  directedBy @string;
+  releaseYear @integer
+}
+```
+
+Here is a sample Sage service which requests for the movie *The Matrix* :
+
+— Query :
+
+```json
+{
+  "matrix": {
+  	"type": "Movie",
+  	"attr": ["name", "starring", "duration", "directedBy", "releaseYear"],
+  	"args": {
+ 			"id": "tt0133093"
+  	}
+	}
+}
+```
+
+— Result :
+
+```json
+{
+  "data": {
+    "matrix": {
+      "name": "The Matrix",
+      "starring": [
+        "Keanu Reeves",
+        "Laurence Fishburne",
+        "Carrie-Anne Moss",
+        "Hugo Weaving"
+      ],
+      "duration": 136,
+      "directedBy": "The Wachowksi Brothers",
+      "relaseYear": 1999
+    }
+  }
+}
+
+In this example, we requested for a **Movie** entity with the argument **id: “*tt0133093*”** and asked for the attributes **name**, **starring**, **duration**, **directedBy** and **releaseYear**. And as a result you got an object which contains only what you wanted. *The Matrix*!
 
 ### Use Sage in Two Simple Steps
 
@@ -24,7 +76,7 @@ A Sage service is created by defining the data **schema** as **entities** with t
 
     Access the full capabilities of your data from a single endpoint, ask for what you want and get exactly that, nothing more or less. Work more productive than you thought possible, create apps faster with awareness.
 
-### Here is a sample
+
 
 ## Why?
 
@@ -40,7 +92,7 @@ Obviously Sage is not the first system to manage client-server interactions. In 
 
 #### Why not GraphQL?
 
--   **Adding a query language –and its whole runtime for parsing, validating and executing it– is overkill.** Why add a new language while there are common formats which can be used for queries and responses? Nowadays developers often write queries programmaticly–not as a string–with helper tools, such as query builders. Most common example is SQL, and also many NoSQL databases provide developer friendly APIs . In Sage, you 
+-   **Adding a query language –and its whole runtime for parsing, validating and executing it– is overkill.** Nowadays developers often write queries programmaticly–not as a string–with helper tools, such as query builders. Most common example is SQL, and also many NoSQL databases provide developer friendly APIs. Why add a new language while there are common formats which can be used for queries and responses? 
 
 -   **Not a good fit for modeling real world data.** Real world data is not for feeding view hierarchies. Data must be expressed and modeled as it is in the real world. GraphQL does not do this naturally, even if we know that it is very suitable for using it with alongside a front-end view library, like React or Vue. 
 
