@@ -64,7 +64,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL 
 
 A conforming implementation of Sage may provide additional functionality, but must not where explicitly disallowed or would otherwise result in non‐conformance.
 
-### Conforming Algorithms
+#### Conforming Algorithms
 
 Algorithm steps phrased in imperative grammar (e.g. “Return the result of calling resolver”) are to be interpreted with the same level of requirement as the algorithm it is contained within. Any algorithm referenced within an algorithm step (e.g. “Let completedResult be the result of calling CompleteValue()”) is to be interpreted as having at least the same level of requirement as the algorithm containing that step.
 
@@ -139,25 +139,29 @@ For example, here is a sample Sage transaction *(request and response for a quer
 
 In this example, we requested for a `Movie` entity with the argument `id: "tt0133093"` and asked for the attributes `name`, `starring`, `duration`, `directedBy` and `releaseYear`. And as a result you got an object which contains only what you wanted.
 
-# <a name="principles">3</a> Principles
+# <a name="principles">3</a> Principles and Concepts
 
-Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving the major problems efficiently and providing a flexible & intuitive way. Here are some of our design principles :
+## <a name="3.1">3.1</a> Principles
+
+Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving the major problems efficiently and providing a flexible & intuitive way. 
+
+Here are some of our principles :
 
 - ### Environment Agnostic
 
     Sage is completely environment agnostic, it **never dictates** the use of *any programming language, platform, storage technique or even a query language like SQL or GraphQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service. **Every language and every Sage implementation does things slightly differently.
 
-    Think of it as a complete specification about what goes into building an powerful API, from design, to architecture, to implementation, and even documentation.
+    It is a specification about what goes into building an powerful API, from design, to architecture, to implementation, and even documentation.
 
 - ### Query-based Data Exchange
 
-    Sage is ***query-based***, which is the ideal way for data interactions. You can query your data, by *declaring the desired attributes, and arguments for conditions*, and get only what you want. You can also call remotely your Sage service to do something, by adding an **act** to be run, in your query.
+    Sage is ***query-based***, which is the ideal way for data interactions. You query your data, by *declaring which attributes you want, and arguments for conditions*, and get only what you want. You can also call remotely your Sage service to do something, by adding an **act** to your query.
 
     Any data consumption and creation process imaginable can be implemented with Sage. Especially in the product-side client applications, it would be a mindful choice to consume a Sage based API.
 
-- ### Entity-focused Type System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+- ### Entity-focused Type System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 
-    Every Sage server defines an application‐specific queries are executed within the context of. A Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
+    Every Sage server defines an application‐specific type system, and queries are executed within the context of it. A Sage instance publishes its data capabilities in an entity-focused way, which determines what its clients are allowed to consume. It is the client that should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
     Sage performs operations *(e.g. data retrieval or modification)* on a specific *“entity type”* . An entity type can be considered like a "class" in *OOP*, with attributes *(or properties)* and acts *(or methods)* are defined on this *entity type*.
 
@@ -175,15 +179,9 @@ Our priority is to keep Sage simple, approachable, easy-to-use and lightweight w
 
 - ### Graph-like Structure
 
-    Most data-driven apps today focus on creation and consumption of their data. So with Sage you can describe your data as **entities** –with their ***attributes***, ***acts***– and their **links**, which is like a *graph*. To achieve harmony with the structure of these applications, a Sage query is highly granular, which means you can determine the exact attributes, acts and links of an entity to work on *(retrieve or modify)*.
+    Most data-driven apps today focus on creation and consumption of their data. So with Sage you can describe your data as **entities** –with their ***attributes***, ***acts***– and their **links**, which is like a *graph*. To achieve harmony with the structure of these applications, a Sage query is highly granular, which means you can determine the exact attributes, acts and links of an entity to work on *(to retrieve or modify)*.
 
-## So…
-
-Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for application-centric data exchange. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be those that build those APIs and tools for the rest to use.
-
-> This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
-
-# <a name="concepts">4</a> Concepts
+## <a name="3.2">3.2</a> Concepts
 
 Here we introduce some concepts and terms which you will need to understand well in order to understand and learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
 
@@ -191,17 +189,18 @@ Here we introduce some concepts and terms which you will need to understand well
 >
 >   Simply a protocol is a set of agreements about how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing APIs.
 
-## <a name="4.1">4.1</a> Entity
+### <a name="3.2.1">3.2.1</a> Entity
 
 Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
 
-Each entity can have any number of attributes and acts. Attributes are **key-value pairs**, while acts are **methods/functions** (which you can remotely call in your query to do something, e.g. updating the database).
+Each entity can have any number of attributes, acts and links. Attributes are **key-value pairs**, while acts are **methods/functions**—which you can remotely call in your query to do something, e.g. updating the database.*
 
-- ### Attribute
+- #### Attribute
 
-    An attribute describes a property of an entity. An attribute can be *any type* which must be **JSON serializable** *(We will explain this in following sections).*
+    An attribute describes a property of an entity, which…
 
-    An attribute will be retrieved by a resolver/retriever function defined by user, which Sage will pass the query object as a parameter.
+    - can be *any of types* within Sage’s type system *(We will explain this in the following sections).*
+    - will be retrieved by a resolver/retriever function defined by user, and Sage will pass the query object as a parameter.
 
     > #### Note
     >
@@ -211,21 +210,24 @@ Each entity can have any number of attributes and acts. Attributes are **key-val
     >
     > **For example:** In our PHP implementation, you can define an optional ‘context’ array which you can use as a simple dependency container. Sage will pass that context value to resolver and act functions.
 
-- ### Act
+- #### Act
 
-    An act is a function *(like a method)* that can be added to an entity type. An act is called in a query with *(optional)* arguments. You can write your business logic code as acts and run any of them by calling it from a query.
+    An act is a function *(like a method)* defined in an entity type, which…
 
-    - An act is identified by a string name.
-    - It takes the query as a parameter.
-    
-- ### Link
+    - is identified by a string name.
+    - is called in a query.
+    - takes the query as a parameter.
 
-    A link represents a typed   can be added to an entity type. An act is called in a query with *(optional)* arguments. You can write your business logic code as acts and run any of them by calling it from a query.
+    You can write your data schema related business logic as acts and run them by calling it from a query.
+
+- #### Link
+
+    A link represents a *named*, *to-one* or *to-many* *relationship* which can be added to an entity type. An act is called in a query with *(optional)* arguments. You can write your business logic code as acts and run any of them by calling it from a query.
 
     - An act is identified by a string name, which must be unique within the scope of an Entity type.
     - It takes the query as a parameter.
 
-## <a name="4.2">4.2</a> Query
+### <a name="3.2.2">3.2.2</a> Query
 
 Sage is a query-based approach for data exchange. 
 
@@ -279,6 +281,16 @@ Each query must be identified with a string name which must be unique within the
 Your Sage server’s data capability is defined by its data schema, which is just a list of defined types. A list/array of all entity types you want to be available. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
 
 In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
+
+## So…
+
+Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for application-centric data exchange. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be those that build those APIs and tools for the rest to use.
+
+> This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
+
+# <a name="concepts">4</a> Concepts
+
+
 
 #  <a name="type-system">5</a> Type System
 
