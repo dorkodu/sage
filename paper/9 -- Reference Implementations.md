@@ -20,4 +20,3 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
     >
     > This document does NOT focus on and specify any certain rules about the client. However, we are creating a web client with JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
-# 
