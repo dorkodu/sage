@@ -6,13 +6,13 @@ To clarify the desired and ideal outcome of this proposal, we built reference se
 
 - ### Sage Server
 
-    You can see [here](https://libre.dorkodu.com/sage.php) the reference server implementation written in PHP.
+    You can see [here](https://github.com/dorkodu/sage.php) the reference server implementation written in PHP.
 
     **`GitHub`**  [dorkodu/sage.php](https://github.com/dorkodu/sage.php)
 
 - ### Sage Client
 
-    You can see [here](https://libre.dorkodu.com/sage.js) the reference client implementation written in JavaScript.
+    You can see [here](https://github.com/dorkodu/sage.js) the reference client implementation written in JavaScript.
 
     **`GitHub`**  [dorkodu/sage.js](https://github.com/dorkodu/sage.js)
 
