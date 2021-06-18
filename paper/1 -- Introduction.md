@@ -41,7 +41,7 @@ Examples in this document are non‐normative, and are presented to help underst
 console.log("Hello, World!");
 ```
 
-Code examples in this document are for providing real-life samples, but does not have to be from a real implementation. We created reference implementations, and highly recommend you checking out them.
+Code examples are for providing real-life samples, but does not have to be from a real implementation. We created reference implementations, and highly recommend you checking out them.
 
 > #### Example
 >
