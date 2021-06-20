@@ -63,7 +63,7 @@ Your Sage server’s data capability is defined by its data schema, which is jus
 
 Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
 
-Each entity can have any number of attributes, acts and links. Attributes are **key-value pairs**, while acts are **methods/functions**—which you can remotely call in your query to do something, e.g. updating the database.*
+Each entity can have any number of *attributes*, *acts* and *links*. Attributes are **key-value pairs**, acts are **methods/functions**—which you can remotely call in your query to do something, *e.g. updating the database.*— and links represent **relationships** between entity types.
 
 - ##### **Attribute**
 
@@ -87,12 +87,12 @@ Each entity can have any number of attributes, acts and links. Attributes are **
 
     You can write your business logic as acts, and trigger any of them by calling it from a query.
 
-- ##### Link”
+- ##### Link
 
-    A link represents a *named*, *to-one* or *to-many* *relationship* which can be added to an entity type. An act is called in a query with *(optional)* arguments. You can write your business logic code as acts and run any of them by calling it from a query.
+    A link represents a *named*, *to-one* or *to-many* *relationship* between Entity types, which…
 
-    - An act is identified by a string name, which must be unique within the scope of an Entity type.
-    - It takes the query as a parameter.
+    - is identified by a string name that must be unique within the scope of an Entity type.
+    - requires a specific Entity type to be set, that the link points to.
 
 ### <a name="3.2.2">3.2.2</a> Query
 
@@ -107,22 +107,29 @@ But how to query?
 > We think it is *unnecessary* to add this burden while being able to use one of the common formats. So we decided to use ***JSON***, which has advantages such as being *universal, lightweight and easy to use*. Also, JSON is commonly used in the software ecosystem, which means it has wide support *(such as tools, helper libraries)* on different languages and platforms.
 >
 > Thus, the query and the result are expressed using the JSON format. By using a universal format and not inventing a new query language, we keep Sage lightweight, easily approachable and implementable.
+>
+> But of course, you can use another format for query and response documents (see [Response](#response)).
 
-Each query must be identified with a string name which must be unique within the query document, and expressed as a JSON object which the name points to.
+Each query must be identified with a string name which must be unique within the query document, and expressed as a map which the name points to.
 
-*— Below here is an example of a transaction (query and response) requesting a single entity :*
+*— Below here is an example query, requesting a single entity :*
 
 ```json
 {
   "doruk": {
     "type": "User",
     "attr": ["name", "email", "age"],
+    "link": {
+      "studiesAt": ["name", "level", "grade"]
+    },
     "args": {
       "handle": "@doruk"
     }
   }
 }
 ```
+
+*— Response :*
 
 ```json
 {
@@ -135,7 +142,7 @@ Each query must be identified with a string name which must be unique within the
         "studiesAt": {
           "name": "Vefa Lisesi",
           "level": "High School",
-          "grade": 11
+          "grade": 10
         }
       }
     }
@@ -145,9 +152,9 @@ Each query must be identified with a string name which must be unique within the
 
 ## So…
 
-Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for application-centric data exchange. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be those that build those APIs and tools for the rest to use.
+Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layer. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be people who build those APIs and tools for the rest to use.
 
 In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
 
-> This paper *(or proposal)* serves as a reference for engineers who will develop Sage implementations. It describes the approach, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
+> This paper *(specification)* serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
 
