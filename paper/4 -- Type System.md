@@ -1,24 +1,24 @@
 #  <a name="type-system">5</a> Type System
 
-Sage type system describes the capabilities of a Sage service and is used to determine if a query and its response are valid.
+Sage type system describes the capabilities of a Sage service and is used to determine if a query is valid and how to response to it.
 
 ## <a name="5.1">5.1</a> Schema
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
 
-A schema is defined as a set of entity types it supports.
+A schema is defined as a set of types it supports.
 
 A Sage schema must itself be internally valid.
 
-All entity types within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
+All entity types defined within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
-All items *(entities, their attributes and acts)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively by Sage’s introspection system.
+All artifacts *(entities, their attributes, acts and links)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively for Sage’s type system internals.
 
 ## <a name="5.2">5.2</a> Types
 
 The fundamental unit of any Sage schema is the *type*.
 
-The most basic type is a `Scalar`. A scalar represents a primitive value, like a string or an integer.
+The most basic type is a **Scalar**. A scalar represents a primitive value, like a string or an integer.
 
 ### <a name="5.2.1">5.2.1</a> Scalar Types
 
@@ -28,15 +28,17 @@ All Sage scalars are representable as strings, though depending on the response 
 
 ##### Result Coercion
 
-A Sage server, when retrieving an attribute of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
+A Sage server, when retrieving the value of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an **attribute error** if a value cannot be coerced or if coercion may result in data loss.
 
 A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` , or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an **attribute error**.
 
 Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
 
-Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and a Sage server which provide a type by these names must adhere to the behavior described below.
+Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and if provides a type by these names, it must adhere to the behavior described below.
 
-> In Sage, scalar types are used for **strict-type constraints** on attributes. By default, all attributes are **flex-typed**, which means they can be any type, provided that they are valid in the output response format. We have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is strictly expected from a specific attribute.
+> By default, all attributes are **flex-typed**, which means they can be any type defined in Sage’s type system, provided that they are valid in the output response format. 
+>
+> Also we have a concept called **“constraints”.** Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is strictly expected from a specific attribute.
 
 #### Integer
 
