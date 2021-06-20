@@ -92,9 +92,9 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     A link represents a *named*, *to-one* or *to-many* *relationship* between Entity types, which…
 
     - is identified by a string name that must be unique within the scope of an Entity type.
-    - requires a specific Entity type to be set, that the link points to.
+    - requires an Entity/Entity Collection type to be specified, that the link points to.
 
-### <a name="3.2.2">3.2.2</a> Query
+### <a name="3.2.2">3.2.2</a> Query-based
 
 Sage is a query-based approach for data exchange. 
 
