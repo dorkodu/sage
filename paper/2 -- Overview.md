@@ -41,7 +41,7 @@ For example, here is a sample Sage transaction *(request and response for a quer
 }
 ```
 
-In this example, we requested for a `Movie` entity with the argument `id: "tt0133093"` and asked for the attributes `name`, `starring`, `duration`, `directedBy` and `releaseYear`. And as a result you got a document which contains objects of only what you wanted.
+In this example, we requested for a `Movie` entity with the argument `id: "tt0133093"` and asked for the attributes `name`, `starring`, `duration`, `directedBy` and `releaseYear`. And as a result you got a document which contains the result object of your query, only what you wanted.
 
 Sage is an application-level protocol used by clients and services which have capabilities defined in this specification to interact with each other and exchange data. Sage does not mandate a particular transport, programming language or storage system for application services that implement it. Instead, application services take their capabilities and map them to a uniform data exchange layer, type system, and philosophy which Sage embraces.
 
