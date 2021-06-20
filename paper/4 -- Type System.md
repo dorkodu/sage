@@ -95,9 +95,12 @@ Sage object type…
 
 ### <a name="5.2.3">5.2.3</a> List
 
-A Sage list is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). List values are serialized as ordered lists, where each item in the list is serialized as per the item type.
+A Sage list…
 
-To denote that a field uses a List type, the item type also must be declared as a type constraint.
+-   is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). 
+-   is serialized as ordered lists, where each item in the list is serialized as per the item type.
+
+To denote that a field uses a List type, the item type also must be specified; and it will behave like a type constraint.
 
 #### **Result Coercion**
 
