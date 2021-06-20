@@ -88,7 +88,10 @@ Sage servers may coerce non‐boolean raw values to `boolean` when reasonable wi
 
 ### <a name="5.2.2">5.2.2</a> Objects
 
-Sage object type represent a set of named fields, each of which yield a value of a valid type within the response output format. Object values should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value. 
+Sage object type…
+
+-   represent a set of named fields, each of which yield a value of a valid type within the Sage type system. 
+-   should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
 
 ### <a name="5.2.3">5.2.3</a> List
 
@@ -100,7 +103,7 @@ To denote that a field uses a List type, the item type also must be declared as 
 
 Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
 
-If a list’s item type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occurring at an individual item in the list must result in an attribute error for the entire list.
+If a list’s item type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐nullable, an error occurring at an individual item in the list must result in an attribute error for the entire list.
 
 >   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
