@@ -99,25 +99,21 @@ Product developers are free to focus on their client software and requirements w
 5.  [The way GraphQL schemas work could be a problem](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#5)
 6.  [REST is better for error handling and tooling](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#6)
 
-## What’s next?
-
-Over the coming months, we will share more technical details about Sage, including additional language features, tools that support it, and how it is built and used at Dorkodu. These posts will culminate in a formal specification of Sage to guide implementors across various languages and platforms. We also plan on releasing a reference implementation in the summer, in order to provide a basis for custom deployments and a platform for experimentation. We’re incredibly excited to share this system and work with the open source community to improve it.
-
 ## Using Sage is easy
 
 ### 1. Write a Sage API schema
 
 Describe the API you want, then implement some functions that map your schema to your existing backends.
 
-### 2. Explore your API
+### 2. Query your API
 
 Once you write your first Sage query, you won't want to fetch data any other way. Use interactive tools to get the data you need.
 
-### 3. Consume your data
+### 3. Get predictable results
 
 Use your data and build apps faster than you thought possible, with any frontend technology or framework.
 
-## Sage, REST, or both?
+## Sage, REST, GraphQL or mix?
 
 Sage can live right alongside your existing architecture investments and bring critical improvements to your workflow.
 
@@ -133,27 +129,18 @@ Documentation and schemas for REST APIs can easily get out of date. In Sage, you
 
 Consumers of your Sage API specify what they are going to use, giving you fine-grained understanding of exactly which fields are used and by whom.
 
-## Sage Beyond the Hype
-
-### With Great Power Comes Great Responsibility
-
-There is a lot of content out there on building client side applications using Sage. Sage can offer an amazing client side experience, but for that to be true, we must be able to build high quality Sage platforms that will support these clients.
-
-The simplicity with which clients can consume use cases using Sage is often balanced by additional complexity on the server. Learn how to manage this complexity and make sure you **keep providing a quality Sage API as your team or organization scales.**
-
 ### Language Agnostic
 
 Sage is completely language agnostic and instead focuses on concepts and patterns that are achievable **no matter how you're building a Sage server. **Every language and every Sage implementation does things slightly differently. 
 
 Think of it as a complete journey of what goes into building a Sage API, from design, to architectures, to implementation, and even documentation.
 
-### So what is Sage? 
+### So what is not Sage?
 
 Maybe a good way to introduce it is by looking at what it is not: 
 
 -   Sage is not some sort of query language 
--   Sage is not a library/framework
--   Sage is not about graph theory
+-   Sage is not a communication protocol like HTTP or TCP/IP
 
-Here’s how I like to describe it instead: **Sage is a specification for an API query language and a server engine capable of executing such queries.**
+Here’s how I like to describe it instead: **Sage is a specification for a query-based data exchange protocol about designing and building APIs, and a runtime capable of executing such queries.**
 
