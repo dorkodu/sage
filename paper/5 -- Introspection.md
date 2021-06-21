@@ -1,4 +1,4 @@
-## <a name="introspection">5.2</a> Introspection
+# <a name="introspection">5</a> Introspection
 
 A Sage server supports introspection over its schema. The schema is queried using Sage itself.
 
@@ -6,11 +6,12 @@ Take an example query, there is a User entity with three fields: *id*, *name*, a
 
 *— for example, given a server with the following type definition :*
 
-```scss
+```css
 entity User {
-  id: @integer @nonNull
-  name: @string @nonNull
-  age: @string
+  id @integer @nonNull;
+  name @string @nonNull;
+  age @integer;
+  email @string;
 }
 ```
 
@@ -18,8 +19,8 @@ The query
 
 ```json
 {
-  "introspectionSample": {
-    "type": "@entity",
+  "example": {
+    "type": "@Entity",
     "attr": [ "name", "attributes", "description", "isDeprecated" ], 
     "args": {
       "name": "User"
@@ -32,7 +33,7 @@ would return
 
 ```json
 {
-  "introspectionSample": {   
+  "example": {   
     "name": "User",    
     "attributes": {   
       "id": {        
@@ -53,11 +54,11 @@ would return
 }
 ```
 
-#### Reserved Names
+### Reserved Names
 
 Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" *(at symbol)*. We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ *(at symbol)*.
 
-#### Documentation
+### Documentation
 
 All types in the introspection system provide a `description` attribute of type **string** to allow type system designers to publish documentation in addition to data capabilities.
 
@@ -67,23 +68,21 @@ To support the effort for backwards compatibility, any piece of Sage type system
 
 Tools built using Sage introspection should respect deprecation by discouraging deprecated use through information hiding or developer‐facing warnings.
 
-### <a name="5.2.1">5.2.1</a> Schema Introspection
+## <a name="5.1">5.1</a> Schema Introspection
 
 The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
 
 — The schema of the Sage introspection system, written in our *pseudo* SDL **:**
 
 ```scss
-entity @Schema {
-  entities: @list( @entity("@Entity") )
-}
+collection @Schema typeof @Entity
 
 entity @Entity {
   name: @string @nonNull
   description: @string
   attributes: @list( @entity("@Attribute") ) @nonNull
 	acts: @list( @entity("@Act") )
-  typekind: @enum("@TypeKind")
+  typekind: @string
   isDeprecated: @boolean
   deprecationReason: @string
 }
@@ -94,7 +93,7 @@ entity @Attribute {
   type: @enum("@Type")
   nonNull: @boolean
   isDeprecated: @boolean
-  typekind: @enum("@TypeKind")
+  typekind: @string
   deprecationReason: @string
 }
 
@@ -103,22 +102,6 @@ entity @Act {
   description: @string
   isDeprecated: @boolean
   deprecationReason: @string
-}
-
-enum @TypeKind {
-	SCALAR,
-  OBJECT,
-  LIST
-}
-
-enum @Type {
-	ENTITY,
-  INT,
-  STRING,
-  FLOAT,
-  BOOLEAN,
-  OBJECT,
-  LIST
 }
 ```
 
