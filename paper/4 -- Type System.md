@@ -44,7 +44,7 @@ Sage supports a basic set of well‐defined Scalar types. A Sage server should s
 
 The integer scalar type represents a signed 32‐bit numeric non‐fractional value. Response formats that support a 32‐bit integer or a number type should use that type to represent this scalar.
 
-##### **Result Coercion**
+##### Result Coercion
 
 Attributes returning the **integer** type expect to encounter **32‐bit** integer internal values.
 
@@ -60,7 +60,7 @@ If the integer internal value represents a value less than **-2^31^** or greater
 
 The Float scalar type represents signed double‐precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). Response formats that support an appropriate double‐precision number type should use that type to represent this scalar.
 
-##### **Result Coercion**
+##### Result Coercion
 
 Attributes returning the **float** type expect to encounter double‐precision floating‐point internal values.
 
@@ -248,7 +248,7 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
 
 2.  For each **attribute** of an Entity type **:**
     1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
-    2.  The attribute must return a type which is **valid** within Sage’s type system.
+    2.  The attribute must return a value which is **valid** within Sage’s type system, and must be of .
     3.  If any constraints have been set for the attribute, the attribute must yield a value which is **valid** within that constraint.
 3.  For each **act** of an Entity type **:**
     1.  The act must have a unique string name within that Entity type; no two acts may share the same name.
@@ -257,20 +257,20 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
 4.  For each **link** of an Entity type **:**
     1.  The Link must have a unique string name within that Entity type; no two links may share the same name.
     2.  The Link must point to a specific Entity/Entity Collection type.
-    3.  The Link should be resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map. Sage will query the linked Entity type using these returned arguments.
+    3.  The Link should be resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map. Sage will query the Entity type which the link points to, using these returned arguments.
 
 ### <a name="5.2.5">5.2.5</a> Entity Collection
 
 Entity Collection is a special set type which contains only items of a specific Entity type.
 
-All rules defined in an Entity type are kept in its Collection definition. Each of the items in a collection and their attributes must be valid within the boundaries of the specified Entity type.
+All rules defined in an Entity type are kept in its Collection definition. Each of the items in a collection and their attributes must be valid within the specified Entity type.
 
 The difference :
 
--   While defining an Entity Collection, for its item type, an Entity type must be specified.
--   For each attribute, an overriding resolver must be defined, which returns an ordered list of values. After resolving all requested attributes, those list of values are merged together based on their indexes.
+-   While defining an Entity Collection, an Entity type must be specified for its item type.
+-   For each attribute, an overriding resolver must be defined, which must return an ordered *List* of values. After resolving all requested attributes, those *Lists* are merged together and maps are constructed based on their indexes.
 
->   An Entity Collection does not have any acts. It behaves as a wrapper type around an existing Entity type. It overrides an Entity type’s attribute resolvers, and its only purpose is to make retrieval of multiple Entities at the same time possible.
+>   An Entity Collection behaves as a wrapper type around an existing Entity type. It only overrides an Entity type’s attribute resolvers, and its purpose is to make retrieval of multiple instances of a specific Entity type at the same time possible.
 
 Here we define a To-do Entity type :
 
@@ -281,30 +281,26 @@ entity Todo {
 }
 ```
 
-Let’s assume this is what `id` and `title` attribute resolvers returned from *(in JSON)* :
+Let’s assume this is what `id` and `title` attribute resolvers returned *(in JSON)* :
 
 ```json
 {
-  "data": {
-    "feed": {
-      "attributes": {
-        
-      },
-      "links": {
-        
-      }
-    }
-	}
+  "id": [ 1, 2, 3 ],
+  "title": [
+    "Do this, do that...",
+    "Eat out with friends",
+    "Complete the website design of Sage"
+  ]
 }
 ```
 
-Merge operation would result in a set of result objects, each of which is an instance of the specified Entity type :
+Merge operation would result in a set of objects, each of which is an instance of the specified Entity type :
 
 ```json
 [
   {
     'id': 1,
-    'title': "Do this, do that"
+    'title': "Do this, do that..."
 	},
   {
     'id': 2,
@@ -317,15 +313,11 @@ Merge operation would result in a set of result objects, each of which is an ins
 ]
 ```
 
+#### Result Coercion
 
+Sage servers must return a list as the result of an Entity Collection type. Each item in the list must be a map which represents an instance of the specified Entity type, and contains only the requested attributes. If a reasonable coercion is not possible, it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
 
-
-
-#### **Result Coercion**
-
-Sage servers must return a list as the result of an Entity Collection type. Each item in the list must be a map which contains only the desired attributes. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
-
-If a list’s item type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐null, an error occurring at an individual item in the list must result in an attribute error for the entire list.
+If the collection’s Entity type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a collection’s Entity type is non‐null, an error occurring at an individual item in the list must result in an attribute error for the entire list.
 
 ## <a name="5.3">5.3</a> Constraints
 
