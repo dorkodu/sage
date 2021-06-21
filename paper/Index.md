@@ -1,25 +1,31 @@
+<img src="../resources/sage-dark.png" alt="Sage Logo" style="width: 67%; margin: 0 auto;"/>
+
 # Sage
 
 June 2021 - Working Draft
 
-**`Author`**<br>  **Doruk Eray**<br>  Founder and Chief @ [Dorkodu](https://dorkodu.com).<br>  Self-taught Software Engineer.
+#### **`Author`**
+ **Doruk Eray**
+ Founder and Chief @ [Dorkodu](https://dorkodu.com).
+ Self-taught Software Engineer.
 
-  Website **:** [doruk.dorkodu.com](https://doruk.dorkodu.com)<br>  Email **:** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
+ Website **:** [doruk.dorkodu.com](https://doruk.dorkodu.com)
+ Email **:** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
 
-------
+---
 
 ## Contents
 
--   **[1 Introduction](1 -- Introduction.md)**
--   **[2 Overview](2 -- Overview.md)**
--   **[3 Principles and Concepts](3 -- Principles and Concepts.md)**
--   **[4 Type System](4 -- Type System.md)** (WIP)
- -   **[5 Introspection](5 -- Introspection.md)** (WIP)
- -   **[6 Validation](6 -- Validation.md)** (WIP)
- -   **[7 Execution](7 -- Execution.md)** (WIP)
- -   **[8 Response](8 -- Response.md)** (WIP)
--   **[9 Reference Implementations](9 -- Reference Implementations)**
--   **[10 Conclusion](10 -- Conclusion.md)**
--   **[11 References](11 -- References.md)**
+-   **[1 Introduction](#introduction)**
+-   **[2 Overview](#overview)**
+-   **[3 Principles and Concepts](#principles-and–concepts)**
+-   **[4 Type System](#type-system)** (WIP)
+-   **[5 Introspection](#introspection)** (WIP)
+-   **[6 Validation](#validation)** (WIP)
+-   **[7 Execution](#execution)** (WIP)
+-   **[8 Response](#response)** (WIP)
+-   **[9 Reference Implementations](#reference-implementations)**
+-   **[10 Conclusion](#conclusion)**
+-   **[11 References](#references)**
 
 [^WIP]: Work in progress.
