@@ -90,7 +90,7 @@ Sage servers may coerce non‐boolean raw values to `boolean` when reasonable wi
 
 Sage object type…
 
--   represent a set of named fields, each of which yield a value of a valid type within the Sage type system. 
+-   represents a set of named fields, each of which yield a value of a valid type within the Sage type system. 
 -   should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
 
 ### <a name="5.2.3">5.2.3</a> List
@@ -120,17 +120,16 @@ Entities are at the heart of the Sage’s type system. They represent sets of…
 
 - #### Acts
 
-    Each of which is a named function that you can call in your query item *(and arguments you give are passed to )*.
+    Each of which is a named function that you can call in your query *(and arguments you give are passed to )*.
 
 - #### Links
 
     Each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* relationship between two entity types.
 
-    - A Link is resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments array. This array will be used when the linked Entity type is queried.
 
 Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
 
-All attributes, acts and links defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage’s introspection system.
+All attributes, acts and links defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage type system internals.
 
 > #### Note
 >
@@ -176,9 +175,10 @@ Would yield the object :
 
 ```json
 {
-  "someone": {  	
+  "someone": {
+    "id": 10,
     "name": "Doruk Eray",
-    "age": 16,	
+    "age": 16
   }
 }
 ```
@@ -234,8 +234,6 @@ And let’s say we only requested for the `occupation` attribute. Here it return
 }
 ```
 
-
-
 #### Attribute Ordering
 
 When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
@@ -250,16 +248,16 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
 
 2.  For each **attribute** of an Entity type **:**
     1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
-    2.  The attribute must return a type which is **valid** within the chosen **response output format**.
-    3.  If any constraints have been set for an attribute, it must return a type which is **valid** within that constraint.
+    2.  The attribute must return a type which is **valid** within Sage’s type system.
+    3.  If any constraints have been set for the attribute, the attribute must yield a value which is **valid** within that constraint.
 3.  For each **act** of an Entity type **:**
-    1.  The act must have a unique name within that Entity type; no two acts may share the same name.
-    2.  The act must be **:**
-        1.  a function
-        2.  able to accept at least one parameter, which will be the query object. 
-4.  For each **link** of an Entity type :
-    1.  The link must have a unique string name within that Entity type; no two links may share the same name.
-    2.  The link must point to a specific Entity/Entity Collection type.
+    1.  The act must have a unique string name within that Entity type; no two acts may share the same name.
+    2.  The act must be a function.
+    3.  The act must be able to accept at least one parameter, which will be the query object. 
+4.  For each **link** of an Entity type **:**
+    1.  The Link must have a unique string name within that Entity type; no two links may share the same name.
+    2.  The Link must point to a specific Entity/Entity Collection type.
+    3.  The Link should be resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map. Sage will query the linked Entity type using these returned arguments.
 
 ### <a name="5.2.5">5.2.5</a> Entity Collection
 
