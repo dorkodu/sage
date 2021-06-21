@@ -1,8 +1,10 @@
-#  <a name="type-system">5</a> Type System
+#  <a name="type-system">4</a> Type System
 
 Sage type system describes the capabilities of a Sage service and is used to determine if a query is valid and how to response to it.
 
-## <a name="5.1">5.1</a> Schema
+[TOC]
+
+## <a name="4.1">4.1</a> Schema
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
 
@@ -14,13 +16,13 @@ All entity types defined within a Sage schema must have *unique, string names*. 
 
 All artifacts *(entities, their attributes, acts and links)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively for Sage’s type system internals.
 
-## <a name="5.2">5.2</a> Types
+## <a name="4.2">4.2</a> Types
 
 The fundamental unit of any Sage schema is the *type*.
 
 The most basic type is a **Scalar**. A scalar represents a primitive value, like a string or an integer.
 
-### <a name="5.2.1">5.2.1</a> Scalar Types
+### <a name="4.2.1">4.2.1</a> Scalar Types
 
 Scalar types represent primitive values in the Sage type system.
 
@@ -70,7 +72,7 @@ Sage servers may coerce non‐floating‐point internal values to **float** when
 
 The string scalar type represents textual data, represented as UTF‐8 character sequences. The string type is generally used to represent free‐form human‐readable text. All response formats must support string representations, and that representation must be used here.
 
-##### **Result Coercion**
+##### Result Coercion
 
 Attributes returning the string type expect to encounter UTF‐8 string internal values.
 
@@ -80,20 +82,20 @@ Sage servers may coerce non‐string raw values to string when reasonable withou
 
 The Boolean scalar type represents `true` or `false`. Response formats should use a built‐in boolean type if supported; otherwise, they should use their representation of the integers `1` and `0`.
 
-##### **Result Coercion**
+##### Result Coercion
 
 Attributes returning the **boolean** type expect to encounter boolean internal values.
 
 Sage servers may coerce non‐boolean raw values to `boolean` when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
 
-### <a name="5.2.2">5.2.2</a> Objects
+### <a name="4.2.2">4.2.2</a> Objects
 
 Sage object type…
 
 -   represents a set of named fields, each of which yield a value of a valid type within the Sage type system. 
 -   should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
 
-### <a name="5.2.3">5.2.3</a> List
+### <a name="4.2.3">4.2.3</a> List
 
 A Sage list…
 
@@ -102,7 +104,7 @@ A Sage list…
 
 To denote that a field uses a List type, the item type also must be specified; and it will behave like a type constraint.
 
-#### **Result Coercion**
+#### Result Coercion
 
 Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
 
@@ -110,7 +112,7 @@ If a list’s item type is nullable, then errors occurring during preparation or
 
 >   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
 
-### <a name="5.2.4">5.2.4</a> Entity
+### <a name="4.2.4">4.2.4</a> Entity
 
 Entities are at the heart of the Sage’s type system. They represent sets of…
 
@@ -259,7 +261,7 @@ Entity types can be invalid if incorrectly defined. These set of rules must be a
     2.  The Link must point to a specific Entity/Entity Collection type.
     3.  The Link should be resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map. Sage will query the Entity type which the link points to, using these returned arguments.
 
-### <a name="5.2.5">5.2.5</a> Entity Collection
+### <a name="4.2.5">4.2.5</a> Entity Collection
 
 Entity Collection is a special set type which contains only items of a specific Entity type.
 
@@ -319,13 +321,13 @@ Sage servers must return a list as the result of an Entity Collection type. Each
 
 If the collection’s Entity type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a collection’s Entity type is non‐null, an error occurring at an individual item in the list must result in an attribute error for the entire list.
 
-## <a name="5.3">5.3</a> Constraints
+## <a name="4.3">4.3</a> Constraints
 
-#### Strict-type
+### <a name="4.3.1">4.3.1</a> Strict-type
 
-All attributes are weak-typed by default. This means they can be any type which is output-able JSON serializable.
+All attributes are flex-typed by default. This means they can be of any type which is valid within defined types in Sage’s type system.
 
-But optionally you can set strict-type constraints for an attribute. This means, the resolver function of that attribute must return a value of that specific type you want.
+But optionally you can set strict-type constraints for an attribute. In that case, he resolver function of that attribute must return a valid value of that specific type you want.
 
 Anyway, Sage will try to coerce the returned value to the desired type if possible.
 
@@ -335,36 +337,34 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
-- **object** (must be represented as a map–a set of key-value pairs.)
-- **list** (must be represented as a list of a specific typed item)
+- **object** (must be represented as a map–a set of key-value pairs)
+- **list** (must be represented as an array of a specific typed item)
 
-#### Non-Null
+### <a name="4.3.2">4.3.2</a> Non-Null
 
-By default, all values in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the Sage Non‐Null constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+By default, all values in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the *Non‐Null* constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
 
-> #### Example
->
-> Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*.
->
-> If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
+> Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*. If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
 
-##### **Nullable vs. Optional**
+#### Nullable vs. Optional
 
 Attributes are *always* optional within the context of a query, an attribute may be omitted and the query is still valid. However attributes that return Non‐Null types will never return the value **null** if queried.
 
-##### **Result Coercion**
+#### Result Coercion
 
 In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
 
-### <a name="5.1.9">5.1.9</a> Descriptions
+## <a name="4.4">4.4</a> Documentation
 
-Documentation is a boring part of API development. But it turned out to be a killer feature when we decided that any Sage service should be able to publish a documentation easily.
+Documentation is a boring part of API development. But it turned out to be a killer feature when we decided that any Sage service should be able to publish its documentation easily.
+
+### <a name="4.4.1">4.4.1</a> Description
 
 To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think they are really useful.
 
 All Sage type definitions which can be described should provide a description unless they are considered self descriptive.
 
-### <a name="5.1.10">5.1.10</a> Deprecation
+### <a name="4.4.2">4.4.2</a> Deprecation
 
 Entities, attributes or acts may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
 
