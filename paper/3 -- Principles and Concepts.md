@@ -1,9 +1,9 @@
-# <a name="principles">3</a> Principles and Concepts
+# <a name="principles-and-concepts">3</a> Principles and Concepts
 
 -   **[3.1 Principles](#3.1)**
 -   **[3.2 Concepts](#3.2)**
-    -   **[3.2.1 Entity-focused](#3.2.1)**
-    -   **[3.2.2 Query-based](#3.2.2)**
+    -   **[3.2.1 Type System](#3.2.1)**
+    -   **[3.2.2 Unified Query Layer](#3.2.2)**
 
 ## <a name="3.1">3.1</a> Principles
 
@@ -23,7 +23,7 @@ Sage has some design principles :
 
     Any data consumption and creation process imaginable can be implemented with Sage. Especially in the product applications, it would be a mindful choice to consume a Sage based API.
 
-- ### Entity-focused, Flexible Type System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+- ### Entity-focused, Flexible Type System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
     Every Sage server defines an application‐specific type system, and queries are executed within the context of it. A Sage instance publishes its data capabilities with an entity-focused schema, which determines what its clients are allowed to consume. Clients should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
@@ -49,11 +49,11 @@ Sage has some design principles :
 
 Here we introduce some concepts and terms which you will need to understand well in order to understand and learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
 
->   #### What sort of protocol is Sage?
+>   #### What makes Sage a protocol?
 >
->   Simply a protocol is a set of agreements about how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing APIs.
+>   Simply a protocol is a set of agreements on how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing APIs.
 
-### <a name="3.2.1">3.2.1</a> Entity-focused
+### <a name="3.2.1">3.2.1</a> Type System
 
 #### Schema
 
@@ -94,7 +94,7 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     - is identified by a string name that must be unique within the scope of an Entity type.
     - requires an Entity/Entity Collection type to be specified, that the link points to.
 
-### <a name="3.2.2">3.2.2</a> Query-based
+### <a name="3.2.2">3.2.2</a> Unified Query Layer
 
 Sage is a query-based approach for data exchange. 
 
@@ -120,7 +120,7 @@ Each query must be identified with a string name which must be unique within the
     "type": "User",
     "attr": ["name", "email", "age"],
     "link": {
-      "studiesAt": ["name", "level", "grade"]
+      "studiesAt": ["name", "grade"]
     },
     "args": {
       "handle": "@doruk"
@@ -140,8 +140,7 @@ Each query must be identified with a string name which must be unique within the
       "age": 16,
       "@links": {
         "studiesAt": {
-          "name": "Vefa Lisesi",
-          "level": "High School",
+          "name": "Vefa High School",
           "grade": 10
         }
       }
@@ -152,9 +151,9 @@ Each query must be identified with a string name which must be unique within the
 
 ## So…
 
-Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layer. Product developers and designers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with. To enable that experience, there must be people who build those APIs and tools for the rest to use.
+Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layers. Product developers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with.
 
-In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this document.
+In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this specification.
 
-> This paper *(specification)* serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
+> This specification (we call it *the Paper*) serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
 
