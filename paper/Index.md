@@ -19,7 +19,7 @@ June 2021 - Working Draft
 -   **[1 Introduction](#introduction)**
 -   **[2 Overview](#overview)**
 -   **[3 Principles and Concepts](#principles-and–concepts)**
--   **[4 Type System](#type-system)** (WIP)
+-   **[4 Type System](#type-system)**
 -   **[5 Introspection](#introspection)** (WIP)
 -   **[6 Validation](#validation)** (WIP)
 -   **[7 Execution](#execution)** (WIP)
