@@ -2,8 +2,6 @@
 
 Sage type system describes the capabilities of a Sage service and is used to determine if a query is valid and how to response to it.
 
-[TOC]
-
 ## <a name="4.1">4.1</a> Schema
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
