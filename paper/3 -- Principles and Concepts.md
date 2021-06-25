@@ -138,7 +138,7 @@ Each query must be identified with a string name which must be unique within the
       "name": "Doruk Eray",
       "email": "doruk@dorkodu.com",
       "age": 16,
-      "@links": {
+      "$links": {
         "studiesAt": {
           "name": "Vefa High School",
           "grade": 10
