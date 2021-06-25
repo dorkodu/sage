@@ -12,7 +12,7 @@ A Sage schema must itself be internally valid.
 
 All entity types defined within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
-All artifacts *(entities, their attributes, acts and links)* defined within a schema must not have a name which begins with ‘**@**‘ *(at symbol)*, as this is used exclusively for Sage’s type system internals.
+All artifacts *(entities, their attributes, acts and links)* defined within a schema must not have a name which begins with ‘**@**‘ *(commercial at)* or ‘**$**‘ *(dollar sign)*, as these are used exclusively for Sage’s type system internals.
 
 ## <a name="4.2">4.2</a> Types
 
