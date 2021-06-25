@@ -1,29 +1,33 @@
 # <a name="introspection">5</a> Introspection
 
-A Sage server supports introspection over its schema. The schema is queried using Sage itself.
+A Sage server supports introspection over its schema. The schema can be queried using Sage itself.
 
-Take an example query, there is a User entity with three fields: *id*, *name*, and *age*.
-
-*— for example, given a server with the following type definition :*
+*— For example, given a server with the following type definitions :*
 
 ```css
 entity User {
   id @integer @nonNull;
   name @string @nonNull;
-  age @integer;
   email @string;
+}
+
+entity Post {
+  id @integer @nonNull;
+  title @string @nonNull;
+  content @string @nonNull;
+  author @link(User) @nonNull;
 }
 ```
 
-The query
+This sample introspection query
 
 ```json
 {
-  "example": {
-    "type": "@Entity",
-    "attr": [ "name", "attributes", "description", "isDeprecated" ], 
-    "args": {
-      "name": "User"
+  "introspect:User": {
+    "type": "User",
+    "attr": ["@type", "@description", "@deprecated"],
+    "link": {
+      "@attributes": ["name", "description", "type", "nonNull"]
     }
   }
 }
@@ -33,143 +37,184 @@ would return
 
 ```json
 {
-  "example": {   
-    "name": "User",    
-    "attributes": {   
-      "id": {        
-        "type": "int",
-        "nonNull": true
-      },
-      "name": {        
-        "type": "string",
-        "nonNull": true
-      },
-      "age": {        
-        "type": "int",
-      }
-		},
-    "description": "The user entity type.",    
-    "isDeprecated": false
+  "introspect:User": { 
+    "@type": "User",
+		"@description": "Represents the user entity type.",    
+    "@deprecated": false,
+    "$links": {
+      "@attributes": [
+        {
+        	"name": "id",
+          "description": "ID of a User. Must be a 32-bit integer.",
+          "type": "integer",
+       	  "nonNull": true
+        },
+        {
+        	"name": "name",
+          "description": "Name of a User.",
+          "type": "string",
+       	  "nonNull": true
+        },
+        {
+        	"name": "email",
+          "description": "Email of a User.",
+          "type": "string",
+       	  "nonNull": false
+        }
+      ]  
+		}
   }
 }
 ```
 
 ### Reserved Names
 
-Entity types, attributes and acts required by the Sage introspection system are prefixed with "**@**" *(at symbol)*. We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any entity types, attributes, acts, arguments, or any other type system artifact with a leading ‘**@**’ *(at symbol)*.
+Entity types; their attributes, acts and links used by the Sage introspection system are prefixed with "**@**" *(commercial at)*, and special variable names are prefixed with ‘**$**’ *(dollar sign)*. We do this in order to avoid naming collisions with user‐defined Sage types. Conversely, type system authors must not define any type system artifact with a leading ‘**@**’ *(commercial at)*, and also ‘**$**’ *(dollar sign)*.
 
 ### Documentation
 
-All types in the introspection system provide a `description` attribute of type **string** to allow type system designers to publish documentation in addition to data capabilities.
+All types in the introspection system provide a `description` attribute of type *string* to allow type system designers to publish documentation in addition to data capabilities.
 
 #### Deprecation
 
-To support the effort for backwards compatibility, any piece of Sage type system (entity type, attribute and act) can indicate whether or not they are deprecated (**isDeprecated :** *boolean*) and a description of why it is deprecated (**deprecationReason :** *string*).
+To support the efforts for backwards compatibility, any defined artifact of Sage type system (entity type, attribute, act or link) can indicate whether or not they are deprecated (`deprecated` **:** *boolean*) and a reason text of why it is deprecated (`deprecationReason` **:** *string*).
 
 Tools built using Sage introspection should respect deprecation by discouraging deprecated use through information hiding or developer‐facing warnings.
 
 ## <a name="5.1">5.1</a> Schema Introspection
 
-The schema introspection system can be queried using its schema. The user of a Sage implementation doesn’t have to write this schema. It must be available as built-in.
+The schema introspection system can be queried using its own *meta-schema*. 
 
-— The schema of the Sage introspection system, written in our *pseudo* SDL **:**
+>   #### Note
+>
+>   This is a meta-schema, provided only for introspection of your Sage service. So it has only attributes and some links, and no acts. The user of a Sage implementation doesn’t have to define this schema. It must be available as built-in.
 
-```scss
-collection @Schema typeof @Entity
+### `@Schema`
 
-entity @Entity {
-  name: @string @nonNull
-  description: @string
-  attributes: @list( @entity("@Attribute") ) @nonNull
-	acts: @list( @entity("@Act") )
-  typekind: @string
-  isDeprecated: @boolean
-  deprecationReason: @string
-}
+Contains meta-information related to your Sage schema.
 
-entity @Attribute {
-  name: @string @nonNull
-  description: @string
-  type: @enum("@Type")
-  nonNull: @boolean
-  isDeprecated: @boolean
-  typekind: @string
-  deprecationReason: @string
-}
+#### Attributes
 
-entity @Act {
-  name: @string @nonNull
-  description: @string
-  isDeprecated: @boolean
-  deprecationReason: @string
+-   `entities` **:** A list (item type of *string*) of all defined Entity types’ names.
+
+— We asked for the attribute `entities` on `@Schema` :
+
+```json
+{
+  "schemaInfo": {
+    "type": "@Schema",
+    "attr": ["entities"]
+  }
 }
 ```
 
-### Type Kinds
+— Here is the response :
 
-There are three different kinds of types. These kinds are listed in the `@TypeKind` enumeration.
+```json
+{
+  "schemaInfo": {
+    "entities": ["User", "Post"]
+  }
+}
+```
 
-#### Scalar
+### Introspection Binding
 
-Represents scalar types such as **Int, String, Float and Boolean**. Scalars cannot have any fields or items.
+Sage offers *Introspection Binding*, which makes it possible to attach introspection queries directly to your regular queries by using magic attributes and links.
 
-A Sage type designer should describe the data format and scalar coercion rules in the description attribute of any scalar.
+— For example, we requested for `@type` attribute, on `User` Entity type :
 
-#### Object
+```json
+{
+  "doruk": {
+    "type": "User",
+    "attr": [ "@type", "name", "age" ], 
+    "args": {
+      "id": 5
+    }
+  }
+}
+```
 
-Object types represent concrete instantiations of sets of fields.
+— Here is the response :
 
-#### List
+```json
+{
+  "doruk": {   
+    "@type": "User",
+    "name": "Doruk Eray",
+    "age": 17
+  }
+}
+```
 
-Lists represent sequences of values in Sage. A List type is a type modifier: it wraps another type instance in the `ofType` attribute, which defines the type of each item in the list.
+As seen in the example above, magic attributes can be used on an Entity type to get schema metadata.
 
-### The `@Schema` Type
-
-Represents the Sage schema. Contains only a single attribute, “entities”.
-
-#### Attributes
-
--   `entities` **:** must return a List of type `@Entity`.
-
-### The `@Entity` Type
-
-Represents Entity types in Sage. Contains a set of defined attributes.
-
-#### Attributes
-
--   `name` **:** must return a *String*.
--   `description` **:** may return a *String* or **null**.
--   `attributes` **:** The set of attributes query‐able on this entity type.
-    -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
--   `acts` **:** The set of acts query‐able on this entity type.
-    -   Accepts the argument `includeDeprecated` which defaults to **false**. If **true**, deprecated fields are also returned.
--   `typekind` **:** must return the `OBJECT` value of `@TypeKind` enumeration.
--   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
--   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
--   All other attributes must return **null**.
-
-### The `@Attribute` Type
-
-The `@Attribute` type represents each attribute in a specific Entity type.
+#### `*` — any Entity type
 
 #### Attributes
 
--   `name` **:** must return a *String*
--   `description` **:** may return a *String* or **null**
--   `type` **:** must return a value of  `@Type` enum that represents the type of value returned by this attribute.
--   `typekind` **:** must return a value of `@TypeKind` enum that represents the type kind of value returned by this attribute.
--   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
--   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
--   All other attributes must return **null**.
+-   `@type` returns a *string* name of the queried Entity type.
+-   `@description` may return a *string* description or *null*.
+-   `@deprecated` returns *true* if queried Entity type should no longer be used, *false* otherwise.
+-   `@deprecationReason` optionally provides a reason *string* why this is deprecated.
 
-### The `@Act` Type
+#### Links
 
-The `@Act` type represents an act in a specific Entity type.
+-   `@attributes` represents the set of attributes defined on queried Entity type. Must return an Entity Collection with item type of `@Attribute`.
+-   `@acts` represents the set of acts defined on queried Entity type. Must return an Entity Collection with item type of `@Act`.
+-   `@links` represents the set of links defined on queried Entity type. Must return an Entity Collection with item type of `@Link`.
+
+>   #### Meta-Entity
+>
+>   A Meta-Entity type represents a value object which contains fields, but cannot be queried directly. They are used only in Sage’s introspection schema, and can not be used/declared by the user.
+
+### `@Attribute`
+
+The `@Attribute` Meta-Entity type represents each attribute in an Entity type.
 
 #### Attributes
 
--   `name` **:** must return a *String*
--   `description` **:** may return a *String* or **null**
--   `isDeprecated` **:** returns **true** if this attribute should no longer be used, otherwise **false**.
--   `deprecationReason` **:** optionally provides a reason why this attribute is deprecated.
--   All other attributes must return **null**.
+-   `name` must return a *string*.
+-   `description` may return a *string* or *null*.
+-   `type` must return a *string* that represents the type of value returned by this field.
+-   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
+-   `deprecationReason` optionally provides a reason *string* why this is deprecated.
+
+### `@Act`
+
+The `@Act` Meta-Entity type represents each act in an Entity type.
+
+#### Attributes
+
+-   `name` must return a *string*.
+-   `description` may return a *string* or *null*.
+-   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
+-   `deprecationReason` optionally provides a reason *string* why this is deprecated.
+
+### `@Link`
+
+The `@Link` Meta-Entity type represents each attribute in an Entity type.
+
+#### Attributes
+
+-   `name` must return a *string*.
+-   `type` must return a *string*, which is the name of the linked Entity type.
+-   `description` may return a *string* or *null*.
+-   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
+-   `deprecationReason` optionally provides a reason *string* why this is deprecated.
+
+Here is an example :
+
+```json
+{
+  "introspection:User": {
+    "type": "User",
+    "attr": [ "@type", "@description", "@deprecated", "@" ], 
+    "args": {
+      "id": 5
+    }
+  }
+}
+```
+
