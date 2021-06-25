@@ -128,7 +128,7 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 {
   "doruk": {
     "type": "User",
-    "attr": [ "@type", "name", "age" ], 
+    "attr": ["@type", "name", "age"], 
     "args": {
       "id": 5
     }
@@ -148,9 +148,11 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 }
 ```
 
-As seen in the example above, magic attributes can be used on an Entity type to get schema metadata.
+As seen in the example above, magic attributes can be used to get metadata about an Entity type.
 
-#### `*` — any Entity type
+#### `*`
+
+ — any Entity type.
 
 #### Attributes
 
@@ -177,7 +179,7 @@ The `@Attribute` Meta-Entity type represents each attribute in an Entity type.
 
 -   `name` must return a *string*.
 -   `description` may return a *string* or *null*.
--   `type` must return a *string* that represents the type of value returned by this field.
+-   `type` must return a *string* that represents the type of value returned by this field, or *null* if not any constraint has been set.
 -   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
 -   `deprecationReason` optionally provides a reason *string* why this is deprecated.
 
@@ -204,15 +206,50 @@ The `@Link` Meta-Entity type represents each attribute in an Entity type.
 -   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
 -   `deprecationReason` optionally provides a reason *string* why this is deprecated.
 
-Here is an example :
+This query
 
 ```json
 {
-  "introspection:User": {
-    "type": "User",
-    "attr": [ "@type", "@description", "@deprecated", "@" ], 
-    "args": {
-      "id": 5
+  "introspection:Post": {
+    "type": "Post",
+    "attr": ["@type", "@description", "@deprecated"],
+    "link": {
+      "@attributes": ["name", "type"],
+    	"@links": ["name", "type"]
+    }
+  }
+}
+```
+
+will result in 
+
+```json
+{
+  "introspection:Post": {
+    "@type": "Post",
+    "@description": "Represents a Post.",
+    "@deprecated": false,
+    "$links": {
+      "@links": [
+        {
+          "name": "author",
+          "type": "User"
+        }
+      ],
+      "@attributes": [
+         {
+           "name": "id",
+           "type": "integer"
+         },
+         {
+           "name": "title",
+           "type": "string"
+         },
+         {
+           "name": "content",
+           "type": "string"
+         }
+      ]
     }
   }
 }
