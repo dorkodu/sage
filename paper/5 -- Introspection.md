@@ -2,7 +2,7 @@
 
 A Sage server supports introspection over its schema. The schema can be queried using Sage itself.
 
-*— For example, given a server with the following type definitions :*
+*— For example, given a server with the following schema definition :*
 
 ```css
 entity User {
@@ -45,7 +45,7 @@ would return
       "@attributes": [
         {
         	"name": "id",
-          "description": "ID of a User. Must be a 32-bit integer.",
+          "description": "ID of a User.",
           "type": "integer",
        	  "nonNull": true
         },
@@ -148,15 +148,15 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 }
 ```
 
-As seen in the example above, magic attributes can be used to get metadata about an Entity type.
+As seen in the example above, magic attributes can be used to get metadata about an Entity type definition.
 
 #### `*`
 
- — any Entity type.
+ — any user-defined Entity type.
 
 #### Attributes
 
--   `@type` returns a *string* name of the queried Entity type.
+-   `@type` returns the *string* name of the queried Entity type.
 -   `@description` may return a *string* description or *null*.
 -   `@deprecated` returns *true* if queried Entity type should no longer be used, *false* otherwise.
 -   `@deprecationReason` optionally provides a reason *string* why this is deprecated.
@@ -169,7 +169,7 @@ As seen in the example above, magic attributes can be used to get metadata about
 
 >   #### Meta-Entity
 >
->   A Meta-Entity type represents a value object which contains fields, but cannot be queried directly. They are used only in Sage’s introspection schema, and can not be used/declared by the user.
+>   A Meta-Entity type represents a value object which contains fields, but cannot be queried directly. They are used only in Sage’s introspection schema, and can not be declared/used by the user.
 
 ### `@Attribute`
 
@@ -178,8 +178,8 @@ The `@Attribute` Meta-Entity type represents each attribute in an Entity type.
 #### Attributes
 
 -   `name` must return a *string*.
--   `description` may return a *string* or *null*.
--   `type` must return a *string* that represents the type of value returned by this field, or *null* if not any constraint has been set.
+-   `description` may return *string* or *null*.
+-   `type` must return a *string* that represents the type of value returned by this field, or *null* if no constraint has been set.
 -   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
 -   `deprecationReason` optionally provides a reason *string* why this is deprecated.
 
@@ -190,23 +190,23 @@ The `@Act` Meta-Entity type represents each act in an Entity type.
 #### Attributes
 
 -   `name` must return a *string*.
--   `description` may return a *string* or *null*.
+-   `description` may return *string* or *null*.
 -   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
 -   `deprecationReason` optionally provides a reason *string* why this is deprecated.
 
 ### `@Link`
 
-The `@Link` Meta-Entity type represents each attribute in an Entity type.
+The `@Link` Meta-Entity type represents each link in an Entity type.
 
 #### Attributes
 
 -   `name` must return a *string*.
 -   `type` must return a *string*, which is the name of the linked Entity type.
--   `description` may return a *string* or *null*.
+-   `description` may return *string* or *null*.
 -   `deprecated` returns *true* if this should no longer be used, otherwise *false*.
 -   `deprecationReason` optionally provides a reason *string* why this is deprecated.
 
-This query
+The query
 
 ```json
 {
@@ -221,7 +221,7 @@ This query
 }
 ```
 
-will result in 
+will result in
 
 ```json
 {
@@ -254,4 +254,3 @@ will result in
   }
 }
 ```
-
