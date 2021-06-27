@@ -128,7 +128,7 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 {
   "doruk": {
     "type": "User",
-    "attr": ["@type", "name", "age"], 
+    "attr": ["@type", "name"], 
     "args": {
       "id": 5
     }
@@ -142,8 +142,7 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 {
   "doruk": {   
     "@type": "User",
-    "name": "Doruk Eray",
-    "age": 17
+    "name": "Doruk Eray"
   }
 }
 ```
@@ -152,7 +151,7 @@ As seen in the example above, magic attributes can be used to get metadata about
 
 #### `*`
 
- — any user-defined Entity type.
+ — Available for any user-defined Entity type.
 
 #### Attributes
 
