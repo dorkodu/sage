@@ -1,8 +1,8 @@
-<img src="../resources/sage-dark.png" alt="Sage Logo" style="width: 67%; margin: 0 auto;"/>
+<img src="../resources/sage-dark.png" alt="Sage Logo" style="width: 60%; margin: 0 auto;"/>
 
 # Sage
 
-June 2021 - Working Draft
+*June 2021 — Proposal*
 
 #### **`Author`**
  **Doruk Eray**
@@ -14,13 +14,13 @@ June 2021 - Working Draft
 
 ---
 
-## Contents
+## § Contents
 
 -   **[1 Introduction](#introduction)**
 -   **[2 Overview](#overview)**
 -   **[3 Principles and Concepts](#principles-and–concepts)**
 -   **[4 Type System](#type-system)**
--   **[5 Introspection](#introspection)** (WIP)
+-   **[5 Introspection](#introspection)**
 -   **[6 Validation](#validation)** (WIP)
 -   **[7 Execution](#execution)** (WIP)
 -   **[8 Response](#response)** (WIP)
