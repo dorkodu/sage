@@ -116,7 +116,7 @@ Entities are at the heart of the Sage’s type system. They represent sets of…
 
 - #### Attributes
 
-    Each of which is a named key and yield a value *(optionally, a value of a specific type you want)*.
+    Each of which is a named key and yield a value *(optionally, a value of a specific type you want)*. 
 
 - #### Acts
 
@@ -124,7 +124,7 @@ Entities are at the heart of the Sage’s type system. They represent sets of…
 
 - #### Links
 
-    Each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* relationship between two entity types.
+    Each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* relationship between two entity types. They are like edges in a graph, where entity types are nodes.
 
 
 Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
