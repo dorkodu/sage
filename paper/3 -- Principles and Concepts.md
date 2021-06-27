@@ -13,17 +13,17 @@ Sage has some design principles :
 
 - ### Environment Agnostic
 
-    Sage is completely environment agnostic, it **never dictates** the use of *any programming language, backend, storage technique or even a query language like GraphQL, SQL or SPARQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service. **Every language and every Sage implementation does things slightly differently.
+    Sage is completely environment agnostic, it **never dictates** the use of *any programming language, backend, storage technique or even a query language like GraphQL, SQL or SPARQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service.** Although every language and every Sage implementation does things slightly differently.
 
-    It is just a specification about designing and building a powerful API; from design, to architecture, to implementation, and even documentation.
+    It is just a specification about designing and building powerful APIs; from design, to architecture, to implementation, and even documentation.
 
 - ### Query-based Data Exchange
 
     Sage is ***query-based***, which is the ideal way for data interactions. You query your data, by *declaring the attributes you want, and arguments for conditions*, then get only what you want. You can also call remotely your Sage service to do something, by adding an **act** to your query.
 
-    Any data consumption and creation process imaginable can be implemented with Sage. Especially in the product applications, it would be a mindful choice to consume a Sage based API.
+    Any data consumption and creation process imaginable can be implemented with Sage. Especially in product applications, it would be a mindful choice to consume a Sage based API.
 
-- ### Entity-focused, Flexible Type System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+- ### Entity-focused, Flexible Type System
 
     Every Sage server defines an application‐specific type system, and queries are executed within the context of it. A Sage instance publishes its data capabilities with an entity-focused schema, which determines what its clients are allowed to consume. Clients should be able to specify exactly how it will consume that data. These queries are specified at attribute‐level granularity.
 
@@ -41,13 +41,13 @@ Sage has some design principles :
 
     Sage is primarily designed to solve *data interaction* problems in product engineering. The main goal is to provide an *intuitive*, *neat*, *lightweight* and *easily applicable framework* for *simplifying the data exchange process* and easing the burden on developers and their application architectures. For this reason, Sage offers a natural way for *describing* *data requirements* and *consuming data capabilities*.
 
-- ### Graph-like Structure
+- ### Graph-like
 
-    Most data-driven apps today focus on creation, consumption and evolution of their data. So with Sage you can describe your data as **entities** –with their ***attributes***, ***acts***– and their **links**, which is like a *graph* data structure. To achieve harmony with the structure of these applications, a Sage query is highly granular, which means you can determine the exact attributes, acts and links of an entity to work on.
+    Most data-driven apps today focus on creation, consumption and evolution of their data. So with Sage you can describe your data as **entities** –with their *attributes*, *acts*– and their *links*, which is like a *graph* data structure. To achieve harmony with the structure of these applications, a Sage query is highly granular, which means you can determine the exact attributes, acts and links of an entity to work on.
 
 ## <a name="3.2">3.2</a> Concepts
 
-Here we introduce some concepts and terms which you will need to understand well in order to understand and learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
+Here we introduce some concepts and terms which you will need to understand well in order to learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
 
 >   #### What makes Sage a protocol?
 >
@@ -72,7 +72,7 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     - can be of *any of the types* defined within Sage’s type system *(We will explain this in [Type System](#type-system))*
     - will be retrieved by a function defined by the service developer, and Sage will pass the query object as a parameter.
 
-    > Sage **does not** dictate that a resolver function will receive the query object as the *ONLY* parameter. If your implementation has additional functionality which requires to pass another parameter, you can do it.
+    > Sage **does not** dictate that a resolver function will receive the query object as the *only* parameter. If your implementation has additional functionality which requires to pass another parameter, you can do it.
     >
     > 
     >
@@ -87,16 +87,60 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
 
     You can write your business logic as acts, and trigger any of them by calling it from a query.
 
+    This is an example query of adding a to-do, for the sake of simplicity :
+
+    ```json
+    {
+      "AddToDo": {
+        "type": "ToDo",
+        "act": "addToDo",
+        "attr": ["id", "title", "isCompleted"],
+        "link": {
+        	"owner": ["id", "username", "name"]
+     		},
+        "args": {
+          "ownerId": 5,
+          "title": "Finish Sage's Whitepaper.",
+          "deadline": "2021-05-20"
+        }
+      }
+    }
+    ```
+
+    This sample will add a to-do with given arguments, and *then* return the desired attributes. 
+
+    Here is the result :
+
+    ```json
+    {
+      "AddToDo": {
+        "id": 109264,
+        "title": "Finish Sage's Whitepaper.",
+        "isCompleted": false,
+        "deadline": "2021-06-27",
+        "$link": {
+          "owner": {
+          	"id": 5,
+          	"username": "doruk",
+          	"name": "Doruk Eray"
+        	}
+        }
+      }
+    }
+    ```
+
+    > Sage does not handle these steps automatically. It’s the developer who writes the code required to save this To-do item to data storage, and retrieve these fields.
+
 - ##### Link
 
-    A link represents a *named*, *to-one* or *to-many* *relationship* between Entity types, which…
+    A link represents a *named*, *to-one* or *to-many* *relationship* between two Entity types, which…
 
     - is identified by a string name that must be unique within the scope of an Entity type.
-    - requires an Entity/Entity Collection type to be specified, that the link points to.
+    - requires an Entity/Entity Collection type to be specified, that the link connects its parent type to.
 
 ### <a name="3.2.2">3.2.2</a> Unified Query Layer
 
-Sage is a query-based approach for data exchange. 
+Sage is a query-based approach for data exchange.
 
 The client requests the data it needs from a Sage service with a structured query document that is created according to certain rules. Basically, a query document contains a list of queries all of which describes an entity instance needed, with no limit on the number of queries.
 
@@ -151,9 +195,9 @@ Each query must be identified with a string name which must be unique within the
 
 ## So…
 
-Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layers. Product developers can create applications a lot more effectively by working with a Sage API. Sage can quickly make your application stack enjoyable to work with.
+Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layers. Product developers can create applications a lot more effectively and faster by working with a Sage API. Sage can quickly make your application stack enjoyable to work with.
 
-In this section we only introduced some concepts. You can find more details about components of Sage in the following sections of this specification.
+In this section we only introduced some concepts. You can find the details about components of Sage in the following sections of this specification.
 
 > This specification (we call it *the Paper*) serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
 
