@@ -13,7 +13,7 @@ Sage has some design principles :
 
 - ### Environment Agnostic
 
-    Sage is completely environment agnostic, it **never dictates** the use of *any programming language, backend, storage technique or even a query language like GraphQL, SQL or SPARQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service.** Although every language and every Sage implementation does things slightly differently.
+    Sage is completely environment agnostic, it **never dictates** the use of *any programming language, backend, storage technique or even a query language like SQL, GraphQL or SPARQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service.** Although every language and every Sage implementation does things slightly differently.
 
     It is just a specification about designing and building powerful APIs; from design, to architecture, to implementation, and even documentation.
 
@@ -47,7 +47,7 @@ Sage has some design principles :
 
 ## <a name="3.2">3.2</a> Concepts
 
-Here we introduce some concepts and terms which you will need to understand well in order to learn more deeply about Sage. Actually we do this because you may fall in love with Sage in first sight ;)
+Here we introduce some concepts and terms which you will need to understand well in order to learn more deeply about Sage.
 
 >   #### What makes Sage a protocol?
 >
@@ -57,13 +57,13 @@ Here we introduce some concepts and terms which you will need to understand well
 
 #### Schema
 
-Your Sage server’s data capability is defined by its data schema, which is just a set of defined types you want to be available to the consumers of your Sage service. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
+Your Sage server’s data capability is defined by its data schema, which is just a set of defined types you want to be available to the consumers of your service. Schema will be passed to Sage’s query executor. Any query document given to the execution engine will be run on this schema you define.
 
 #### Entity
 
 Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
 
-Each entity can have any number of *attributes*, *acts* and *links*. Attributes are **key-value pairs**, acts are **methods/functions**—which you can remotely call in your query to do something, *e.g. updating the database.*— and links represent **relationships** between entity types.
+Each entity can have any number of ***attributes***, **acts** and **links**. Attributes are **key-value pairs**, acts are **methods/functions**—which you can remotely call in your query to do something, *e.g. updating the database.*— and links represent **relationships** between entity types.
 
 - ##### **Attribute**
 
@@ -80,10 +80,7 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     
 - ##### Act
 
-    An act is a function *(just like a method in OOP)* defined in an entity type, which…
-
-    - is identified by a string name.
-    - takes the query as a parameter.
+    An act is a function *(just like a method in OOP)* defined in an entity type, which is identified by a string name.
 
     You can write your business logic as acts, and trigger any of them by calling it from a query.
 
@@ -107,7 +104,7 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     }
     ```
 
-    This sample will add a to-do with given arguments, and *then* return the desired attributes. 
+    This sample will add a to-do with given arguments, and *then* return the desired fields. 
 
     Here is the result :
 
@@ -136,7 +133,7 @@ Each entity can have any number of *attributes*, *acts* and *links*. Attributes 
     A link represents a *named*, *to-one* or *to-many* *relationship* between two Entity types, which…
 
     - is identified by a string name that must be unique within the scope of an Entity type.
-    - requires an Entity/Entity Collection type to be specified, that the link connects its parent type to.
+    - requires an Entity/Entity Collection type to be specified, that the link’s parent type is related to.
 
 ### <a name="3.2.2">3.2.2</a> Unified Query Layer
 
