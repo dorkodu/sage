@@ -404,11 +404,11 @@ If the collection’s Entity type is nullable, then errors occurring during prep
 
 ## <a name="4.3">4.3</a> Constraints
 
-### <a name="4.3.1">4.3.1</a> Strict-type
+### <a name="4.3.1">4.3.1</a> Strict-Type
 
-All attributes are flex-typed by default. This means they can be of any type which is valid within defined types in Sage’s type system.
+All attributes are flex-typed by default. This means they can be of any type within defined types in Sage’s type system.
 
-But optionally you can set strict-type constraints for an attribute. In that case, he resolver function of that attribute must return a valid value of that specific type you want.
+But optionally you can set strict-type constraints for an attribute. In that case, the resolver function of that attribute must return a valid value of that specific type you want.
 
 Anyway, Sage will try to coerce the returned value to the desired type if possible.
 
@@ -418,12 +418,12 @@ These are all possible types which you can set as a strict-type constraint **:**
 - **integer**
 - **string**
 - **float**
-- **object** (must be represented as a map–a set of key-value pairs)
-- **list** (must be represented as an array of a specific typed item)
+- **object** (*map* — a set of key-value pairs)
+- **list** (an *array* with a specific item type — e.g. array of integers)
 
 ### <a name="4.3.2">4.3.2</a> Non-Null
 
-By default, all values in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the *Non‐Null* constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
+By default, all types in Sage are **nullable**; which means the **null** value is a valid response for all of the above types. To declare a type that disallows null, the *Non‐Null* constraint can be used. This constraint wraps an underlying type, and acts identically to that wrapped type, with the exception that **null** is not a valid response for the wrapping type.
 
 > Think about the ‘**age**’ attribute of a ‘**Person**’. In real life; it is an *integer*, and *non-null*. If you set these constraints for *‘age’* attribute, it must return a non-null, integer value.
 
@@ -434,6 +434,15 @@ Attributes are *always* optional within the context of a query, an attribute may
 #### Result Coercion
 
 In all of the above result coercions, **null** was considered a valid value. To coerce the result of a Non‐Null type, the coercion of the wrapped type should be performed. If that result was not **null**, then the result of coercing the Non‐Null type is that result. If that result was **null**, then an attribute error must be raised.
+
+#### Combining List and Non-Null
+
+The List and Non‐Null wrapping types can compose, representing more complex types. The rules for result coercion of Lists and Non‐Null types apply in a recursive fashion.
+
+##### Rules
+
+-   If the item type of a *List* is *Non‐Null*, then that *List* may not contain any **null** items.
+-   If a *List* is *Non-Null*, then **null** is not accepted however an empty list is accepted. 
 
 ## <a name="4.4">4.4</a> Documentation
 
