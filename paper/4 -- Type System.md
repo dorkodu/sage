@@ -88,10 +88,15 @@ Sage servers may coerce non‐boolean raw values to *boolean* when reasonable wi
 
 ### <a name="4.2.2">4.2.2</a> Objects
 
-Sage object type…
+A Sage object…
+-   represents a set of named fields
+    -   each of which yield a value of a valid type within the Sage type system. 
+-   should be serialized as a map
+    -   where the field names are keys and the results of evaluating fields are values.
 
--   represents a set of named fields, each of which yield a value of a valid type within the Sage type system. 
--   should be serialized as maps, where the field names are the keys and the result of evaluating the field is the value.
+#### Result Coercion
+
+Sage servers must return a *map* as the result of an object type. Although each field in the object must yield a valid value in Sage’s type system and chosen response format; there is no more restriction for an object’s fields.
 
 ### <a name="4.2.3">4.2.3</a> List
 
