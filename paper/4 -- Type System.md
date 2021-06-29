@@ -12,7 +12,7 @@ A Sage schema must itself be internally valid.
 
 All entity types defined within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
-All artifacts *(entities, their attributes, acts and links)* defined within a schema must not have a name which begins with ‘**@**‘ *(commercial at)* or ‘**$**‘ *(dollar sign)*, as these are used exclusively for Sage’s type system internals.
+All artifacts *(entities; their attributes, acts and links)* defined within a schema must not have a name which begins with **`@`** *(commercial at)* or **`$`** *(dollar sign)*; as these are used exclusively for Sage’s type system internals.
 
 ## <a name="4.2">4.2</a> Types
 
@@ -46,7 +46,7 @@ The integer scalar type represents a signed 32‐bit numeric non‐fractional va
 
 ##### Result Coercion
 
-Attributes returning the *integer* type expect to encounter **32‐bit** integer internal values.
+Attributes returning the *integer* type expect to encounter **32‐bit** integer internal values. 
 
 Sage servers may coerce non‐integer internal values to integers when reasonable without losing information, otherwise they must raise an *attribute error*. Examples of this may include returning `1` for the floating‐point number `1.0`, or returning `123` for the string `"123"`. In scenarios where coercion may lose data, raising an attribute error is more appropriate. For example, a floating‐point number `1.2` should raise an attribute error instead of being truncated to `1`.
 
