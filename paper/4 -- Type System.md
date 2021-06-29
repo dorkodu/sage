@@ -1,5 +1,19 @@
 #  <a name="type-system">4</a> Type System
 
+-   **[4.1 Schema](#4.1)**
+-   **[4.2 Types](#4.2)**
+    -   **[4.2.1 Scalar Types](#4.2.1)**
+    -   **[4.2.2 Object](#4.2.2)**
+    -   **[4.2.3 List](#4.2.3)**
+    -   **[4.2.4 Entity](#4.2.4)**
+    -   **[4.2.5 Entity Collection](#4.2.5)**
+-   **[4.3 Constraints](#4.3)**
+    -   **[4.3.1 Strict Type](#4.3.1)**
+    -   **[4.3.2 Non-Null](#4.3.2)**
+-   **[4.4 Documentation](#4.4)**
+    -   **[4.4.1 Description](#4.4.1)**
+    -   **[4.4.2 Deprecation](#4.4.2)**
+
 Sage type system describes the capabilities of a Sage service and is used to determine if a query is valid and how to response to it.
 
 ## <a name="4.1">4.1</a> Schema
