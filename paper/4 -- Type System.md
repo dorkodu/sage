@@ -26,7 +26,7 @@ A Sage schema must itself be internally valid.
 
 All entity types defined within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
-All artifacts *(entities; their attributes, acts and links)* defined within a schema must not have a name which begins with **`@`** *(commercial at)* or **`$`** *(dollar sign)*; as these are used exclusively for Sage’s type system internals.
+All artifacts *(entities; their attributes, acts and links)* defined within a schema must not have a name which begins with **`@`** *(commercial at)* or **`$`** *(dollar sign)*, as these are used exclusively for Sage’s type system internals.
 
 ## <a name="4.2">4.2</a> Types
 
@@ -46,11 +46,11 @@ A Sage server, when resolving the value of a given scalar type, must uphold the 
 
 A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` , or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an *attribute error*.
 
-Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage server must yield values which adhere to the expected Scalar type.
+Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage service must yield values which adhere to the expected Scalar type.
 
-Sage supports a basic set of well‐defined Scalar types. A Sage server should support all of these types, and if provides a type by these names, it must adhere to the behavior described below.
+Sage supports a basic set of well‐defined Scalar types. A Sage service should support all of these types, and if provides a type by these names, it must adhere to the behavior described below.
 
-> By default, all attributes are **flex-typed**, which means they can be any type defined in Sage’s type system, provided that they are valid in the output response format. 
+> By default, all attributes are **flex-typed**, which means their values can be any type defined in Sage’s type system, provided that they are valid in the output response format. 
 >
 > Also we have a concept called **“constraints”**. Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is strictly expected from a specific attribute.
 
