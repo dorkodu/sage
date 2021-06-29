@@ -100,7 +100,7 @@ Attributes returning the *boolean* type expect to encounter boolean internal val
 
 Sage servers may coerce non‐boolean raw values to *boolean* when reasonable without losing information, otherwise they must raise an attribute error. Examples of this may include returning `true` for non‐zero numbers.
 
-### <a name="4.2.2">4.2.2</a> Objects
+### <a name="4.2.2">4.2.2</a> Object
 
 A Sage object…
 -   represents a set of named fields
