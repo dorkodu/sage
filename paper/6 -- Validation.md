@@ -23,6 +23,15 @@ entity Person {
   name: @string @nonNull
   nickname
   age: @int
+  name @attribute(string, non-null);
+  age @attribute(integer, non-null);
+  favoriteBook @link(Book, non-null);
+}
+
+entity Book {
+  title @attribute(string, non-null);
+  publishYear @attribute(integer);
+  author @link(Person, non-null);
 }
 ```
 

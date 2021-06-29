@@ -145,9 +145,9 @@ For example, a `Person` entity type could be described as **:**
 
 ```css
 entity Person {
-  id;
-  name @string;
-  age @integer;
+  id @attribute;
+  name @attribute(string);
+  age @attribute(integer);
 }
 ```
 
@@ -213,10 +213,10 @@ For example, the `Person` type might include an `occupation` attribute with the 
 
 ```css
 entity Person {
-  id;
-  name @string;
-  age @integer;
-  occupation @object;
+  id @attribute;
+  name @attribute(string);
+  age @attribute(integer);
+  occupation @attribute(object);
 }
 ```
 
@@ -276,8 +276,8 @@ Here we define a To-do Entity type :
 
 ```css
 entity Todo {
-  id @integer;
-  title @string;
+  id @attribute(integer);
+  title @attribute(string);
 }
 ```
 

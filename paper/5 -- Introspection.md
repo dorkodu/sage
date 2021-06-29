@@ -6,16 +6,16 @@ A Sage server supports introspection over its schema. The schema can be queried 
 
 ```css
 entity User {
-  id @integer @nonNull;
-  name @string @nonNull;
-  email @string;
+  id @attribute(integer, non-null);
+  name @attribute(string, non-null);
+  email @attribute(string);
 }
 
 entity Post {
-  id @integer @nonNull;
-  title @string @nonNull;
-  content @string @nonNull;
-  author @link(User) @nonNull;
+  id @attribute(integer, non-null);
+  title @attribute(string, non-null);
+  content @attribute(string, non-null);
+  author @link(User, non-null);
 }
 ```
 
