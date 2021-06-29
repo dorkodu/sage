@@ -137,30 +137,44 @@ Entities are at the heart of the Sage’s type system. They represent sets of…
 
 - #### Attributes
 
-    Each of which is a named key and yield a value *(optionally, a value of a specific type you want)*. 
+    Each of which…
+
+    - represents a property of an Entity.
+    - is identified by a *string* name.
+    - yields a value.
+        - Optionally, a value of a desired type that is specified as a [constraint](#4.3).
+        - It is resolved by a function which takes the query object as a parameter, and returns the value.
 
 - #### Acts
 
-    Each of which is a named function that you can call in your query *(and arguments you give are passed to )*.
+    Each of which…
+
+    - represents a specific business logic related to an Entity type.
+    - is identified by a *string* name.
+    - is a function
+        - that can be called with a query *(And the query is passed as a parameter to it, just like an attribute resolver function. The only difference is that an act does not yield a value.)*.
 
 - #### Links
 
-    Each of which is a named, typed and directed *to-one (Entity)* or *to-many (Entity Collection)* relationship between two entity types. They are like edges in a graph, where entity types are nodes.
+    Each of which…
 
+    - represents a typed and directed *to-one (Entity)* or *to-many (Entity Collection)* relationship.
 
-Entity values should be serialized as maps, where the queried attribute names are the keys and the result of evaluating the attribute is the value.
-
-All attributes, acts and links defined within an Entity type must not have a name which begins with "**@**" (at symbol), as this is used exclusively by Sage type system internals.
+        - An Entity/Entity Collection type that the link is connected to, must be specified. 
+        - They are like edges in a graph, where entities are nodes.
+    - is identified by a *string* name.
+    - is resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map.
+        - Sage will use the returned arguments for querying the Entity type which the link points to.
 
 > #### Note
 >
 > Sage queries are **not hierarchical**. You request for entities individually.
 >
-> We want to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just give links to them. This is why Sage also has *links*. 
+> We want to handle every single entity separately. By doing so we try to provide as much granularity as possible. This becomes very useful if you think in terms of a *“knowledge graph”*, where you don’t embed relationships with other entities, instead you just give links to them. This is why Sage also has *links*.
 
 For example, a `Person` entity type could be described as **:**
 
-*— Just to clarify our examples to make them easily understandable, here we introduce this hypothetical, pseudo **SDL**; which we use only here and at the documentation for language-agnostic examples* :<br>
+*— Just to clarify our examples and make them easily understandable, here we introduce this hypothetical, pseudo **SDL**; which we use only here and at the documentation for language-agnostic examples* :
 
 [^SDL]: Schema Definition Language
 
@@ -172,9 +186,9 @@ entity Person {
 }
 ```
 
-Where `name` is an attribute that will yield a **string** value, while `age` will yield an **integer** value. And `id` is a flex-typed attribute, which means it has no constraints.
+Where `name` is an attribute that will yield a **string** value, while `age` will yield an **integer** value. And `id` is a flex-typed attribute, which means it has no restrictions for its return value.
 
-> Do not forget that **strict-types or any constraints are optional**. You do not need to set a type constraint for each attribute you define. Here we did not dictate anything for `id` attribute.
+> Do not forget that **strict-types or any other constraint is optional**. You do not need to set a type constraint for each attribute you define. Here we did not dictate any expectation for the value of `id` attribute.
 
 Only attributes, acts and links which are declared on that entity type may validly be queried.
 
@@ -184,7 +198,7 @@ For example, selecting all the attributes of a `Person` :
 {
   "someone": {    
     "type": "Person",    
-    "attr": "*",   
+    "attr": "*", 
     "args": {   
       "id": 10
     }
@@ -199,7 +213,7 @@ Would yield the object :
   "someone": {
     "id": 10,
     "name": "Doruk Eray",
-    "age": 16
+    "age": 17
   }
 }
 ```
@@ -255,6 +269,56 @@ And let’s say we only requested for the `occupation` attribute. Here it return
 }
 ```
 
+But sometimes a relationship should also be represented, this is the reason why Sage also has *links*. Here we define a link named `favoriteBook`, which points to the `Book` Entity.
+
+```css
+entity Person {
+  id @attribute;
+  name @attribute(string);
+  age @attribute(integer);
+  occupation @attribute(object);
+  favoriteBook @link(Book);
+}
+
+entity Book {
+  name @attribute(string);
+	publishYear @attribute(integer);
+}
+```
+
+And here we requested for also a link, `favoriteBook`, as well :
+
+```json
+{
+  "someone": {
+    "type": "Person",
+    "attr": ["name", "age"],
+    "link": {
+      "favoriteBook": ["name"]
+    },
+    "args": {
+      "id": 10
+    }
+  } 
+}
+```
+
+This is the response :
+
+```json
+{
+  "someone": {
+    "name": "Doruk Eray",
+    "age": 17,
+    "$link": {
+      "favoriteBook": {
+        "name": "Nutuk"
+      }
+    }
+  }
+}
+```
+
 #### Attribute Ordering
 
 When querying an Entity, the resulting mapping of fields are conceptually ordered in the same order in which they were encountered during query execution.
@@ -263,22 +327,9 @@ Response serialization formats capable of representing ordered maps should maint
 
 Producing a response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated.
 
-#### Type Validation
+#### Result Coercion
 
-Entity types can be invalid if incorrectly defined. These set of rules must be adhered to by every Entity type in a Sage schema.
-
-2.  For each **attribute** of an Entity type **:**
-    1.  The attribute must have a unique string name within that Entity type; no two attributes may share the same name.
-    2.  The attribute must return a value which is **valid** within Sage’s type system, and must be of .
-    3.  If any constraints have been set for the attribute, the attribute must yield a value which is **valid** within that constraint.
-3.  For each **act** of an Entity type **:**
-    1.  The act must have a unique string name within that Entity type; no two acts may share the same name.
-    2.  The act must be a function.
-    3.  The act must be able to accept at least one parameter, which will be the query object. 
-4.  For each **link** of an Entity type **:**
-    1.  The Link must have a unique string name within that Entity type; no two links may share the same name.
-    2.  The Link must point to a specific Entity/Entity Collection type.
-    3.  The Link should be resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map. Sage will query the Entity type which the link points to, using these returned arguments.
+Determining the result of coercing an entity is the heart of the Sage executor, so this is covered in that section of the specification.
 
 ### <a name="4.2.5">4.2.5</a> Entity Collection
 
