@@ -244,7 +244,10 @@ Must only yield exactly that subset :
 
 We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **object**.
 
-For example, the `Person` type might include an `occupation` attribute with the type *object* **:**
+For example, the `Person` type might include two new attributes :
+
+-    `occupation` : *object*.
+-    `nicknames` : *list*\<string>.
 
 ```css
 entity Person {
@@ -252,10 +255,11 @@ entity Person {
   name @attribute(string);
   age @attribute(integer);
   occupation @attribute(object);
+  nicknames @attribute(list: string);
 }
 ```
 
-And let’s say we only requested for the `occupation` attribute. Here it returns an *object* value **:**
+And let’s say we only requested for these two new  attributes,`occupation` and `nicknames`. Here it returns an *object* value **:**
 
 ```json
 {
@@ -264,7 +268,12 @@ And let’s say we only requested for the `occupation` attribute. Here it return
       "company": "Dorkodu",
       "role": "Founder",
       "startYear": 2017
-    }
+    },
+		"nicknames": [
+      "Mr. Dorkodu",
+      "Doruk Dorkodu",
+      "Dorkodu Khan"
+    ]
   }
 }
 ```
