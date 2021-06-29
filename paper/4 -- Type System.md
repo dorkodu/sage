@@ -450,12 +450,12 @@ Documentation is a boring part of API development. But it turned out to be a kil
 
 ### <a name="4.4.1">4.4.1</a> Description
 
-To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside their definitions and made available via introspection. Although descriptions are completely optional, we think they are really useful.
+To allow Sage service designers easily write documentation alongside the capabilities of a Sage API, descriptions of Sage definitions are provided alongside them, and made available via introspection using magic attributes. Although descriptions are completely optional, we think they are really useful.
 
-All Sage type definitions which can be described should provide a description unless they are considered self descriptive.
+Any Sage schema definition which can be described should provide a description unless it is considered self descriptive.
 
 ### <a name="4.4.2">4.4.2</a> Deprecation
 
-Entities, attributes or acts may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes or acts (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
+Any Sage schema definition may be marked as *“deprecated”* as deemed necessary by the application. It is still legal to query for these attributes, acts or links (to ensure existing clients are not broken by the change), but they should be appropriately treated in documentation and code.
 
-This must be handled just like setting optional constraints on attributes. As simple as declaring the ‘**deprecated’** setting as **true**.
+This must be handled just like setting optional constraints on attributes—as simple as declaring a ‘**deprecated’** setting as **true**.
