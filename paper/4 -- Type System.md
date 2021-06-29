@@ -116,18 +116,20 @@ Sage servers must return a *map* as the result of an object type. Although each 
 
 A Sage list…
 
--   is a special collection type which declares the type of each item in the List (referred to as the *item type* of the list). 
--   is serialized as ordered lists, where each item in the list is serialized as per the item type.
+-   is a special collection type
+    -   which declares the type of each item in the List (referred to as the *item type* of the list). 
+-   is serialized as an ordered list
+    -   where each item in the list is serialized as per the item type.
 
-To denote that a field uses a List type, the item type also must be specified; and it will behave like a type constraint.
+To denote that an attribute uses a List type, the item type also must be specified; and it will behave like a type constraint.
 
 #### Result Coercion
 
-Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of a result coercion of the item type. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
+Sage servers must return an ordered list as the result of a list type. Each item in the list must be the result of the item type coercion. If a reasonable coercion is not possible it must raise an attribute error. In particular, if a non‐list is returned, the coercion should fail, as this indicates a mismatch in expectations between the type system and the implementation.
 
-If a list’s item type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value **null** at that position in the list along with an error added to the response. If a list’s item type is non‐nullable, an error occurring at an individual item in the list must result in an attribute error for the entire list.
+If a list’s item type is nullable, then errors occurring during preparation or coercion of an individual item in the list must result in the value `null` at that position in the list along with an error added to the response. If a list’s item type is non‐nullable, an error occurring at an individual item in the list must result in an attribute error for the entire list.
 
->   For more information on the error handling process, see **“Errors and Non‐Nullability”** within the Execution section.
+>   For more information on the error handling process, see [Execution](#execution).
 
 ### <a name="4.2.4">4.2.4</a> Entity
 
