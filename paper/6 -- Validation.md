@@ -21,26 +21,22 @@ As Sage type system schema evolve over time by defining new artifacts such as en
 
 Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
 
-For this section of this document, we will assume the following type system in order to demonstrate examples**:**
+For this section of this specification, we will assume this simple type system in order to demonstrate examples **:**
 
-```scss
+```css
 entity Person {
-  name: @string @nonNull
-  nickname
-  age: @int
-  name @attribute(string, non-null);
-  age @attribute(integer, non-null);
-  favoriteBook @link(Book, non-null);
+  name @attribute(string) @nonNull;
+  age @attribute(integer) @nonNull;
+  favoriteBook @link(Book) @nonNull;
 }
 
 entity Book {
-  title @attribute(string, non-null);
-  publishYear @attribute(integer);
-  author @link(Person, non-null);
+  title @attribute(string) @nonNull;
+  publishYear @attribute(integer) @nonNull;
+  author @link(Person) @nonNull;
 }
 ```
 
-`Person` entity type has attributes : 
 
 -   `name` : **string** and **non-null**
 -   `nickname` –no constraint–
