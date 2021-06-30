@@ -1,6 +1,9 @@
-## <a name="validation">5.3</a> Validation
+# <a name="validation">6</a> Validation
 
-Sage does not just verify if a request is structurally and syntactically correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
+-   **[6.1 Query](#6.1)**
+-   **[6.2 Type System](#6.2)**
+
+Sage does not just verify if a request is structurally correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
 
 **An invalid request is still technically executable**, and will always produce a stable result as defined by the algorithms in the Execution section, however that result may be ambiguous, surprising, or unexpected relative to a request containing validation errors, **so execution should only occur for valid requests.**
 
@@ -10,11 +13,13 @@ Typically validation is performed in the context of a request immediately before
 >
 >   A request may be validated during development, provided it does not later change, or a service may validate a request once and memoize the result to avoid validating the same request again in the future. Any client‐side or development‐time tool should report validation errors and not allow the formulation or execution of requests known to be invalid at that given point in time.
 
-#### **Type system evolution**
+### Type System Evolution
 
-As Sage type system schema evolve over time by adding new entities, attributes or acts, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
+As Sage type system schema evolve over time by defining new artifacts such as entities and their attributes, acts or links, it is possible that a request which was previously valid could later become invalid. Any change that can cause a previously valid request to become invalid is considered a *breaking change*. 
 
-#### **Examples**
+#### Breaking Changes
+
+Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
 
 For this section of this document, we will assume the following type system in order to demonstrate examples**:**
 
