@@ -25,15 +25,15 @@ For this section of this specification, we will assume this simple type system i
 
 ```css
 entity Person {
-  name @attribute(string) @nonNull;
-  age @attribute(integer) @nonNull;
-  favoriteBook @link(Book) @nonNull;
+  name @attribute(string);
+  age @attribute(integer);
+  favoriteBook @link(Book);
 }
 
 entity Book {
-  title @attribute(string) @nonNull;
-  publishYear @attribute(integer) @nonNull;
-  author @link(Person) @nonNull;
+  title @attribute(string);
+  publishYear @attribute(integer);
+  author @link(Person);
 }
 ```
 
