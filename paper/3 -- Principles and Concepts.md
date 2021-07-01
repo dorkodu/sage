@@ -89,13 +89,13 @@ Each entity can have any number of ***attributes***, **acts** and **links**. Att
     ```json
     {
       "AddToDo": {
-        "type": "ToDo",
+        "typ": "ToDo",
         "act": "addToDo",
-        "attr": ["id", "title", "isCompleted"],
-        "link": {
+        "atr": ["id", "title", "isCompleted"],
+        "lnk": {
         	"owner": ["id", "username", "name"]
      		},
-        "args": {
+        "arg": {
           "ownerId": 5,
           "title": "Finish Sage's Whitepaper.",
           "deadline": "2021-05-20"
@@ -158,12 +158,12 @@ Each query must be identified with a string name which must be unique within the
 ```json
 {
   "doruk": {
-    "type": "User",
-    "attr": ["name", "email", "age"],
-    "link": {
+    "typ": "User",
+    "atr": ["name", "email", "age"],
+    "lnk": {
       "studiesAt": ["name", "grade"]
     },
-    "args": {
+    "arg": {
       "handle": "@doruk"
     }
   }

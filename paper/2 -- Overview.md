@@ -11,9 +11,9 @@ For example, here is a sample Sage transaction *(request and response for a quer
 ```json
 {
   "matrix": {
-  	"type": "Movie",
-  	"attr": ["name", "starring", "duration", "directedBy", "releaseYear"],
-  	"args": {
+  	"typ": "Movie",
+  	"atr": ["name", "starring", "duration", "directedBy", "releaseYear"],
+  	"arg": {
  			"id": "tt0133093"
   	}
 	}

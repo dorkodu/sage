@@ -197,9 +197,9 @@ For example, selecting all the attributes of a `Person` :
 ```json
 {
   "someone": {    
-    "type": "Person",    
-    "attr": "*", 
-    "args": {   
+    "typ": "Person",    
+    "atr": "*", 
+    "arg": {   
       "id": 10
     }
   } 
@@ -223,9 +223,9 @@ While selecting a subset of attributes :
 ```json
 {
   "someone": {    
-    "type": "Person",    
-    "attr": ["name"],    
-    "args": {      
+    "typ": "Person",    
+    "atr": ["name"],    
+    "arg": {      
     	"id": 10    
 		}  
   } 
@@ -300,12 +300,12 @@ And here we requested for also a link, `favoriteBook`, as well :
 ```json
 {
   "someone": {
-    "type": "Person",
-    "attr": ["name", "age"],
-    "link": {
+    "typ": "Person",
+    "atr": ["name", "age"],
+    "lnk": {
       "favoriteBook": ["name"]
     },
-    "args": {
+    "arg": {
       "id": 10
     }
   } 

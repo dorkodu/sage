@@ -24,9 +24,9 @@ This sample introspection query
 ```json
 {
   "introspect:User": {
-    "type": "User",
-    "attr": ["@type", "@description", "@deprecated"],
-    "link": {
+    "typ": "User",
+    "atr": ["@type", "@description", "@deprecated"],
+    "lnk": {
       "@attributes": ["name", "description", "type", "nonNull"]
     }
   }
@@ -102,8 +102,8 @@ Contains meta-information related to your Sage schema.
 ```json
 {
   "schemaInfo": {
-    "type": "@Schema",
-    "attr": ["entities"]
+    "typ": "@Schema",
+    "atr": ["entities"]
   }
 }
 ```
@@ -127,9 +127,9 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 ```json
 {
   "doruk": {
-    "type": "User",
-    "attr": ["@type", "name"], 
-    "args": {
+    "typ": "User",
+    "atr": ["@type", "name"], 
+    "arg": {
       "id": 5
     }
   }
@@ -210,9 +210,9 @@ The query
 ```json
 {
   "introspection:Post": {
-    "type": "Post",
-    "attr": ["@type", "@description", "@deprecated"],
-    "link": {
+    "typ": "Post",
+    "atr": ["@type", "@description", "@deprecated"],
+    "lnk": {
       "@attributes": ["name", "type"],
     	"@links": ["name", "type"]
     }
