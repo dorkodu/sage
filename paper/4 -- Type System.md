@@ -110,7 +110,7 @@ A Sage object…
 
 #### Result Coercion
 
-Sage servers must return a *map* as the result of an object type. Although each field in the object must yield a valid value in Sage’s type system and chosen response format; there is no more restriction for an object’s fields.
+Sage servers must return a *map* as the result of an object type. Although each field in the object must yield a valid value in Sage’s type system and the output response format; there is no more restriction for an object’s fields.
 
 ### <a name="4.2.3">4.2.3</a> List
 
@@ -121,7 +121,7 @@ A Sage list…
 -   is serialized as an ordered list
     -   where each item in the list is serialized as per the item type.
 
-To denote that an attribute uses a List type, the item type also must be specified; and it will behave like a type constraint.
+To denote that an attribute uses a List type, the item type also must be specified; and it will behave like a wrapper type constraint.
 
 #### Result Coercion
 
@@ -133,7 +133,11 @@ If a list’s item type is nullable, then errors occurring during preparation or
 
 ### <a name="4.2.4">4.2.4</a> Entity
 
-Entities are at the heart of the Sage’s type system. They represent sets of…
+Entities are at the heart of the Sage’s type system. 
+
+-   An Entity type is identified by a string name, which must be unique in the schema.
+
+An Entity is represented as sets of…
 
 - #### Attributes
 
