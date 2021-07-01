@@ -31,7 +31,7 @@ Sage has some design principles :
 
     #### Flex Types and Constraints
 
-    Sage is *flex-typed*. By default, all values can be of any type within the Sage’s type system. However, we also know that sometimes *strong-typing* is desperately needed, or at least useful. Thus, Sage has *constraints*, which you can set for attributes to ensure their values will be of a specific type. This is why Sage can be *flexible* and *powerful* at the same time.
+    Sage is *flex-typed*. By default, all values can be of any type within the Sage’s type system. However, we also know that sometimes *strong-typing* is desperately needed, or at least useful. Thus, Sage offers a concept called *constraints*, which you can set for attributes to ensure their values will be of a specific type. This is why Sage can be both *flexible* and *powerful* at the same time.
 
 - ### Application-level Protocol
 
@@ -49,10 +49,6 @@ Sage has some design principles :
 
 Here we introduce some concepts and terms which you will need to understand well in order to learn more deeply about Sage.
 
->   #### What makes Sage a protocol?
->
->   Simply a protocol is a set of agreements on how to do something. Sage can be called as a **standard, approach, specification, protocol** etc. We just wanted to create a specified, structural way for building and designing APIs.
-
 ### <a name="3.2.1">3.2.1</a> Type System
 
 #### Schema
@@ -61,9 +57,9 @@ Your Sage server’s data capability is defined by its data schema, which is jus
 
 #### Entity
 
-Entities are at the core of the type system in Sage. You define your data as entities. You can think of entities like objects in OOP.
+Entities are at the core of Sage’s type system. You define your data as entities.
 
-Each entity can have any number of ***attributes***, **acts** and **links**. Attributes are **key-value pairs**, acts are **methods/functions**—which you can remotely call in your query to do something, *e.g. updating the database.*— and links represent **relationships** between entity types.
+Each entity can have any number of ***attributes***, **acts** and **links**. *Attributes* are **key-value pairs**, *acts* are **methods/functions**—which you can remotely call in your query to do something, *e.g. updating the database.*— and *links* represent **relationships** between entity types.
 
 - ##### **Attribute**
 
@@ -77,6 +73,8 @@ Each entity can have any number of ***attributes***, **acts** and **links**. Att
     > 
     >
     > **For example:** In our PHP implementation, you can define an optional ‘context’ array which you can use as a simple dependency container. Sage will pass that context value to resolver and act functions.
+    
+    This is an example query of adding a to-do, for the sake of simplicity :
     
 - ##### Act
 
@@ -126,7 +124,7 @@ Each entity can have any number of ***attributes***, **acts** and **links**. Att
     }
     ```
 
-    > Sage does not handle these steps automatically. It’s the developer who writes the code required to save this To-do item to data storage, and retrieve these fields.
+    > Sage does not handle these steps automatically. It’s the developer who writes the code required to save this To-do item to data storage, and retrieve these attributes.
 
 - ##### Link
 
@@ -151,7 +149,7 @@ But how to query?
 >
 > But of course, you can use another format for query and response documents (see [Response](#response)).
 
-Each query must be identified with a string name which must be unique within the query document, and expressed as a map which the name points to.
+Each query must be identified with a string name which must be unique in the query document, and expressed as a map which the name points to.
 
 *— Below here is an example query, requesting a single entity :*
 
