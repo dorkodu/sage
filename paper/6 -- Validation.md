@@ -1,7 +1,12 @@
 # <a name="validation">6</a> Validation
 
--   **[6.1 Query](#6.1)**
--   **[6.2 Type System](#6.2)**
+-   **[6.1 Document](#6.1)**
+-   **[6.2 Query](#6.2)**
+    -   **[6.2.1 Entity Type](#6.2.1)**
+    -   **[6.2.2 Attributes](#6.2.2)**
+    -   **[6.2.3 Act](#6.2.3)**
+    -   **[6.2.4 Links](#6.2.4)**
+    -   **[6.2.5 Arguments](#6.2.5)**
 
 Sage does not just verify if a request is structurally correct, but also ensures that it is unambiguous and mistake‐free in the context of a given Sage schema.
 
@@ -37,10 +42,9 @@ entity Book {
 }
 ```
 
+This section defines the validation rules for Sage queries.
 
--   `name` : **string** and **non-null**
--   `nickname` –no constraint–
--   `age` : **integer**
+Unless otherwise noted, maps defined by this specification should not contain any additional fields. Client and server implementations should ignore fields not recognized by this specification.
 
 ### <a name="5.3.1">5.3.1</a> Query
 
