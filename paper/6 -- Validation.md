@@ -26,29 +26,20 @@ As Sage type system schema evolve over time by defining new artifacts such as en
 
 Sage services and schema maintainers are encouraged to avoid breaking changes, however in order to be more resilient to these breaking changes, sophisticated Sage services may still allow for the execution of requests which *at some point* were known to be free of any validation errors, and have not changed since.
 
-For this section of this specification, we will assume this simple type system in order to demonstrate examples **:**
-
-```css
-entity Person {
-  name @attribute(string);
-  age @attribute(integer);
-  favoriteBook @link(Book);
-}
-
-entity Book {
-  title @attribute(string);
-  publishYear @attribute(integer);
-  author @link(Person);
-}
-```
-
-This section defines the validation rules for Sage queries.
-
 Unless otherwise noted, maps defined by this specification should not contain any additional fields. Client and server implementations should ignore fields not recognized by this specification.
 
-### <a name="5.3.1">5.3.1</a> Query
+This section covers the validation rules for Sage queries.
 
-#### Query Document Structure
+## <a name="6.1">6.1</a> Document
+
+A *document* (known as *query document*)…
+-   contains only a map, which…
+    -   must be at the root of every Sage query document.
+    -   defines “top level” of a query document.
+    -   contains at least one or more queries, as key-value pairs, with the following rules :
+        -   A **key** must be a unique *string*, name of a *[query](#6.2)*.
+        -   A **value** must be a *[query](#6.2)*.
+
 
 This section describes the structure of a Sage document, which is defined in *JavaScript Object Notation (JSON)* — [RFC7159](http://tools.ietf.org/html/rfc7159). 
 
