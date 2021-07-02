@@ -40,12 +40,18 @@ A *document* (known as *query document*)…
         -   A **key** must be a unique *string*, name of a *[query](#6.2)*.
         -   A **value** must be a *[query](#6.2)*.
 
+## <a name="6.2">6.2</a> Query
 
-This section describes the structure of a Sage document, which is defined in *JavaScript Object Notation (JSON)* — [RFC7159](http://tools.ietf.org/html/rfc7159). 
+A *query*…
 
-Unless otherwise noted, objects defined by this specification shouldn’t contain any additional properties. Client and server implementations must ignore properties not recognized by this specification.
+-   is represented as a *map*.
+-   is identified by a *string* name, which…
+    -   must be unique in the query document. No two queries can have the same name.
+-   contains a number of pre-defined fields.
+    -   To have compact query documents, field names are used in their shortened forms.
+    -   Implementations may use additional fields provided that they do not conflict (by both naming and functionality) with those defined in this specification.
 
-A JSON object must be at the root of every Sage request and response containing data. This object defines a document’s “top level”.
+The followings are pre-defined fields of a Sage query.
 
 A query document must be a single JSON object, which contains a list of named query object. 
 
