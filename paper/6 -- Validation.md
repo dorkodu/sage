@@ -32,24 +32,28 @@ This section covers the validation rules for Sage queries.
 
 ## <a name="6.1">6.1</a> Document
 
-A *document* (known as *query document*)…
--   contains only a map, which…
-    -   must be at the root of every Sage query document.
-    -   defines “top level” of a query document.
+A Sage *document* describes a complete file or request string operated on by a Sage service or client.
+
+*Documents* are only executable by a Sage service if they contain at least one valid *[Query](#6.2)*.
+
+A *document* (known as *request/query document*)…
+-   consists from a *map*, which…
+    -   must be at the root of every Sage *document*.
+    -   defines “top level” of a *document*.
     -   contains at least one or more queries, as key-value pairs, with the following rules :
-        -   A **key** must be a unique *string*, name of a *[query](#6.2)*.
-        -   A **value** must be a *[query](#6.2)*.
+        -   A **key** must be a unique *string*, name of a *query*.
+        -   A **value** must be a *query*.
 
 ## <a name="6.2">6.2</a> Query
 
 A *query*…
 
 -   is represented as a *map*.
--   is identified by a *string* name, which…
-    -   must be unique in the query document. No two queries can have the same name.
+-   is identified by a *string* name.
+    -   Each *query* a Sage *document* contains must be named. When submitting a *document* to a Sage service, the name of the each *query* to be executed must also be provided.
 -   contains a number of pre-defined fields.
-    -   To have compact query documents, field names are used in their shortened forms.
-    -   Implementations may use additional fields provided that they do not conflict (by both naming and functionality) with those defined in this specification.
+    -   To have compact *documents*, *field* names are used in their shortened forms.
+    -   Implementations may use additional *fields* provided that they do not conflict (by both naming and functionality) with those defined in this specification.
 
 The followings are pre-defined fields of a Sage query.
 
