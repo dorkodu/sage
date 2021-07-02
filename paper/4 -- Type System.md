@@ -365,7 +365,21 @@ entity Todo {
   title @attribute(string);
 }
 
-collection Todos @typeof(Todo)
+collection Todos of Todo
+```
+
+And query the collection type :
+
+```json
+{
+  "todos": {
+    "typ": "Todo",
+    "atr": "*",
+    "arg": {
+      "userId": 1923
+    }
+  }
+}
 ```
 
 Let’s assume this is what `id` and `title` attribute resolvers returned *(in JSON)* :
@@ -381,23 +395,28 @@ Let’s assume this is what `id` and `title` attribute resolvers returned *(in J
 }
 ```
 
-Merge operation would result in a set of objects, each of which is an instance of the specified Entity type :
+Merge operation would result in a set of objects, each of which is an Entity of the specified type.
+
+Then this would be the final result :
 
 ```json
-[
-  {
-    'id': 1,
-    'title': "Do this, do that..."
-	},
-  {
-    'id': 2,
-    'title': "Eat out with friends."
-	},
-  {
-    'id': 3,
-    'title': "Complete the website design of Sage."
-	}
-]
+{
+  "todos": [
+    {
+      'id': 1,
+      'title': "Do this, do that..."
+    },
+    {
+      'id': 2,
+      'title': "Eat out with friends."
+    },
+    {
+    	'id': 3,
+    	'title': "Complete the website design of Sage."
+		}
+	]   
+}
+
 ```
 
 #### Result Coercion
