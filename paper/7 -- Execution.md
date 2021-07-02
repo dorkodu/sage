@@ -1,39 +1,35 @@
-## <a name="execution">5.4</a> Execution
+# <a name="execution">7</a> Execution
 
 Sage generates a response from a request via execution.
 
 A request for execution consists of a few pieces of information **:**
 
--   The [*Schema*](#5.1.1) to use, typically solely provided by the Sage service.
+-   The [*schema*](#4.1) to use, typically solely provided by the Sage service.
 
--   A valid *[Query Document](#Document)*.
+-   A valid *[document](#6.1)*.
 
--   An initial value corresponding to the root type being executed. Conceptually, an initial value represents the “universe” of data available via a Sage service. It is common for a Sage service to always use the same initial value for every request.
 
-    [^WHY]: Why there is an initial value?
+Given this information, the result of *[ExecuteRequest()](#7.1)* produces the response, to be formatted according to the [Response](#response) section below.
 
-Given this information, the result of [ExecuteRequest](#ExecuteRequest())() produces the response, to be formatted according to the [Response](#response) section below.
+## <a name="7.1">7.1</a> Executing Requests
 
-### <a name="5.4.1">5.4.1</a> Executing Requests
+To execute a *request*, the executor must have a *[schema](#4.1)* and a parsed *[document](#6.1)* containing *[queries](#6.2)* to run. The result of the request is determined by the result of executing queries according to the [“Executing Queries”](#7.2) section below.
 
-To execute a request, the executor must have a parsed a [Query Document](#).
+<a name="7.1.ExecuteRequest">ExecuteRequest</a> **(** *schema, document* **) :**
 
-[^TODO]: Write the algorithm for request execution.
+1.  For each *query* given in the *document*:
+    1.  Return [ExecuteQuery](#7.1.ExecuteQuery) **(** *schema, document* **)**
 
-**ExecuteRequest (** *schema, query* **)** **:**
 
-  * For every query item found in *query* **ExecuteQueryItem**( *schema, queryItem* ).
+### <a name="7.1.1">7.1.1</a> Validating Requests
 
-#### Validating Requests
-
-As explained in the Validation section, only requests which pass all validation rules should be executed. If validation errors are known, they should be reported in the list of "**errors**" in the response and the request must fail without execution.
+As explained in the [**Validation**](#validation) section, only requests which pass all validation rules should be executed. If validation errors are known, they should be reported in the list of `errors` in the response and the request must fail without execution.
 
 Typically validation is performed in the context of a request immediately before execution, however a Sage service may execute a request without immediately validating it if that exact same request is known to have been
 validated before. A Sage service should only execute requests which *at some point* were known to be free of any validation errors, and have since not changed.
 
 >   The request may be validated during development, provided it does not later change, or a service may validate a request **once** and **memoize** the result to avoid validating the same request again in the future.
 
-### <a name="5.4.2">5.4.2</a> Executing Query Items
 
 The type system, as described in the “Type System” section of this document, must provide a query root object type. If mutations or subscriptions are supported, it must also provide a mutation or subscription root object type, respectively.
 
