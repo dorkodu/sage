@@ -15,10 +15,18 @@ Given this information, the result of *[ExecuteRequest()](#7.1)* produces the re
 
 To execute a *request*, the executor must have a *[schema](#4.1)* and a parsed *[document](#6.1)* containing *[queries](#6.2)* to run. The result of the request is determined by the result of executing queries according to the [“Executing Queries”](#7.2) section below.
 
-<a name="7.1.ExecuteRequest">ExecuteRequest</a> **(** *schema, document* **) :**
+<a name="7.1.ExecuteRequest()">ExecuteRequest</a> **(** *schema, document* **) :**
 
-1.  For each *query* given in the *document*:
-    1.  Return [ExecuteQuery](#7.1.ExecuteQuery) **(** *schema, document* **)**
+1.  Initialize *data* to an empty ordered map.
+2.  Initialize *errors* to an empty set.
+3.  Let *data* be the result of running the following algorithm *normally* (allowing parallelization) **:**
+    1.  For each *query* given in the *document* **:**
+        1.  Let *queryName* be the name of *query*.
+        2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.ExecuteQuery()) **(** *schema, query* **)**.
+        3.  Set *queryResult* as the value for the key *queryName* in *data*.
+4.  Let *errors* be a set of objects, each represent an error produced while executing the queries.
+5.  Return an unordered map containing *data* and *errors*.
+    1.  If *errors* is still empty at the end of the execution, return an unordered map containing only *data*.
 
 
 ### <a name="7.1.1">7.1.1</a> Validating Requests
