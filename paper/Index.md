@@ -2,7 +2,7 @@
 
 # Sage
 
-*June 2021 — Proposal*
+*July 2021 — Proposal* *(Work In Progress)*
 
 #### **`Author`**
  **Doruk Eray**
@@ -14,18 +14,16 @@
 
 ---
 
-## § Contents
+## [§](#) Contents
 
 -   **[1 Introduction](#introduction)**
 -   **[2 Overview](#overview)**
 -   **[3 Principles and Concepts](#principles-and–concepts)**
 -   **[4 Type System](#type-system)**
 -   **[5 Introspection](#introspection)**
--   **[6 Validation](#validation)** (WIP)
+-   **[6 Validation](#validation)**
 -   **[7 Execution](#execution)** (WIP)
 -   **[8 Response](#response)** (WIP)
--   **[9 Reference Implementations](#reference-implementations)**
--   **[10 Conclusion](#conclusion)**
--   **[11 References](#references)**
+-   **[9 References](#references)**
 
 [^WIP]: Work in progress.
