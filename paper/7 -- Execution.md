@@ -9,7 +9,7 @@ A request for execution consists of a few pieces of information **:**
 -   A valid *[document](#6.1)*.
 
 
-Given this information, the result of *[ExecuteRequest()](#7.1)* produces the response, to be formatted according to the [Response](#response) section below.
+Given this information, the result of *[ExecuteRequest()](#7.1.ExecuteRequest())* produces the response, to be formatted according to the [Response](#response) section below.
 
 ## <a name="7.1">7.1</a> Executing Requests
 
@@ -18,13 +18,12 @@ To execute a *request*, the executor must have a *[schema](#4.1)* and a parsed *
 <a name="7.1.ExecuteRequest()">ExecuteRequest</a> **(** *schema, document* **) :**
 
 1.  Initialize *data* to an empty ordered map.
-2.  Initialize *errors* to an empty list.
 3.  Let *data* be the result of running the following algorithm *normally* (allowing parallelization) **:**
     1.  For each *query* given in the *document* **:**
         1.  Let *queryName* be the name of *query*.
         2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.ExecuteQuery()) **(** *schema, query* **)**.
         3.  Set *queryResult* as the value for the key *queryName* in *data*.
-4.  Let *errors* be a list of objects, each represent an error produced while executing the queries.
+4.  Let *errors* be a list of error objects, each represents an error produced while executing the queries.
 5.  Return an unordered map containing *data* and *errors*.
     1.  If *errors* is still empty at the end of the execution, return an unordered map containing only *data*.
 
