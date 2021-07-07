@@ -1,8 +1,12 @@
 # <a name="references">9</a> References
 
+-   **[9.1 Links](#9.1)**
+-   **[9.2 Reference Implementations](#9.2)**
+-   **[9.3 Other](#9.3)**
+
 In this paper, we present Sage, which is a new way of data exchange and API design. We first give an overview, then introduce principles, concepts behind Sage; after that we dive deeply into its components. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
 
-## Links
+## <a name="9.1">9.1</a> Links
 
 - **[Sage — libre.dorkodu.com/sage](https://libre.dorkodu.com/sage)**
 
@@ -20,11 +24,11 @@ In this paper, we present Sage, which is a new way of data exchange and API desi
 
     You can find our open source project repositories on GitHub.
 
-## Reference Implementations
+## <a name="9.2">9.2</a> Reference Implementations
 
 To clarify the desired and ideal outcome of this proposal, we work on our own reference server and client implementations. Both of them are used on the production, at Dorkodu.
 
-*— As of July 10, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback, of course :)*
+*— As of July 8, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback, of course :)*
 
 - #### Sage Server
 
@@ -42,7 +46,7 @@ To clarify the desired and ideal outcome of this proposal, we work on our own re
     >
     > This document does not focus on and specify any certain rules about clients. However, we develop a web client in JavaScript, for our own needs. And it can be considered as a *“reference”* for the community.
 
-## Other
+## <a name="9.3">9.3</a> Other
 
 Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* a kid (at least, when I am writing this, I am 16), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
 
