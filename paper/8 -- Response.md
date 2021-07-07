@@ -1,5 +1,12 @@
 # <a name="response">8</a> Response
 
+-   **[8.1 Response Format](#8.1)**
+    -   **[8.1.1 Data](#8.1.1)**
+    -   **[8.1.2 Errors](#8.1.2)**
+-   **[8.2 Serialization Format](#8.2)**
+    -   **[8.2.1 JSON Serialization](#8.2.1)**
+    -   **[8.2.2 Serialized Map Ordering](#8.2.2)**
+
 When a Sage server receives a request, it must return a well‐formed response. The server’s response describes the result of executing the requested queries if successful, and describes any errors encountered during the request.
 
 A response may contain both a partial response as well as encountered errors in the case that an attribute error occurred on a attribute which was replaced with **null**.
