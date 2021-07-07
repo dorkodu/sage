@@ -119,11 +119,19 @@ An ideal serialization format should also support the following primitives, each
 
 This is not meant to be an exhaustive list of what a serialization format may encode. For example custom scalars representing a Date, Time, URI, or number with a different precision may be represented in whichever relevant format a given serialization format may support.
 
+### <a name="8.2.1">8.2.1</a> JSON Serialization
 
-If an error can be associated to a particular point in the requested GraphQL document, it should contain an entry with the key `locations` with a list of locations, where each location is a map with the keys `line` and `column`, both positive numbers starting from `1` which describe the beginning of an associated syntax element.
+JSON is the recommended serialization format for Sage. Though as mentioned above, Sage does not require a specific serialization format.
 
-If an error can be associated to a particular field in the GraphQL result, it must contain an entry with the key `path` that details the path of the response field which experienced the error. This allows clients to identify whether a `null` result is intentional or caused by a runtime error.
+When using JSON as a serialization of Sage responses, the following JSON values should be used to encode the related Sage values:
 
-This field should be a list of path segments starting at the root of the response and ending with the field associated with the error. Path segments that represent fields should be strings, and path segments that represent list indices should be 0‐indexed integers. If the error happens in an aliased field, the path to the error should use the aliased name, since it represents a path in the response, not in the query.
+| Sage Value | JSON Value            |
+| ---------- | --------------------- |
+| Map        | Object                |
+| List       | Array                 |
+| Null       | **null**              |
+| String     | String                |
+| Boolean    | **true** or **false** |
+| Int        | Number                |
+| Float      | Number                |
 
-For example, if fetching one of the friends’ names fails in the following query:
