@@ -26,8 +26,24 @@ If an error was encountered before execution begins, the `data` entry should not
 
 If an error was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
 
+### <a name="8.1.2">8.1.2</a> Errors
 
-— Query **:**
+The `errors` entry in the response is a non‐empty list of errors, where each error is a map.
+
+If no errors were encountered during the request, the `errors` entry should not be present in the response.
+
+If the `data` entry in the response is not present, the `errors` entry in the response must not be empty. It must contain at least one error. The errors it contains should indicate why no data was able to be returned.
+
+If the `data` entry in the response is present (including if it is the value **null**), the `errors` entry in the response may contain any errors that occurred during execution. If errors occurred during execution, it should contain those errors.
+
+#### Error Result Format
+
+Every error must contain an entry with the key `message` with a string description of the error intended for the developer as a guide to understand and correct the error.
+
+If an error can be associated with a particular query and requested artifact—such as attribute, act or link—in the Sage response, it must contain a map with the key `location`,  which contains the keys `query` and one of [ `attribute`, `act`, `link` ] which describes the location of the response entry which experienced the error. 
+
+This allows clients to identify whether a `null` result is intentional or caused by a runtime error.
+
 
 ```json
 {
