@@ -1,6 +1,6 @@
 # <a name="introduction">1</a> Introduction
 
-This is the specification for Sage; a query-based, entity-focused data exchange protocol and a runtime capable of executing those queries with your existing data and business logic. Sage is originally created at Dorkodu especially for APIs, to simplify the communication for data interactions between different layers of software. The development of this open standard started in 2020.
+This is the specification for Sage; a query-based, entity-focused data exchange protocol and a runtime capable of executing those queries with your existing business logic and data . Sage is originally created at Dorkodu especially for APIs, to simplify the communication for data interactions between different layers of software. The development of this open standard started in 2020.
 
 The latest working draft of this protocol can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
 
