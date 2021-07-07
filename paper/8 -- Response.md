@@ -1,6 +1,6 @@
-## <a name="response">5.5</a> Response
+# <a name="response">8</a> Response
 
-When a Sage server receives a request, it must return a well‐formed response. The server’s response describes the result of executing the requested directives if successful, and describes any errors encountered during the request.
+When a Sage server receives a request, it must return a well‐formed response. The server’s response describes the result of executing the requested queries if successful, and describes any errors encountered during the request.
 
 A response may contain both a partial response as well as encountered errors in the case that an attribute error occurred on a attribute which was replaced with **null**.
 
