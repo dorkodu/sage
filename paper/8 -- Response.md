@@ -135,3 +135,18 @@ When using JSON as a serialization of Sage responses, the following JSON values 
 | Int        | Number                |
 | Float      | Number                |
 
+For consistency and ease of notation, examples of responses are given in JSON format throughout this document.
+
+### <a name="8.2.2">8.2.2</a> Serialized Map Ordering
+
+Since the result of evaluating an artifact *(attribute or link)* set of a queried Entity is ordered, the serialized Map of results should preserve this order by writing the map entries in the same order as those attributes were requested as defined by query execution.
+
+>   Producing a serialized response where fields are represented in the same order in which they appear in the request improves human readability during debugging and enables more efficient parsing of responses if the order of properties can be anticipated.
+
+Serialization formats which represent an ordered map should preserve the order of requested artifacts. Serialization formats which only represent unordered maps but where order is still implicit in the serialization’s textual order (such as JSON) should preserve the order of requested fields textually.
+
+For example, if the requested attributes were `["name", "age"]`, a Sage service responding in JSON should respond with `{ "name": "Doruk", "age": 17 }` and should not respond with `{ "age": 17, "name": "Doruk" }`.
+
+While JSON Objects are specified as an [unordered collection of key‐value pairs](https://tools.ietf.org/html/rfc7159#section-4) the pairs are represented in an ordered manner. In other words, while the JSON strings `{ "name": "Doruk", "age": 17 }` and `{ "age": 17, "name": "Doruk" }` encode the same value, they also have observably different property orderings.
+
+This does not violate the JSON spec, as clients may still interpret objects in the response as unordered Maps and arrive at a valid value.
