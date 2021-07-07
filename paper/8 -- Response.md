@@ -40,43 +40,68 @@ If the `data` entry in the response is present (including if it is the value **n
 
 Every error must contain an entry with the key `message` with a string description of the error intended for the developer as a guide to understand and correct the error.
 
-If an error can be associated with a particular query and requested artifact—such as attribute, act or link—in the Sage response, it must contain a map with the key `location`,  which contains the keys `query` and one of [ `attribute`, `act`, `link` ] which describes the location of the response entry which experienced the error. 
+If an error can be associated with a particular query and requested artifact—such as attribute, act or link—in the Sage response, it must contain a map with the key `location`, which contains the keys `query` and one of [ `attribute`, `act`, `link` ] which describes the location of the response entry which experienced the error. 
 
 This allows clients to identify whether a `null` result is intentional or caused by a runtime error.
 
+For example, if fetching *age* of Neo fails in the following query :
 
 ```json
 {
-  "myFavoriteMovie": {
-    "type": "Movie",
-    "attr": ["name", "releaseYear"],
-    "args": {
-      "id": "tt0133093";
+	"neo": {
+    "typ": "Character",
+    "atr": ["name", "age"],
+    "arg": {
+      "character.id": 1
     }
-  }
-}	
+	} 
+}
 ```
 
-— Response **:**
+The response might look like :
 
 ```json
 {
+  "errors": [
+    {
+      "message": "Age for character with ID 1 could not be fetched.",
+      "location": {
+        "query": "neo",
+        "attribute": "age"
+      }
+    }
+  ],
   "data": {
-		"myFavoriteMovie": {
- 			"name": "The Matrix",
-      "releaseYear": 1999
+    "neo": {
+      "name": "Neo",
+      "age": null
     }
   }
 }
 ```
 
-### <a name="5.5.1.2">5.5.1.2</a> Errors
+Sage services may provide an additional entry to errors with key `meta`. This entry, if set, must have a map as its value. This entry is reserved for implementors to attach additional information to errors however they see fit, and there are no additional restrictions on its contents.
 
-The `errors` entry in the response is a non‐empty list of errors, where each error is a map.
+```json
+{
+  "errors": [
+    {
+      "message": "Age for character with ID 1 could not be fetched.",
+      "location": {
+        "query": "neo",
+        "attribute": "age"
+      },
+      "meta": {
+        "code": "CAN_NOT_FETCH_BY_ID",
+        "timestamp": "Thu Jul 8 15:40:09 UTC 2021"
+      }
+    }
+  ]
+}
+```
 
-If no errors were encountered during the requested operation, the `errors` entry should not be present in the result.
+Sage services should not provide any additional entries to the error format since they could conflict with additional entries that may be added in future versions of this specification.
 
-If the `data` entry in the response is not present, the `errors` entry in the response must not be empty. It must contain at least one error. The errors it contains should indicate why no data was able to be returned.
 
 If the `data` entry in the response is present (including if it is the value **null**), the `errors` entry in the response may contain any errors that occurred during execution. If errors occurred during execution, it should contain those errors.
 
