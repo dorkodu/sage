@@ -16,16 +16,16 @@ The response map may also contain an entry with key `meta`. This entry, if set, 
 
 To ensure future changes to the protocol do not break existing servers and clients, the top level response map must not contain any entries other than the three described above.
 
+>   When `errors` is present in the response, it may be helpful for it to appear first when serialized to make it more clear when errors are present in a response during debugging.
 
-### <a name="5.5.1.1">5.5.1.1</a> Data
+### <a name="8.1.1">8.1.1</a> Data
 
-The `data` entry in the response will be a map of directive names pointing to directives’ execution result objects. If a directive requested for any attributes, its output will be an object of the schema’s specified entity type.
+The `data` entry in the response will be the result of the execution of the request.
 
-If an error was encountered before execution begins, the `data` entry should not be present in the result.
+If an error was encountered before execution begins, the `data` entry should not be present in the response.
 
-If an error favorite was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
+If an error was encountered during the execution that prevented a valid response, the `data` entry in the response should be `null`.
 
-Here is a valid Sage transaction, in JSON **:**
 
 — Query **:**
 
