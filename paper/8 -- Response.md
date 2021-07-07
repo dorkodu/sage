@@ -102,12 +102,23 @@ Sage services may provide an additional entry to errors with key `meta`. This en
 
 Sage services should not provide any additional entries to the error format since they could conflict with additional entries that may be added in future versions of this specification.
 
+## <a name="8.2">8.2</a> Serialization Format
 
-If the `data` entry in the response is present (including if it is the value **null**), the `errors` entry in the response may contain any errors that occurred during execution. If errors occurred during execution, it should contain those errors.
+Sage does not require a specific serialization format. However, clients should use a serialization format that supports the major primitives in the Sage response. In particular, the serialization format must at least support representations of the following four primitives :
 
-#### Error result format
+-   Map
+-   List
+-   String
+-   Null
 
-Every error must contain an entry with the key `message` with a string description of the error intended for the developer as a guide to understand and correct the error.
+An ideal serialization format should also support the following primitives, each representing one of the common Sage scalar types, however a string or simpler primitive may be used as a substitute if any are not directly supported:
+
+-   Boolean
+-   Int
+-   Float
+
+This is not meant to be an exhaustive list of what a serialization format may encode. For example custom scalars representing a Date, Time, URI, or number with a different precision may be represented in whichever relevant format a given serialization format may support.
+
 
 If an error can be associated to a particular point in the requested GraphQL document, it should contain an entry with the key `locations` with a list of locations, where each location is a map with the keys `line` and `column`, both positive numbers starting from `1` which describe the beginning of an associated syntax element.
 
