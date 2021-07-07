@@ -113,7 +113,7 @@ Each entity can have any number of ***attributes***, **acts** and **links**. *At
         "title": "Finish Sage's Whitepaper.",
         "isCompleted": false,
         "deadline": "2021-06-27",
-        "$link": {
+        "$links": {
           "owner": {
           	"id": 5,
           	"username": "doruk",

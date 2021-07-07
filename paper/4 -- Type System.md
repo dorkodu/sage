@@ -275,8 +275,7 @@ And let’s say we only requested for these two new  attributes,`occupation` and
     },
 		"nicknames": [
       "Mr. Dorkodu",
-      "Doruk Dorkodu",
-      "Dorkodu Khan"
+      "Doruk 'Dorkodu'"
     ]
   }
 }
@@ -323,7 +322,7 @@ This is the response :
   "someone": {
     "name": "Doruk Eray",
     "age": 17,
-    "$link": {
+    "$links": {
       "favoriteBook": {
         "name": "Nutuk"
       }
