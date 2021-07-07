@@ -4,28 +4,18 @@ When a Sage server receives a request, it must return a well‐formed response. 
 
 A response may contain both a partial response as well as encountered errors in the case that an attribute error occurred on a attribute which was replaced with **null**.
 
-### <a name="5.5.1">5.5.1</a> Response Format
+## <a name="8.1">8.1</a> Response Format
 
-A response to a Sage query directive must be a map.
+A response to a Sage request must be a *map*.
 
-If the query directive (shortly, directive) encountered any errors, the response map must contain an entry with key `errors`. The value of this entry is described in the “Errors” section. If the operation completed without encountering any errors, this entry must not be present.
+If the request encountered any errors, the response map must contain an entry with key `errors`. The value of this entry is described in the [Errors](#8.1.2) section. If the request completed without encountering any errors, this entry must not be present.
 
-If a directive which requested for any is executed, the response map must contain an entry with key `data`. The value of this entry is described in the “Data” section. If the directive failed before execution, (e.g. due to a syntax error, missing information, or validation error) this entry must not be present.
+If the request resulted in execution, the response map must contain an entry with key `data`. The value of this entry is described in the [Data](#8.1.1) section. If the request failed before execution, due to a syntax error, missing information, or validation error, this entry must not be present.
 
-The response map may also contain an entry with key `meta`. This entry, if set, must have a map as its value. This entry is reserved for implementors to extend the protocol however they see fit, and hence there are no additional restrictions on its contents.
+The response map may also contain an entry with key `meta`. This entry, if set, must have a map as its value. This entry is reserved for implementors to extend the protocol and/or just return additional information however they see fit. Hence there are no additional restrictions on its contents.
 
 To ensure future changes to the protocol do not break existing servers and clients, the top level response map must not contain any entries other than the three described above.
 
-```json
-{
-	"data": {
-    "doruk": {
-      "attributes": {···},
-      "links": {···}
-    }
-  }
-}
-```
 
 ### <a name="5.5.1.1">5.5.1.1</a> Data
 
