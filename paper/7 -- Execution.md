@@ -41,29 +41,28 @@ validated before. A Sage service should only execute requests which *at some poi
 
 To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a parsed, valid *[query](#6.2)* to run. The result of the query is determined by the result of executing it with the following algorithm **:**
 
+<a name="7.2.ExecuteQuery()">ExecuteQuery</a> **(** *schema, query* **) :**
 
-[**ExecuteQuery**](#5.4.1) **(** *query **,** schema* **)**
+1.  Let *entityType* be the type in *query*.
 
-1.  Let queryType be the root Query type in schema.
-2.  Assert: queryType is an Object type.
-3.  Let selectionSet be the top level Selection Set in query.
-4.  Let data be the result of running [ExecuteSelectionSet](#ExecuteSelectionSet())(selectionSet, queryType, initialValue, variableValues) *normally* (allowing parallelization).
-5.  Let errors be any *field errors* produced while executing the selection set.
-6.  Return an unordered map containing data and errors.
+3.  Let *actName* be the act in *query*.
+    1.  If *actName* is defined:
+        1.  Run [PerformAct](#7.2.PerformAct()) **(** *entityType, actName, schema, query* **)**.
+    
+4.  Let *attributeSet* be the set of requested attributes in *query*.
+    1.  If *attributeSet* is defined:
+        1.  Let *attributes* be the result of [RetrieveAttributes](#7.2.RetrieveAttributes()) **(** *entityType, attributeSet, schema, query* **)**.
+    
+5.  Let *linksMap* be the map of requested links; link names as keys and their attribute sets as values, in *query*.
 
-#### [6.2.2](#sec-Mutation)Mutation
+    1.  If *linksMap* is defined:
+        1.  Let *links* be the result of [ResolveLinks](#7.2.RetrieveLinks()) **(** *entityType, linksMap, schema, query* **)**.
 
-If the operation is a mutation, the result of the operation is the result of executing the mutation’s top level selection set on the mutation root object type. This selection set should be executed serially.
+  5.  If *attributes* is not empty, let *resultMap* be equal to *attributes*. Otherwise initialize *resultMap* to an empty ordered map.
 
-It is expected that the top level fields in a mutation operation perform side‐effects on the underlying data system. Serial execution of the provided mutations ensures against race conditions during these side‐effects.
+  6.  If *links* is not empty, set it as the value for the key *$links* in *resultMap*.
 
-[ExecuteMutation](#ExecuteMutation())(mutation, schema, variableValues, initialValue)
+  7.  Return *resultMap*.
 
-1.  Let mutationType be the root Mutation type in schema.
-2.  Assert: mutationType is an Object type.
-3.  Let selectionSet be the top level Selection Set in mutation.
-4.  Let data be the result of running [ExecuteSelectionSet](#ExecuteSelectionSet())(selectionSet, mutationType, initialValue, variableValues) *serially*.
-5.  Let errors be any *field errors* produced while executing the selection set.
-6.  Return an unordered map containing data and errors.
+      >   *resultMap* is ordered by which attribute appear first in the query. Then, *links* are appended to the *resultMap*.
 
-## 
