@@ -37,10 +37,10 @@ validated before. A Sage service should only execute requests which *at some poi
 
 >   The request may be validated during development, provided it does not later change, or a service may validate a request **once** and **memoize** the result to avoid validating the same request again in the future.
 
+## <a name="7.2">7.2</a> Executing Queries
 
-The type system, as described in the “Type System” section of this document, must provide a query root object type. If mutations or subscriptions are supported, it must also provide a mutation or subscription root object type, respectively.
+To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a parsed, valid *[query](#6.2)* to run. The result of the query is determined by the result of executing it with the following algorithm **:**
 
-An initial value may be provided when executing a query.
 
 [**ExecuteQuery**](#5.4.1) **(** *query **,** schema* **)**
 
