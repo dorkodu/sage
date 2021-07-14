@@ -78,3 +78,15 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 1.  Assert: *actName* is a validly defined act on *entityType*.
 2.  Run the function of *actName* with *query* as a parameter.
 
+#### <a name="7.2.1.2">RetrieveAttributes</a> ( *entityType, attributeSet, schema, query* ) :
+
+2.  Initialize *resultMap* to an empty ordered map.
+3.  For each *attributeSet* as *attributeName*:
+    1.  Assert: *attributeName* is a validly defined attribute on *entityType*.
+    2.  Let *attributeValue* be the result of [RetrieveAttribute](#) **(** *entityType, attributeName, schema, query* **)**.
+
+    3.  Set *responseValue* as the value for *responseKey* in *resultMap*.
+4.  Return resultMap.
+
+>   *resultMap* is ordered by which attributes appear first in the query.
+
