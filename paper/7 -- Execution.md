@@ -68,3 +68,5 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
       >   *resultMap* is ordered by which attribute appear first in the query. Then, *links* are appended to the *resultMap*.
 
+### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
+
