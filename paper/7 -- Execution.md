@@ -15,13 +15,13 @@ Given this information, the result of *[ExecuteRequest()](#7.1.ExecuteRequest())
 
 To execute a *request*, the executor must have a *[schema](#4.1)* and a parsed *[document](#6.1)* containing *[queries](#6.2)* to run. The result of the request is determined by the result of executing queries according to the [“Executing Queries”](#7.2) section below.
 
-<a name="7.1.ExecuteRequest()">ExecuteRequest</a> **(** *schema, document* **) :**
+<a name="7.1.0">ExecuteRequest</a> **(** *schema, document* **) :**
 
 1.  Initialize *data* to an empty ordered map.
 3.  Let *data* be the result of running the following algorithm *normally* (allowing parallelization) **:**
     1.  For each *query* given in the *document* **:**
         1.  Let *queryName* be the name of *query*.
-        2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.ExecuteQuery()) **(** *schema, query* **)**.
+        2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.0) **(** *schema, query* **)**.
         3.  Set *queryResult* as the value for the key *queryName* in *data*.
 4.  Let *errors* be a list of error objects, each represents an error produced while executing the queries.
 5.  Return an unordered map containing *data* and *errors*.
@@ -41,32 +41,32 @@ validated before. A Sage service should only execute requests which *at some poi
 
 To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a parsed, valid *[query](#6.2)* to run. The result of the query is determined by the result of executing it with the following algorithm **:**
 
-<a name="7.2.ExecuteQuery()">ExecuteQuery</a> **(** *schema, query* **) :**
+<a name="7.2.0">ExecuteQuery</a> **(** *schema, query* **) :**
 
 1.  Let *entityType* be the type in *query*.
 
-    1.  Assert: *entityType* is a validly defined Entity type in *schema*.
+    1.  Assert: *entityType* is an Entity type defined in *schema*.
 
 2.  Let *actName* be the act in *query*.
     1.  If *actName* is defined:
-        1.  Run [PerformAct](#7.2.PerformAct()) **(** *entityType, actName, schema, query* **)**.
+        1.  Run [PerformAct](#7.2.1.1) **(** *entityType, actName, schema, query* **)**.
 
-3.  Let *attributeSet* be the set of requested attributes in *query*.
-    1.  If *attributeSet* is defined:
-        1.  Let *attributes* be the result of [RetrieveAttributes](#7.2.RetrieveAttributes()) **(** *entityType, attributeSet, schema, query* **)**.
+3.  Let *attributes* be the set of requested attributes in *query*.
+    1.  If *attributes* is defined:
+        1.  Let *attributesResult* be the result of [RetrieveAttributes](#7.2.1.2) **(** *entityType, attributes, schema, query* **)**.
 
-4.  Let *linksMap* be the map of requested links in *query*.
+4.  Let *links* be the map of requested links in *query*.
 
-    1.  If *linksMap* is defined:
-        1.  Let *links* be the result of [ResolveLinks](#7.2.RetrieveLinks()) **(** *entityType, linksMap, schema, query* **)**.
+    1.  If *links* is defined:
+        1.  Let *linksResult* be the result of [ResolveLinks](#7.2.1.3) **(** *entityType, links, schema, query* **)**.
 
-  5.  If *attributes* is not empty, let *resultMap* be equal to *attributes*. 
+  5.  If *attributesResult* is not empty, let *resultMap* be equal to *attributesResult*.
 
       Otherwise initialize *resultMap* to an empty ordered map.
 
-  6.  If *links* is not empty, set it as the value for the key *$links* in *resultMap*.
+  6.  If *linksResult* is not empty, set it as the value for the key *$links* in *resultMap*.
 
-      >   *links* are appended as a reserved attribute *‘$links’* to the *resultMap*.
+      >   *linksResult* are appended as a reserved attribute *‘$links’* to the *resultMap*.
 
   7.  Return *resultMap*.
 
