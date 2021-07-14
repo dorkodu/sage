@@ -45,15 +45,17 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
 1.  Let *entityType* be the type in *query*.
 
-3.  Let *actName* be the act in *query*.
+    1.  Assert: *entityType* is a validly defined Entity type in *schema*.
+
+2.  Let *actName* be the act in *query*.
     1.  If *actName* is defined:
         1.  Run [PerformAct](#7.2.PerformAct()) **(** *entityType, actName, schema, query* **)**.
-    
-4.  Let *attributeSet* be the set of requested attributes in *query*.
+
+3.  Let *attributeSet* be the set of requested attributes in *query*.
     1.  If *attributeSet* is defined:
         1.  Let *attributes* be the result of [RetrieveAttributes](#7.2.RetrieveAttributes()) **(** *entityType, attributeSet, schema, query* **)**.
-    
-5.  Let *linksMap* be the map of requested links; link names as keys and their attribute sets as values, in *query*.
+
+4.  Let *linksMap* be the map of requested links in *query*.
 
     1.  If *linksMap* is defined:
         1.  Let *links* be the result of [ResolveLinks](#7.2.RetrieveLinks()) **(** *entityType, linksMap, schema, query* **)**.
