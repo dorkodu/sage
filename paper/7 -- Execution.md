@@ -60,13 +60,16 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
     1.  If *linksMap* is defined:
         1.  Let *links* be the result of [ResolveLinks](#7.2.RetrieveLinks()) **(** *entityType, linksMap, schema, query* **)**.
 
-  5.  If *attributes* is not empty, let *resultMap* be equal to *attributes*. Otherwise initialize *resultMap* to an empty ordered map.
+  5.  If *attributes* is not empty, let *resultMap* be equal to *attributes*. 
+
+      Otherwise initialize *resultMap* to an empty ordered map.
 
   6.  If *links* is not empty, set it as the value for the key *$links* in *resultMap*.
 
+      >   *links* are appended as a reserved attribute *‘$links’* to the *resultMap*.
+
   7.  Return *resultMap*.
 
-      >   *resultMap* is ordered by which attribute appear first in the query. Then, *links* are appended to the *resultMap*.
 
 ### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
 
