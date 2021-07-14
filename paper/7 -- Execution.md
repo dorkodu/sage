@@ -70,3 +70,8 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
 ### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
 
+#### <a name="7.2.1.1">PerformAct</a> ( *entityType, actName, schema, query* ) :
+
+1.  Assert: *actName* is a validly defined act on *entityType*.
+2.  Run the function of *actName* with *query* as a parameter.
+
