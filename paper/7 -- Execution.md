@@ -75,31 +75,30 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
 ### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
 
-#### <a name="7.2.1.1">PerformAct</a> ( *entityType, actName, schema, query* ) :
+<a name="7.2.1.1">PerformAct</a> **(** *entityType, actName, schema, referenceValue* **) :**
 
 1.  Assert: *actName* is an act defined on *entityType*.
-2.  Run the function of *actName* with *query* as a parameter.
+2.  Run the function of *actName* with *referenceValue* as a parameter.
 
-#### <a name="7.2.1.2">RetrieveAttributes</a> ( *entityType, attributes, schema, query* ) :
+<a name="7.2.1.2">RetrieveAttributes</a> **(** *entityType, attributes, schema, referenceValue* **) :**
 
-2.  Initialize *resultMap* to an empty ordered map.
-3.  For each *attributes* as *attributeName*:
+1.  Initialize *resultMap* to an empty ordered map.
+2.  For each *attributes* as *attributeName*:
     1.  Assert: *attributeName* is an attribute defined on *entityType*.
-    2.  Let *attributeValue* be the result of [RetrieveAttribute](#) **(** *entityType, attributeName, schema, query* **)**.
+    2.  Let *attributeValue* be the result of [RetrieveAttribute](#7.3.0) **(** *entityType, attributeName, schema, referenceValue* **)**.
 
     3.  Set *attributeValue* as the value for the key *attributeName* in *resultMap*.
-4.  Return *resultMap*.
+3.  Return *resultMap*.
 
 >   *resultMap* is ordered by which attributes appear first in the query.
 
-####  <a name="7.2.1.3">ResolveLinks</a> ( *entityType, links, schema, query* ) :
+<a name="7.2.1.3">ResolveLinks</a> **(** *entityType, links, schema, referenceValue* **) :**
 
 1.  Inıtialize *resultMap* to an empty ordered map.
 2.  For each *links* as **[** *linkName* **:** *linkAttributes* **]** **:**
     1.  Assert: *linkName* is a link defined on *entityType*.
     2.  Let *linkType* be the Entity/Entity Collection type that *linkName* points to.
-    3.  Let *linkResolver* be the resolver function of *linkName*, which is defined in *schema*.
-    4.  Let *linkArguments* be the result of *linkResolver***(** *query* **)**.
+    4.  Let *linkArguments* be the result of running the resolver function of *linkName*, which is defined in *schema*, with the parameter *referenceValue*.
     5.  Let *linkQuery* be a Sage query as follows **:**
         -   **type:** *linkType*
         -   **attributes:** *linkAttributes*
