@@ -4,6 +4,8 @@
 
 The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder, release of which is published at [Sage’s website](https://libre.dorkodu.com/sage).
 
+> The Sage website is still under development. We are working on the reference implementation nowadays. Will release soon!
+
 The latest public draft specification can be found at [libre.dorkodu.com/sage/paper/draft](https://libre.dorkodu.com/sage/paper/draft).
 
 All releases of the Sage specification paper can be found on [libre.dorkodu.com/sage/paper](https://libre.dorkodu.com/sage/paper). If you are linking directly to the Sage specification, it's best to link to the particular referenced version.
