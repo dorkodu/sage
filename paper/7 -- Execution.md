@@ -47,28 +47,30 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
     1.  Assert: *entityType* is an Entity type defined in *schema*.
 
-2.  Let *actName* be the act in *query*.
+2.  Let *referenceValue* be the result of running the resolver function with *query* as the parameter.
+
+3.  Let *actName* be the act in *query*.
     1.  If *actName* is defined:
-        1.  Run [PerformAct](#7.2.1.1) **(** *entityType, actName, schema, query* **)**.
+        1.  Run [PerformAct](#7.2.1.1) **(** *entityType, actName, schema, referenceValue* **)**.
 
-3.  Let *attributes* be the set of requested attributes in *query*.
+4.  Let *attributes* be the set of requested attributes in *query*.
     1.  If *attributes* is defined:
-        1.  Let *attributesResult* be the result of [RetrieveAttributes](#7.2.1.2) **(** *entityType, attributes, schema, query* **)**.
+        1.  Let *attributesResult* be the result of [RetrieveAttributes](#7.2.1.2) **(** *entityType, attributes, schema, referenceValue* **)**.
 
-4.  Let *links* be the map of requested links in *query*.
+5.  Let *links* be the map of requested links in *query*.
 
     1.  If *links* is defined:
-        1.  Let *linksResult* be the result of [ResolveLinks](#7.2.1.3) **(** *entityType, links, schema, query* **)**.
+        1.  Let *linksResult* be the result of [ResolveLinks](#7.2.1.3) **(** *entityType, links, schema, referenceValue* **)**.
 
-  5.  If *attributesResult* is not empty, let *resultMap* be equal to *attributesResult*.
+  6.  If *attributesResult* is not empty, let *resultMap* be equal to *attributesResult*.
 
       Otherwise initialize *resultMap* to an empty ordered map.
 
-  6.  If *linksResult* is not empty, set it as the value for the key *$links* in *resultMap*.
+  7.  If *linksResult* is not empty, set it as the value for the key *$links* in *resultMap*.
 
       >   *linksResult* are appended as a reserved attribute *‘$links’* to the *resultMap*.
 
-  7.  Return *resultMap*.
+  8.  Return *resultMap*.
 
 
 ### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
