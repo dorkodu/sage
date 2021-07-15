@@ -49,9 +49,9 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
 2.  Let *referenceValue* be the result of calling the resolver function with *query* as the parameter.
 
-3.  Let *actName* be the act in *query*.
-    1.  If *actName* is defined:
-        1.  Run [PerformAct](#7.2.1.1) **(** *entityType, actName, schema, referenceValue* **)**.
+3.  Let *act* be the act in *query*.
+    1.  If *act* is defined:
+        1.  Run [PerformAct](#7.2.1.1) **(** *entityType, act, schema, referenceValue* **)**.
 
 4.  Let *attributes* be the set of requested attributes in *query*.
     1.  If *attributes* is defined:
@@ -75,10 +75,10 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
 ### <a name="7.2.1">7.2.1</a> Algorithms for Query Execution
 
-<a name="7.2.1.1">PerformAct</a> **(** *entityType, actName, schema, referenceValue* **) :**
+<a name="7.2.1.1">PerformAct</a> **(** *entityType, act, schema, referenceValue* **) :**
 
-1.  Assert: *actName* is an act defined on *entityType*.
-2.  Run the function of *actName* with *referenceValue* as a parameter.
+1.  Assert: *act* is an act defined on *entityType*.
+2.  Run the function of *act* with *referenceValue* as a parameter.
 
 <a name="7.2.1.2">RetrieveAttributes</a> **(** *entityType, attributes, schema, referenceValue* **) :**
 
