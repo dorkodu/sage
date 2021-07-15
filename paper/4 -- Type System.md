@@ -133,9 +133,17 @@ If a list’s item type is nullable, then errors occurring during preparation or
 
 ### <a name="4.2.4">4.2.4</a> Entity
 
-Entities are at the heart of the Sage’s type system. 
+Entities are at the heart of the Sage’s type system.
 
--   An Entity type is identified by a string name, which must be unique in the schema.
+-   An Entity type is
+
+    -   identified by a *string* name, which must be unique in the *schema*.
+
+    -   resolved by a function which takes the *query* as a parameter, and returns a **reference value**.
+
+        >   This *reference value* represents the **meta data** which that Entity’s artifact (attribute, act or link) resolvers depend on, or can be useful for them to retrieve and resolve a more accurate value.
+        >
+        >   We will explain this concept in the following parts of this section.
 
 An Entity is represented as sets of…
 
@@ -147,7 +155,7 @@ An Entity is represented as sets of…
     - is identified by a *string* name.
     - yields a value.
         - Optionally, a value of a desired type that is specified as a [constraint](#4.3).
-        - It is resolved by a function which takes the query object as a parameter, and returns the value.
+        - It is resolved by a function which takes the reference value as a parameter, and returns the value.
 
 - #### Acts
 
@@ -156,7 +164,7 @@ An Entity is represented as sets of…
     - represents a specific business logic related to an Entity type.
     - is identified by a *string* name.
     - is a function
-        - that can be called with a query *(And the query is passed as a parameter to it, just like an attribute resolver function. The only difference is that an act does not yield a value.)*.
+        - that can be called with a query *(And the reference value is passed as a parameter to it, just like an attribute resolver function. The only difference is that an act does not yield a value.)*.
 
 - #### Links
 
@@ -167,7 +175,7 @@ An Entity is represented as sets of…
         - An Entity/Entity Collection type that the link is connected to, must be specified. 
         - They are like edges in a graph, where entities are nodes.
     - is identified by a *string* name.
-    - is resolved by a function which takes the query object and the resolved entity as parameters, and returns an arguments map.
+    - is resolved by a function which takes the root value and the resolved entity as parameters, and returns an arguments map.
         - Sage will use the returned arguments for querying the Entity type which the link points to.
 
 > #### Note
@@ -263,7 +271,9 @@ entity Person {
 }
 ```
 
-And let’s say we only requested for these two new  attributes,`occupation` and `nicknames`. Here it returns an *object* value **:**
+And let’s say we only requested for these two new  attributes,`occupation` and `nicknames`. 
+
+Here it returns an *object* value **:**
 
 ```json
 {
