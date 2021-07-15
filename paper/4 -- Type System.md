@@ -444,12 +444,13 @@ But optionally you can set strict-type constraints for an attribute. In that cas
 
 Anyway, Sage will try to coerce the returned value to the desired type if possible.
 
-These are all possible types which you can set as a strict-type constraint **:**
+These are the types which you can set as a strict-type constraint **:**
 
-- **boolean**
-- **integer**
-- **string**
-- **float**
+- **scalar**
+    - **boolean**
+    - **integer**
+    - **string**
+    - **float**
 - **object** (*map* — a set of key-value pairs)
 - **list** (an *array* with a specific item type — e.g. array of integers)
 
