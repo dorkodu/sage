@@ -116,3 +116,16 @@ Each attribute requested in the attribute set that is defined on the selected *e
 1.  Let *resolvedValue* be the result of [ResolveAttributeValue](#7.3.1.1) **(** *entityType, attributeName, referenceValue* **)**.
 2.  Return the result of [CompleteValue](#7.3.1.2) **(** *entityType, attributeName, resolvedValue, schema* **)**.
 
+### <a name="7.3.1">7.3.1</a> Value Resolution
+
+While nearly all of Sage execution can be described generically, ultimately the internal system exposing the Sage interface must provide values. This is exposed via *ResolveAttributeValue*, which produces a value for a given attribute on an Entity type for a real value.
+
+As an example, this might accept the Entity type `Person`, the field `age`, and the *referenceValue* representing *Doruk Eray*. It would be expected to yield the value *17*.
+
+<a name="7.3.1.1">ResolveAttributeValue</a> **(** *entityType, attributeName, referenceValue* **) :**
+
+1.  Let *resolver* be the resolver function of *attributeName*, which is defined on *entityType*.
+2.  Return the result of calling *resolver*, with the parameter *referenceValue*.
+
+It is common for resolver to be asynchronous due to relying on reading an underlying database or networked service to produce a value. This necessitates the rest of a Sage executor to handle an asynchronous execution flow.
+
