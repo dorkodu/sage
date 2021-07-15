@@ -151,3 +151,8 @@ After resolving the value for an attribute, it is completed by ensuring it compl
         1.  Return the result of “coercing” *result*, ensuring it is a legal value of *typeConstraint*, otherwise **null**.
 2.  If result is **null** (or another internal value similar to **null** such as **undefined** or *NaN*), return **null**.
 
+### <a name="7.3.3">7.3.3</a> Errors and Non-Nullability
+
+If an error is thrown while resolving an attribute, it should be treated as though the attribute returned **null**, and an error must be added to the `errors` list in the response.
+
+If the result of resolving an attribute is **null** (either because the function to resolve the field returned **null** or because an error occurred), and that attribute is of a *non-null* type, then an attribute error is thrown. The error must be added to the `errors` list in the response.
