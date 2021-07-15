@@ -47,7 +47,7 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
     1.  Assert: *entityType* is an Entity type defined in *schema*.
 
-2.  Let *referenceValue* be the result of running the resolver function with *query* as the parameter.
+2.  Let *referenceValue* be the result of calling the resolver function with *query* as the parameter.
 
 3.  Let *actName* be the act in *query*.
     1.  If *actName* is defined:
@@ -98,7 +98,7 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 2.  For each *links* as **[** *linkName* **:** *linkAttributes* **]** **:**
     1.  Assert: *linkName* is a link defined on *entityType*.
     2.  Let *linkType* be the Entity/Entity Collection type that *linkName* points to.
-    4.  Let *linkArguments* be the result of running the resolver function of *linkName*, which is defined in *schema*, with the parameter *referenceValue*.
+    4.  Let *linkArguments* be the result of calling the resolver function of *linkName*, which is defined in *schema*, with the parameter *referenceValue*.
     5.  Let *linkQuery* be a Sage query as follows **:**
         -   **type:** *linkType*
         -   **attributes:** *linkAttributes*
@@ -106,4 +106,13 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
     6.  Let *linkResult* be the result of [ExecuteQuery](#7.2.0) **(** *schema, linkQuery* **)**.
     7.  Set *linkResult* as the value for the key *linkName* in *resultMap*.
 3.  Return *resultMap*.
+
+## <a name="7.3">7.3</a> Data Retrieval and Resolution
+
+Each attribute requested in the attribute set that is defined on the selected *entityType* will result in an entry in the response map. Retrieval first resolves a value for the attribute, and then completes that value.
+
+<a name="7.3.0">RetrieveAttribute</a>  **(** *entityType, attributeName, schema, referenceValue* **) :**
+
+1.  Let *resolvedValue* be the result of [ResolveAttributeValue](#7.3.1.1) **(** *entityType, attributeName, referenceValue* **)**.
+2.  Return the result of [CompleteValue](#7.3.1.2) **(** *entityType, attributeName, resolvedValue, schema* **)**.
 
