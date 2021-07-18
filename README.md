@@ -1,6 +1,9 @@
 # Sage
 
-<img alt="Sage Logo" src="resources/sage-dark.png" style="width: 67%; margin: 15px auto;" />
+<p align="center">
+  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 70%" />
+</p>
+
 
 The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder, release of which is published at [Sage’s website](https://libre.dorkodu.com/sage).
 
