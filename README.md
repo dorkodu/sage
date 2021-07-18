@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 60%; margin: 10px auto;" />
+  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 50%; height: auto; margin: 10px auto;" />
 </p>
 
 # Sage
