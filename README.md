@@ -1,7 +1,7 @@
 # Sage
 
 <p align="center">
-  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 70%" />
+  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 60%" />
 </p>
 
 
