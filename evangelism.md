@@ -24,7 +24,7 @@ Change your Sage schema without impacting existing queries. Aging types can be d
 
 Sage creates a uniform API across your entire application without being limited by a specific storage engine. Build Sage APIs that leverage your existing data and code–business logic–with a Sage runtime. You provide functions for each attribute/act in the type system, and Sage calls them with optimal concurrency.
 
-### Who’s using Sage?
+## Who’s using Sage?
 
 We haven’t started marketing to spread the use of Sage. But for now, we are dedicated to keep it both simple and approachable for everyone.
 
