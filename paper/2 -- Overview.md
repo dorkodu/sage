@@ -1,6 +1,6 @@
 # <a name="overview">2</a> Overview
 
-Sage is a query-based, entity-focused data exchange protocol designed to simplify the communication for data interactions between different layers of software. 
+Sage is a query-based, entity-focused data exchange protocol designed to simplify the communication for data interactions between different layers of software.
 
 The primary goal was to develop a simple & lightweight but efficient, expressive and intuitive way for designing and building powerful **APIs**.
 
