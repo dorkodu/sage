@@ -9,13 +9,15 @@ export function Sage(options) {
 
   return {
     want: want,
+    forget: forget,
     retrieve: retrieve,
     refresh: refresh
   };
 }
 
 const _Sage = {
-  options: {}
+  options: {},
+  queries: {}
 };
 
 /**
@@ -25,7 +27,15 @@ const _Sage = {
  * @param {object} [options] 
  */
 function want(queryName, query, options) {
+  _Sage.queries[queryName] = { query: query, options: options };
+}
 
+/**
+ * 
+ * @param {string} queryName 
+ */
+function forget(queryName) {
+  delete _Sage.queries[queryName];
 }
 
 function retrieve() {
