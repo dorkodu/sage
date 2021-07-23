@@ -1,7 +1,6 @@
 <p align="center">
-  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 70% !important; height: auto !important; margin: 10px auto !important;" />
+  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 70% !important; height: auto !important; margin: 5px auto !important;" />
 </p>
-
 
 # Sage
 
