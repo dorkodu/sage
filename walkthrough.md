@@ -20,9 +20,9 @@ For example, let’s assume that you want a Sage service which tells you about m
 
 ```css
 entity Movie {
-  name @string;
+  name @attribute(string);
   starring @list( @string );
-  duration @integer;
+  duration @attribute(integer);
   directedBy @string;
   releaseYear @integer
 }
@@ -35,9 +35,9 @@ Here is a sample Sage service which requests for the movie *The Matrix* :
 ```json
 {
   "matrix": {
-  	"type": "Movie",
-  	"attr": ["name", "starring", "duration", "directedBy", "releaseYear"],
-  	"args": {
+  	"typ": "Movie",
+  	"atr": ["name", "starring", "duration", "directedBy", "releaseYear"],
+  	"arg": {
  			"id": "tt0133093"
   	}
 	}
@@ -63,6 +63,7 @@ Here is a sample Sage service which requests for the movie *The Matrix* :
     }
   }
 }
+```
 
 In this example, we requested for a **Movie** entity with the argument **id: “*tt0133093*”** and asked for the attributes **name**, **starring**, **duration**, **directedBy** and **releaseYear**. And as a result you got an object which contains only what you wanted. *The Matrix*!
 
@@ -74,9 +75,7 @@ In this example, we requested for a **Movie** entity with the argument **id: “
 
 2.  #### Consume your data
 
-    Access the full capabilities of your data from a single endpoint, ask for what you want and get exactly that, nothing more or less. Work more productive than you thought possible, create apps faster with awareness.
-
-
+    Access the full capabilities of your data from a single endpoint, ask for what you want and get exactly that, nothing more or less. Work more productive than you thought possible, create apps faster with extreme awareness.
 
 ## Why?
 
@@ -97,4 +96,3 @@ Obviously Sage is not the first system to manage client-server interactions. In 
 -   **Not a good fit for modeling real world data.** Real world data is not for feeding view hierarchies. Data must be expressed and modeled as it is in the real world. GraphQL does not do this naturally, even if we know that it is very suitable for using it with alongside a front-end view library, like React or Vue. 
 
     Of course, the responsibility of preparing the data for use in view library should be the client library’s which you use for communicating with the API.
-
