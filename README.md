@@ -4,17 +4,19 @@
 
 # Sage
 
-The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder, release of which is published at [Sage’s website](https://libre.dorkodu.com/sage).
+The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder.
 
-> The Sage website is still under development. We are working on the reference implementation nowadays. Will release soon!
+> The Sage website is still under development. We are working on the reference implementation nowadays. 
+>
+> **Will release soon!**
 
-The latest public draft specification can be found at [the Sage respository](https://github.com/dorkodu/sage).
+The latest working draft of the specification can be found at [Sage’s GitHub repository](https://github.com/dorkodu/sage).
 
-The Sage protocol’s specification paper can be found on [libre.dorkodu.com/sage/paper](https://libre.dorkodu.com/sage/paper).
+Sage protocol’s specification paper and its releases can be found at [libre.dorkodu.com/sage/paper](https://libre.dorkodu.com/sage/paper).
 
 ## Overview
 
-This is a Working Draft of the Specification for Sage, a query-based data exchange protocol for APIs, and a runtime capable of executing those queries with your existing data and business logic. The [specification](https://libre.dorkodu.com/sage/paper) is open source; created, designed and governed by [Dorkodu](https://dorkodu.com).
+This is the Working Draft of the Specification for Sage, a query-based data exchange protocol for APIs, and a runtime capable of executing those queries with your existing data and business logic. The [specification](https://libre.dorkodu.com/sage/paper) is open source; created, designed and governed by [Dorkodu](https://dorkodu.com).
 
 The target audience for this specification are not the product developers; but those who have, or are actively interested in, building their own Sage implementations and tools.
 
@@ -26,8 +28,8 @@ Looking for more? [See Sage’s website](https://libre.dorkodu.com/sage).
 
 - #### [Website](https://libre.dorkodu.com/sage)
 
-- #### [Reference documentation](https://libre.dorkodu.com/sage/learn)
+- #### [Reference Documentation & Learning Material](https://libre.dorkodu.com/sage/learn)
 
-- #### [Language support, tools, and services](https://libre.dorkodu.com/sage/code)
+- #### [Libraries, Tools and Community Work](https://libre.dorkodu.com/sage/code)
 
 - #### [Frequently Asked Questions (FAQ)](https://libre.dorkodu.com/sage/faq)
