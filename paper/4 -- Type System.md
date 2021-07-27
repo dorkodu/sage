@@ -186,7 +186,7 @@ An Entity is represented as sets of…
 
 For example, a `Person` entity type could be described as **:**
 
-*— Just to clarify our examples and make them easily understandable, here we introduce this hypothetical, pseudo **SDL**; which we use only here and at the documentation for language-agnostic examples* :
+*— Just to clarify our examples and make them easily understandable, here we introduce this hypothetical, pseudo **SDL**; which we use only here and at the documentation for language-agnostic examples*:
 
 [^SDL]: Schema Definition Language
 
@@ -271,7 +271,7 @@ entity Person {
 }
 ```
 
-And let’s say we only requested for these two new  attributes,`occupation` and `nicknames`. 
+And let’s say we only requested for these two new  attributes, `occupation` and `nicknames`. 
 
 Here it returns an *object* value **:**
 
@@ -285,7 +285,8 @@ Here it returns an *object* value **:**
     },
 		"nicknames": [
       "Mr. Dorkodu",
-      "Doruk 'Dorkodu'"
+      "The Walking Wikipedia",
+      "The Turko"
     ]
   }
 }
@@ -382,7 +383,7 @@ And query the collection type :
 ```json
 {
   "todos": {
-    "typ": "Todo",
+    "typ": "Todos",
     "atr": "*",
     "arg": {
       "userId": 1923
@@ -391,7 +392,7 @@ And query the collection type :
 }
 ```
 
-Let’s assume this is what `id` and `title` attribute resolvers returned *(in JSON)* :
+Let’s assume this is what `id` and `title` attribute resolvers returned *(represented in JSON)* :
 
 ```json
 {
@@ -404,7 +405,7 @@ Let’s assume this is what `id` and `title` attribute resolvers returned *(in J
 }
 ```
 
-Merge operation would result in a set of objects, each of which is an Entity of the specified type.
+Merge operation (based on the indexes of arrays) would result in a set of objects, each of which is an Entity of the specified type.
 
 Then this would be the final result :
 
@@ -438,7 +439,7 @@ If the collection’s Entity type is nullable, then errors occurring during prep
 
 ### <a name="4.3.1">4.3.1</a> Strict-Type
 
-All attributes are flex-typed by default. This means they can be of any type within defined types in Sage’s type system.
+All attributes are *flex-typed* by default. This means they can be of any type within defined types in Sage’s type system.
 
 But optionally you can set strict-type constraints for an attribute. In that case, the resolver function of that attribute must return a valid value of that specific type you want.
 
@@ -446,13 +447,13 @@ Anyway, Sage will try to coerce the returned value to the desired type if possib
 
 These are the types which you can set as a strict-type constraint **:**
 
-- **scalar**
-    - **boolean**
-    - **integer**
-    - **string**
-    - **float**
-- **object** (*map* — a set of key-value pairs)
-- **list** (an *array* with a specific item type — e.g. array of integers)
+- **Scalar**
+    - **Boolean**
+    - **Integer**
+    - **String**
+    - **Float**
+- **Object** (*map* — a set of key-value pairs)
+- **List** (an *array* with a specific item type — e.g. array of integers)
 
 ### <a name="4.3.2">4.3.2</a> Non-Null
 
