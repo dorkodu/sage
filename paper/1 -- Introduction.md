@@ -1,6 +1,8 @@
 # <a name="introduction">1</a> Introduction
 
-This is the specification for Sage; a query-based, entity-focused data exchange protocol and a runtime capable of executing those queries with your existing business logic and data . Sage is originally created at Dorkodu especially for APIs, to simplify the communication for data interactions between different layers of software. The development of this open standard started in 2020.
+This is the specification for Sage; an open protocol for query-based data exchange and a runtime for executing those queries with your existing business logic and data. Sage is originally created at Dorkodu especially for APIs, to simplify the communication for data interactions between different layers of software. 
+
+Sage is a new and evolving protocol, and is not complete. Significant enhancement will continue in future editions of this specification. The development of this open standard started in 2020.
 
 The latest working draft of this protocol can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
 
@@ -10,7 +12,7 @@ Copyright © 2020-present, [Dorkodu](https://dorkodu.com)
 
 ### Disclaimer
 
-Your use of this “Specification” may be subject to other third party rights. THIS SPECIFICATION IS PROVIDED “AS IS.” The contributors expressly disclaim any warranties (express, implied, or otherwise), including implied warranties of merchantability, non‐infringement, fitness for a  particular purpose, or title, related to the Specification. The entire risk as to implementing or otherwise using the Specification is assumed by the Specification implementer and user. IN NO EVENT WILL ANY PARTY BE LIABLE TO ANY OTHER PARTY FOR LOST PROFITS OR ANY FORM OF INDIRECT,  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER FROM ANY  CAUSES OF ACTION OF ANY KIND WITH RESPECT TO THIS PROPOSAL OR ITS  GOVERNING AGREEMENT, WHETHER BASED ON BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE), OR OTHERWISE, AND WHETHER OR NOT THE OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Your use of this “Specification” may be subject to other third party rights. THIS SPECIFICATION IS PROVIDED “AS IS.” The contributors expressly disclaim any warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to the Specification. The entire risk as to implementing or otherwise using the Specification is assumed by the Specification implementer and user. IN NO EVENT WILL ANY PARTY BE LIABLE TO ANY OTHER PARTY FOR LOST PROFITS OR ANY FORM OF INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER FROM ANY CAUSES OF ACTION OF ANY KIND WITH RESPECT TO THIS SPECIFICATION OR ITS GOVERNING AGREEMENT, WHETHER BASED ON BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE), OR OTHERWISE, AND WHETHER OR NOT THE OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ### Conformance
 
