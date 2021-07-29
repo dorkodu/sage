@@ -6,13 +6,13 @@ This is the walkthrough for Sage, a query-based data exchange protocol for APIs.
 
 ## What?
 
-Sage is an **open protocol** for *designing* and *developing* better APIs, simply a specification about how to *describe* and *query for* **data;** and a **runtime** capable of **executing** those queries with your **existing** *data* and *business logic*.
+Sage is an **open protocol** for *designing* and *developing* better **APIs**, a specification about how to *query/response* for **data;** and a **runtime** for **executing** those queries with your **existing** *data* and *business logic*.
 
-Sage provides a **simple** & **lightweight** but also **efficient, expressive** and **intuitive** way for describing the data graph in your API, giving clients the power to interact with your API exactly how they need to —performing data retrieval or action call— makes evolving and documenting your APIs easier.
+Sage provides a **simple** & **lightweight** but also **efficient, expressive** and **intuitive** way for describing the data in your API, giving clients the power to interact with your API exactly how they need to —performing data retrieval or action call— makes evolving and documenting your APIs easier.
 
 ## How?
 
-A Sage service is created by defining the data **schema** as **entities** with their **attributes**, **acts** and **relationships**, then writing the code which maps your schema to your existing business logic. You describe and consume data more realistically with Sage, as how it is in the real world.
+A Sage service is created by defining the data **schema** as **entities** with their **attributes**, **acts** and **links**, then writing the code which maps your schema to your existing business logic. You describe and consume data more realistically with Sage, as how it is in the real world.
 
 ### Let’s hit the road!
 
@@ -21,10 +21,10 @@ For example, let’s assume that you want a Sage service which tells you about m
 ```css
 entity Movie {
   name @attribute(string);
-  starring @list( @string );
+  starring @attribute(list: string);
   duration @attribute(integer);
-  directedBy @string;
-  releaseYear @integer
+  directedBy @attribute(string);
+  releaseYear @attribute(integer);
 }
 ```
 
@@ -36,7 +36,7 @@ Here is a sample Sage service which requests for the movie *The Matrix* :
 {
   "matrix": {
   	"typ": "Movie",
-  	"atr": ["name", "starring", "duration", "directedBy", "releaseYear"],
+  	"atr": ["name", "starring", "directedBy", "releaseYear"],
   	"arg": {
  			"id": "tt0133093"
   	}
@@ -57,8 +57,7 @@ Here is a sample Sage service which requests for the movie *The Matrix* :
         "Carrie-Anne Moss",
         "Hugo Weaving"
       ],
-      "duration": 136,
-      "directedBy": "The Wachowksi Brothers",
+      "directedBy": "The Wachowksis",
       "relaseYear": 1999
     }
   }
