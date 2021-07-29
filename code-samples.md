@@ -15,8 +15,6 @@ Here we share the code samples which can help you better understand some concept
  * Description, constraints and other optional settings should be expressed as a 
  * map if possible. Like object literals in JS, or assoc arrays in PHP.
  */
-
-# 
 $Name = new Attribute(
   function ($query) {
 		$id = $query->argument('id');
@@ -40,7 +38,6 @@ $Name = new Attribute(
  * A psuedo act definition.
  * Options should be expressed as a map, if possible.
  */
-
 $Greet = new Act(
   function($query, $context) {
     $name = $query->argument('name');
@@ -130,26 +127,5 @@ $ToDoList = new EntityCollection(
     ...
   ]
 );
-```
-
-
-
-```json
-{
-  'todoList': [
-    {
-      'id': 1,
-      'title': "Do this, do that"
-    },
-    {
-      'id': 2,
-      'title': "Eat something"
-    },
-    {
-      'id': 3,
-      'title': "Go to sleep"
-    }
-  ]
-}
 ```
 
