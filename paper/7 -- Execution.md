@@ -47,7 +47,7 @@ To execute a *query*, the executor must have a valid *[schema](#4.1)*; and a par
 
     1.  Assert: *entityType* is an Entity type defined in *schema*.
 
-2.  Let *referenceValue* be the result of calling the resolver function with *query* as the parameter.
+2.  Let *referenceValue* be the result of calling the Entity type’s resolver function with *query* as the parameter.
 
 3.  Let *act* be the act in *query*.
     1.  If *act* is defined:
@@ -135,21 +135,23 @@ After resolving the value for an attribute, it is completed by ensuring it compl
 
 <a name="7.3.2.1">CompleteValue</a> **(** *attribute, result* **) :**
 
-1.  Let *typeConstraint* be the constraint set for *attribute*, if set any.  
-    1.  If *typeConstraint* is a Non‐Null type:
+1.  Let *typeConstraints* be the set of constraints for *attribute*, if has any.
+2.  For each *typeConstraints* as *typeConstraint* **:**
+    1.  If *typeConstraint* is a Non‐Null constraint **:**
         1.  Let *wrappedType* be the wrapped type of *typeConstraint*.
-        2.  Let *completedResult* be the result of <a name="7.3.2.1">CompleteValue</a> for the *wrappedType*.
+        2.  Let *completedResult* be the result of <a name="7.3.2.1">CompleteValue()</a> for the *wrappedType*.
         3.  If *completedResult* is **null**, throw an attribute error.
         4.  Return *completedResult*.
-    2.  If *typeConstraint* is a List strict-type:
-        1.  If *result* is not a collection of values, throw an attribute error.
-        2.  Let *innerType* be the inner type of *typeConstraint*.
-        3.  Return a list where each list item is the result of calling [CompleteValue](#7.3.2.1) **(** *attribute, resultItem* **)**, where *resultItem* is each item in *result*.
-    3.  If *typeConstraint* is an Object strict-type:
-        1.  If *result* is not a map of Scalar keys and their values as legal in the Sage type system, throw an attribute error.
-    4.  If *typeConstraint* is a Scalar strict-type:
-        1.  Return the result of “coercing” *result*, ensuring it is a legal value of *typeConstraint*, otherwise **null**.
-2.  If result is **null** (or another internal value similar to **null** such as **undefined** or *NaN*), return **null**.
+    2.  If *typeConstraint* is a strict-type constraint **:**
+        1.  If *typeConstraint* is a List strict-type **:**
+            1.  If *result* is not a collection of values, throw an attribute error.
+            2.  Let *innerType* be the inner type of *typeConstraint*.
+            3.  Return a list where each list item is the result of calling [CompleteValue](#7.3.2.1) **(** *attribute, resultItem* **)**, where *resultItem* is each item in *result*.
+        2.  If *typeConstraint* is an Object strict-type **:**
+            1.  If *result* is not a map of Scalar keys and their values as legal in the Sage type system, throw an attribute error.
+        3.  If *typeConstraint* is a Scalar, strict-type **:**
+            1.  Return the result of “coercing” *result*, ensuring it is a legal value of *typeConstraint*, otherwise **null**.
+3.  If result is **null** (or another internal value similar to **null** such as *undefined* or *NaN*), return **null**.
 
 ### <a name="7.3.3">7.3.3</a> Errors and Non-Nullability
 
