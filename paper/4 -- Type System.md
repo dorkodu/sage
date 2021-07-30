@@ -192,9 +192,9 @@ For example, a `Person` entity type could be described as **:**
 
 ```css
 entity Person {
-  id @attribute;
-  name @attribute(string);
-  age @attribute(integer);
+  id: @attribute;
+  name: @attribute(string);
+  age: @attribute(integer);
 }
 ```
 
@@ -254,20 +254,20 @@ Must only yield exactly that subset :
 }
 ```
 
-We see that an attribute of an entity type may be a scalar type, but it can also be a **list** or **object**.
+We see that an attribute of an entity type may be a Scalar type, but it can also be a **List** or **Object**.
 
 For example, the `Person` type might include two new attributes :
 
--    `occupation` : *object*.
--    `nicknames` : *list*\<string>.
+-    `occupation` : *Object*.
+-    `nicknames` : *List*\<string>.
 
 ```css
 entity Person {
-  id @attribute;
-  name @attribute(string);
-  age @attribute(integer);
-  occupation @attribute(object);
-  nicknames @attribute(list: string);
+  id: @attribute;
+  name: @attribute(string);
+  age: @attribute(integer);
+  occupation: @attribute(object);
+  nicknames: @attribute(list: string);
 }
 ```
 
@@ -296,16 +296,16 @@ But sometimes a relationship should also be represented, this is the reason why 
 
 ```css
 entity Person {
-  id @attribute;
-  name @attribute(string);
-  age @attribute(integer);
-  occupation @attribute(object);
-  favoriteBook @link(Book);
+  id: @attribute;
+  name: @attribute(string);
+  age: @attribute(integer);
+  occupation: @attribute(object);
+  favoriteBook: @link(Book);
 }
 
 entity Book {
-  name @attribute(string);
-	publishYear @attribute(integer);
+  name: @attribute(string);
+	publishYear: @attribute(integer);
 }
 ```
 
@@ -399,7 +399,7 @@ Let’s assume this is what `id` and `title` attribute resolvers returned *(repr
   "id": [ 1, 2, 3 ],
   "title": [
     "Do this, do that...",
-    "Eat out with friends.",
+    "Hang out with friends.",
     "Complete the website design of Sage."
   ]
 }
@@ -418,7 +418,7 @@ Then this would be the final result :
     },
     {
       'id': 2,
-      'title': "Eat out with friends."
+      'title': "Hang out with friends."
     },
     {
     	'id': 3,
