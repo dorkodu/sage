@@ -46,9 +46,9 @@ We are working to make Sage the industry-standard data exchange protocol for the
 
 -   **Application-Layer Protocol:** Sage is an application-layer protocol and does not require a particular transport. It only specifies how to query/response in a standardized way.
 
--   **Flexible Types and Constraints:** Sage is *flex-typed*. *** 
+-   **Flexible Types and Constraints:** Sage is *flex-typed*.
 
-    Given a query, tooling can ensure that the query is both syntactically correct and valid within the Sage type system before execution, i.e. at development time, and the server can make certain guarantees about the shape and nature of the response. It is especially useful in statically typed languages such as Swift, Objective-C and Java, as it obviates the need for repetitive and error-prone code to shuffle raw, untyped JSON into strongly-typed business objects. This makes it easier to build high quality client tools.
+    Given a query, tooling can ensure that the query is both syntactically correct and valid within the Sage type system before execution, i.e. at development time, and the server can make certain guarantees about the shape and nature of the response.
 
 -   **Introspective:** Sage is introspective. Clients can query the data schema using the Sage itself. This provides a powerful platform for building tools and client software. 
 
@@ -95,9 +95,7 @@ Product developers are free to focus on their client software and requirements w
 1.  [GraphQL queries could cause performance issues](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#1)
 2.  [REST can do much of what GraphQL does](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#2)
 3.  [GraphQL makes some tasks more complex](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#3)
-4.  [It’s easier to use a web cache with REST than with GraphQL](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#4)
-5.  [The way GraphQL schemas work could be a problem](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#5)
-6.  [REST is better for error handling and tooling](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#6)
+4.  [The way GraphQL schemas work could be a problem](https://blog.logrocket.com/why-you-shouldnt-use-graphql/#5)
 
 ## Using Sage is easy
 
@@ -133,7 +131,7 @@ Consumers of your Sage API specify what they are going to use, giving you fine-g
 
 Sage is completely language agnostic and instead focuses on concepts and patterns that are achievable **no matter how you're building a Sage server. **Every language and every Sage implementation does things slightly differently. 
 
-Think of it as a complete journey of what goes into building a Sage API, from design, to architectures, to implementation, and even documentation.
+Think of it as a complete journey of what goes into building an API, from design, to architectures, to implementation, and even documentation.
 
 ### So what is not Sage?
 
@@ -142,5 +140,5 @@ Maybe a good way to introduce it is by looking at what it is not:
 -   Sage is not some sort of query language 
 -   Sage is not a communication protocol like HTTP or TCP/IP
 
-Here’s how I like to describe it instead: **Sage is a specification for a query-based data exchange protocol about designing and building APIs, and a runtime capable of executing such queries.**
+Here’s how we like to describe it instead: **Sage is an open protocol for query-based data exchange, and a runtime capable of executing such queries.**
 
