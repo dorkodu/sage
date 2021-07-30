@@ -7,7 +7,7 @@
 
 ## <a name="3.1">3.1</a> Principles
 
-Our priority is to keep Sage simple, approachable, easy-to-use and lightweight while solving the major problems efficiently and providing a flexible & intuitive way. 
+Our priority is to keep Sage *simple*, *approachable*, *easy-to-use* and *lightweight* while solving the major problems *efficiently* and providing a *flexible* & *intuitive* way. 
 
 Sage has some design principles :
 
@@ -15,7 +15,7 @@ Sage has some design principles :
 
     Sage is completely environment agnostic, it **never dictates** the use of *any programming language, backend, storage technique or even a query language like SQL, GraphQL or SPARQL*. Instead, Sage focuses on concepts and patterns that are achievable **no matter how you're building a service.** Although every language and every Sage implementation does things slightly differently.
 
-    It is just a specification about designing and building powerful APIs; from design, to architecture, to implementation, and even documentation.
+    Sage is just a specification about designing and building powerful APIs; from design, to architecture, to implementation, and even documentation.
 
 - ### Query-based Data Exchange
 
@@ -31,7 +31,7 @@ Sage has some design principles :
 
     #### Flex Types and Constraints
 
-    Sage is *flex-typed*. By default, all values can be of any type within the Sage’s type system. However, we also know that sometimes *strong-typing* is desperately needed, or at least useful. Thus, Sage offers a concept called *constraints*, which you can set for attributes to ensure their values will be of a specific type. This is why Sage can be both *flexible* and *powerful* at the same time.
+    Sage is *flex-typed*. By default, all values can be of any type within the Sage’s type system. However, we also know that sometimes *strict-typing* is desperately needed, or at least useful. Thus, Sage offers a concept called *constraints*, which you can set for attributes to ensure their values will be of a specific type. This is why Sage can be both *flexible* and *powerful* at the same time.
 
 - ### Application-level Protocol
 
@@ -102,9 +102,9 @@ Each entity can have any number of ***attributes***, **acts** and **links**. *At
     }
     ```
 
-    This sample will add a to-do with given arguments, and *then* return the desired fields. 
+    This sample will add a to-do with given arguments, and *then* return the desired artifacts. 
 
-    Here is the result :
+    Here is the result **:**
 
     ```json
     {
@@ -159,7 +159,7 @@ Each query must be identified with a string name which must be unique in the que
     "typ": "User",
     "atr": ["name", "email", "age"],
     "lnk": {
-      "studiesAt": ["name", "grade"]
+      "school": ["name"]
     },
     "arg": {
       "handle": "@doruk"
@@ -178,9 +178,8 @@ Each query must be identified with a string name which must be unique in the que
       "email": "doruk@dorkodu.com",
       "age": 16,
       "$links": {
-        "studiesAt": {
+        "school": {
           "name": "Vefa High School",
-          "grade": 10
         }
       }
     }
@@ -190,9 +189,11 @@ Each query must be identified with a string name which must be unique in the que
 
 ## So…
 
-Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building application-centric data exchange layers. Product developers can create applications a lot more effectively and faster by working with a Sage API. Sage can quickly make your application stack enjoyable to work with.
+Because of these principles, Sage is a simple-to-use, flexible, lightweight but also powerful and productive way for designing and building an application-centric data exchange layer. Product developers can create applications a lot more effectively and faster by working with a Sage API. Sage can quickly make your application stack enjoyable to work with.
 
-In this section we only introduced some concepts. You can find the details about components of Sage in the following sections of this specification.
+In this section we only introduced some concepts. You can find the details about the components of Sage in the following sections of this specification.
 
-> This specification (we call it *the Paper*) serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. We look forward to work with the community to improve this standard. 
+> This specification (we call it *the Paper*) serves as a reference for engineers who will, or want to, implement Sage. It describes the protocol, concepts, rules and components. The goal of this document is to provide a foundation and framework for Sage. 
+>
+> We look forward to work with the community to improve this standard. 
 
