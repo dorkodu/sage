@@ -8,7 +8,7 @@
     -   **[4.2.4 Entity](#4.2.4)**
     -   **[4.2.5 Entity Collection](#4.2.5)**
 -   **[4.3 Constraints](#4.3)**
-    -   **[4.3.1 Strict Type](#4.3.1)**
+    -   **[4.3.1 Strict Types](#4.3.1)**
     -   **[4.3.2 Non-Null](#4.3.2)**
 -   **[4.4 Documentation](#4.4)**
     -   **[4.4.1 Description](#4.4.1)**
@@ -20,11 +20,11 @@ Sage type system describes the capabilities of a Sage service and is used to det
 
 A Sage service’s data capabilities are referred to as that service’s “*schema*”.
 
-A schema is defined as a set of types it supports.
+A *schema* is defined as a set of types it supports.
 
-A Sage schema must itself be internally valid.
+A Sage *schema* must itself be internally valid.
 
-All entity types defined within a Sage schema must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
+All entity types defined within a Sage *schema* must have *unique, string names*. No two provided entity types may have the same name. No provided type may have a name which conflicts with any built in types.
 
 All artifacts *(entities; their attributes, acts and links)* defined within a schema must not have a name which begins with **`@`** *(commercial at)* or **`$`** *(dollar sign)*, as these are used exclusively for Sage’s type system internals.
 
@@ -38,19 +38,19 @@ The most basic type is a *Scalar*.
 
 Scalar types represent primitive values *(e.g. integer)* in the Sage type system.
 
-All Sage scalars are representable as strings, though depending on the response format being used, there may be a more appropriate primitive for the given scalar type, and server should use those types when appropriate.
+All Sage scalars are representable as strings, though depending on the response format being used, there may be a more appropriate primitive for the given scalar type, and if so, server should use those types.
 
 ##### Result Coercion
 
 A Sage server, when resolving the value of a given scalar type, must uphold the contract the scalar type describes, either by coercing the value or producing an *attribute error* if a value cannot be coerced or if coercion may result in data loss.
 
-A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing a attribute of type `int` or a `boolean` true value may produce `1` , or a string value `"123"` may be parsed as base‐10 `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an *attribute error*.
+A Sage service may decide to allow coercing different internal types to the expected return type. For example when coercing an attribute of *integer* type, *a* boolean `true` value may produce `1` , or a *string* value `"123"` may be parsed as *base‐10* `123`. However if internal type coercion cannot be reasonably performed without losing information, then it must raise an *attribute error*.
 
 Since this coercion behavior is not observable to clients of a Sage service, the precise rules of coercion are left to the implementation. The only requirement is that a Sage service must yield values which adhere to the expected Scalar type.
 
 Sage supports a basic set of well‐defined Scalar types. A Sage service should support all of these types, and if provides a type by these names, it must adhere to the behavior described below.
 
-> By default, all attributes are **flex-typed**, which means their values can be any type defined in Sage’s type system, provided that they are valid in the output response format. 
+> By default, all attributes are **flex-typed**, which means their values can be any type defined in Sage’s type system, provided that they are valid in the output response format.
 >
 > Also we have a concept called **“constraints”**. Oftentimes it is useful to add a constraint to an attribute, like **strict-type**. For example, strict-type constraint allows the schema to specify exactly which data type is strictly expected from a specific attribute.
 
@@ -102,7 +102,7 @@ Sage servers may coerce non‐boolean raw values to *boolean* when reasonable wi
 
 ### <a name="4.2.2">4.2.2</a> Object
 
-A Sage object…
+A Sage Object…
 -   represents a set of named fields
     -   each of which yield a value of a valid type within the Sage type system. 
 -   should be serialized as a map
@@ -114,14 +114,14 @@ Sage servers must return a *map* as the result of an object type. Although each 
 
 ### <a name="4.2.3">4.2.3</a> List
 
-A Sage list…
+A Sage List…
 
 -   is a special collection type
     -   which declares the type of each item in the List (referred to as the *item type* of the list). 
 -   is serialized as an ordered list
     -   where each item in the list is serialized as per the item type.
 
-To denote that an attribute uses a List type, the item type also must be specified; and it will behave like a wrapper type constraint.
+To denote that an attribute uses a List type, the item type also must be specified; and List type will behave like a wrapper type constraint.
 
 #### Result Coercion
 
