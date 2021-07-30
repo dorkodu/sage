@@ -4,7 +4,7 @@ This is the specification for Sage; an open protocol for query-based data exchan
 
 Sage is a new and evolving protocol, and is not complete. Significant enhancement will continue in future editions of this specification. The development of this open standard started in 2020.
 
-The latest working draft of this protocol can be found on [Sage’s website on Dorkodu Libre](https://libre.dorkodu.com/sage/).
+The latest working draft of this protocol can be found on [Sage’s website](https://libre.dorkodu.com/sage/).
 
 ### Copyright Notice
 
