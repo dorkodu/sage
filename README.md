@@ -6,10 +6,6 @@
 
 The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder.
 
-> The Sage website is still under development. We are working on the reference implementation nowadays. 
->
-> **Will release soon!**
-
 The latest working draft of the specification can be found at this repository.
 
 Sage protocol’s specification paper and its releases can be found at [libre.dorkodu.com/sage/paper](https://libre.dorkodu.com/sage/paper).
