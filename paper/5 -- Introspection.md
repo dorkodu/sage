@@ -1,8 +1,10 @@
 # <a name="introspection">5</a> Introspection
 
+-   **[5.1 Schema Introspection](#5.1)**
+
 A Sage server supports introspection over its schema. The schema can be queried using Sage itself.
 
-*— For example, given a server with the following schema definition :*
+*— For example, given a server with the following schema definition **:***
 
 ```css
 entity User {
@@ -81,9 +83,11 @@ To support the efforts for backwards compatibility, any defined artifact of Sage
 
 Tools built using Sage introspection should respect deprecation by discouraging deprecated use through information hiding or developer‐facing warnings.
 
+>   If an Entity type is marked as deprecated, also all of its artifacts are treated as deprecated.
+
 ## <a name="5.1">5.1</a> Schema Introspection
 
-The schema introspection system can be queried using its own *meta-schema*. 
+The schema introspection system can be queried using its own *meta-schema*.
 
 >   #### Note
 >
@@ -120,7 +124,7 @@ Contains meta-information related to your Sage schema.
 
 ### Introspection Binding
 
-Sage offers *Introspection Binding*, which makes it possible to attach introspection queries directly to your regular queries by using magic attributes and links.
+Sage offers *Introspection Binding*, which makes it possible to attach introspection queries directly to your regular queries by using meta attributes and links.
 
 — For example, we requested for `@type` attribute, on `User` Entity type :
 
@@ -147,7 +151,7 @@ Sage offers *Introspection Binding*, which makes it possible to attach introspec
 }
 ```
 
-As seen in the example above, magic attributes can be used to get metadata about an Entity type definition.
+As seen in the example above, meta attributes can be used to get metadata about an Entity type definition.
 
 #### `*`
 
@@ -226,7 +230,7 @@ will result in
 {
   "introspection:Post": {
     "@type": "Post",
-    "@description": "Represents a Post.",
+    "@description": "Represents a Post object.",
     "@deprecated": false,
     "$links": {
       "@links": [
