@@ -45,4 +45,3 @@ While creating an API with Sage, you must follow these principles :
 - Pagination is not a topic covered by Sage. While Sage does not dictate any rules on pagination, it can be handled with query arguments.
 
 - There is no need to version your APIs. Making changes does not break the rest of your API.
-
