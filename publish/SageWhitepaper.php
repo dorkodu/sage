@@ -32,12 +32,12 @@ class SageWhitepaper
    */
   private static function listAllSections()
   {
-    return glob('../[0-9] -- *.md');
+    return glob('../paper/[0-9] -- *.md');
   }
 
   private static function getIndex()
   {
-    $indexPath = "../Index.md";
+    $indexPath = "../paper/Index.md";
 
     # get Index contents if file exists
     if (is_file($indexPath)) {
