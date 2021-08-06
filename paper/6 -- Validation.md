@@ -104,9 +104,9 @@ The followings are pre-defined fields of a Sage query.
             - Those attributes must be defined in the type which the link connects to.
 - *Not defined*
 
-### <a name="6.2.5">6.2.5</a> Arguments — `arg`
+### <a name="6.2.5">6.2.5</a> Arguments
 
-*(optional)*
+*(optional)* — `arg`
 
 #### Possible Values
 
