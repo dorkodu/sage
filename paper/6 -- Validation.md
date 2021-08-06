@@ -42,33 +42,33 @@ A *document* (known as *request/query document*)…
     -   defines “top level” of a *document*.
     -   contains at least one or more queries, as key-value pairs, with the following rules :
         -   A **key** must be a unique *string*, name of a *query*.
-        -   A **value** must be a *query*.
+        -   A **value** must be a *[query](#6.2)*.
 
 ## <a name="6.2">6.2</a> Query
 
 A *query*…
 
--   is represented as a *map*.
 -   is identified by a *string* name.
     -   Each *query* a Sage *document* contains must be named. When submitting a *document* to a Sage service, the name of the each *query* to be executed must also be provided.
--   contains a number of pre-defined fields.
-    -   To have compact *documents*, *field* names are used in their shortened forms.
-    -   Implementations may use additional *fields* provided that they do not conflict (by both naming and functionality) with those defined in this specification.
+-   is represented as a *map*.
+    -   Each query contains a number of pre-defined fields.
+        -   To have compact *documents*, *field* names are used in their shortened forms.
+        -   Implementations may use additional *fields* provided that they do not conflict (by both naming and functionality) with those defined in this specification.
 
 The followings are pre-defined fields of a Sage query.
 
-### <a name="6.2.1">6.2.1</a> Entity Type — `typ`
+### <a name="6.2.1">6.2.1</a> Entity Type
 
-(required)
+(required) — `typ`
 
 #### Possible Values
 
 - *String*
     - Must be the *name* of an Entity type that is defined in the schema.
 
-### <a name="6.2.2">6.2.2</a> Attributes — `atr`
+### <a name="6.2.2">6.2.2</a> Attributes
 
-*(optional)*
+*(optional)* — `atr`
 
 #### Possible Values
 
@@ -81,9 +81,9 @@ The followings are pre-defined fields of a Sage query.
 - *Not defined*
 
 
-### <a name="6.2.3">6.2.3</a> Act — `act`
+### <a name="6.2.3">6.2.3</a> Act
 
-*(optional)*
+*(optional)* — `act`
 
 #### Possible Values
 
@@ -91,9 +91,9 @@ The followings are pre-defined fields of a Sage query.
     -   Must be the name of an act which is defined in the schema.
 -   *Not defined*
 
-### <a name="6.2.4">6.2.4</a> Links — `lnk`
+### <a name="6.2.4">6.2.4</a> Links
 
-*(optional)*
+*(optional)* — `lnk`
 
 #### Possible Values
 
