@@ -4,7 +4,7 @@
 -   **[9.2 Reference Implementations](#9.2)**
 -   **[9.3 Other](#9.3)**
 
-In this paper, we present Sage, which is a new way of data exchange and API design. We first give an overview, then introduce principles, concepts behind Sage; after that we dive deeply into its components. We believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
+In this paper, we present Sage, which is a new way of data exchange and API design. We first give an overview, then introduce the principles, concepts behind Sage; after that we dive deeply into its components. In a nutshell, we believe that Sage can perform well in terms of both developer experience and performance under heavy production-load because of its simplicity, lightness and flexibility.
 
 ## <a name="9.1">9.1</a> Links
 
@@ -28,17 +28,17 @@ In this paper, we present Sage, which is a new way of data exchange and API desi
 
 To clarify the desired and ideal outcome of this proposal, we work on our own reference server and client implementations. Both of them are used on the production, at Dorkodu.
 
-*— As of July 8, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback, of course :)*
+*— As of August 10, reference implementations are under development, but you should have a look at the links below for the real-time development progress. We appreciate your feedback, of course :)*
 
 - #### Sage Server
 
-    You can see [here](https://github.com/dorkodu/sage.php) the reference server implementation, written in PHP.
+    The reference server implementation, written in PHP.
 
     **`GitHub` :**  [dorkodu/sage.php](https://github.com/dorkodu/sage.php)
 
 - #### Sage Client
 
-    You can see [here](https://github.com/dorkodu/sage.js) the reference client implementation, written in JavaScript.
+    The reference client implementation, written in JavaScript.
 
     **`GitHub` :**  [dorkodu/sage.js](https://github.com/dorkodu/sage.js)
 
@@ -48,7 +48,7 @@ To clarify the desired and ideal outcome of this proposal, we work on our own re
 
 ## <a name="9.3">9.3</a> Other
 
-Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* a kid (at least, when I am writing this, I am 16), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
+Also while writing this document, I was *heavily inspired by* some previous specifications, especially for the document structure. I am *literally* a kid (at least, while I am writing this, I am 16), so it was really hard for me to do boring paperwork to publish an open standard before developing an actual useful implementation.
 
 Here they are **:**
 
