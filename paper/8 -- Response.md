@@ -47,11 +47,11 @@ If the `data` entry in the response is present (including if it is the value **n
 
 Every error must contain an entry with the key `message` with a string description of the error intended for the developer as a guide to understand and correct the error.
 
-If an error can be associated with a particular query and requested artifact—such as attribute, act or link—in the Sage response, it must contain a map with the key `location`, which contains the keys `query` and one of [ `attribute`, `act`, `link` ] which describes the location of the response entry which experienced the error. 
+If an error can be associated with a particular query and field—such as `atr`, `act` or `lnk`—in the Sage response, it must contain a a list of maps with the key `location`, which contains the keys `query`, `field` to describe the location of the response entry which experienced the error. and optionally `meta`,  
 
 This allows clients to identify whether a `null` result is intentional or caused by a runtime error.
 
-For example, if fetching *age* of Neo fails in the following query :
+For example, if fetching *age* of Neo fails in the following query**:**
 
 ```json
 {
@@ -72,10 +72,15 @@ The response might look like :
   "errors": [
     {
       "message": "Age for character with ID 1 could not be fetched.",
-      "location": {
-        "query": "neo",
-        "attribute": "age"
-      }
+      "location": [
+        {
+        	"query": "neo",
+        	"field": "atr",
+          "meta": {
+            "value": "age"
+          }
+      	}
+    	]
     }
   ],
   "data": {
@@ -94,10 +99,15 @@ Sage services may provide an additional entry to errors with key `meta`. This en
   "errors": [
     {
       "message": "Age for character with ID 1 could not be fetched.",
-      "location": {
-        "query": "neo",
-        "attribute": "age"
-      },
+      "location": [
+        {
+        	"query": "neo",
+        	"field": "atr",
+          "meta": {
+            "value": "age"
+          }
+      	}
+      ],
       "meta": {
         "code": "CAN_NOT_FETCH_BY_ID",
         "timestamp": "Thu Jul 8 15:40:09 UTC 2021"
