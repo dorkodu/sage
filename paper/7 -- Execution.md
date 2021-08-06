@@ -1,5 +1,14 @@
 # <a name="execution">7</a> Execution
 
+-   **[7.1 Executing Requests](#7.1)**
+    -   **[7.1.1 Validating Requests](#7.1.1)**
+-   **[7.2 Executing Queries](#7.2)**
+    -   **[7.2.1 Algorithms for Query Execution](#7.2.1)**
+-   **[7.3 Data Retrieval and Resolution](#7.3)**
+    -   **[7.3.1 Value Resolution](#7.3.1)**
+    -   **[7.3.2 Value Completion](#7.3.2)**
+    -   **[7.3.3 Errors and Non-Nullability](#7.3.3)**
+
 Sage generates a response from a request via execution.
 
 A request for execution consists of a few pieces of information **:**
