@@ -175,7 +175,7 @@ An Entity is represented as sets of…
         - An Entity/Entity Collection type that the link is connected to, must be specified. 
         - They are like edges in a graph, where entities are nodes.
     - is identified by a *string* name.
-    - is resolved by a function which takes the root value and the resolved entity as parameters, and returns an arguments map.
+    - is resolved by a function which takes the reference value and the resolved entity as parameters, and returns an arguments map.
         - Sage will use the returned arguments for querying the Entity type which the link points to.
 
 > #### Note
