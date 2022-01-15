@@ -13,9 +13,8 @@ entity User {
   email @attribute(string);
 }
 
-entity Post {
+entity Note {
   id @attribute(integer, non-null);
-  title @attribute(string, non-null);
   content @attribute(string, non-null);
   author @link(User, non-null);
 }
@@ -101,7 +100,7 @@ Contains meta-information related to your Sage schema.
 
 -   `entities` **:** A list (item type of *string*) of all defined Entity types’ names.
 
-— We asked for the attribute `entities` on `@Schema` :
+— We asked for the attribute `entities` on `@Schema` **:**
 
 ```json
 {
@@ -166,9 +165,12 @@ As seen in the example above, meta attributes can be used to get metadata about 
 
 #### Links
 
--   `@attributes` represents the set of attributes defined on queried Entity type. Must return an Entity Collection with item type of `@Attribute`.
--   `@acts` represents the set of acts defined on queried Entity type. Must return an Entity Collection with item type of `@Act`.
--   `@links` represents the set of links defined on queried Entity type. Must return an Entity Collection with item type of `@Link`.
+-   `@attributes` represents the set of attributes defined on queried Entity type. 
+    Must return an Entity Collection with item type of `@Attribute`.
+-   `@acts` represents the set of acts defined on queried Entity type. 
+    Must return an Entity Collection with item type of `@Act`.
+-   `@links` represents the set of links defined on queried Entity type. 
+    Must return an Entity Collection with item type of `@Link`.
 
 >   #### Meta-Entity
 >

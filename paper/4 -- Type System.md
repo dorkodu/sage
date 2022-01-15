@@ -367,7 +367,7 @@ All rules defined in an Entity type are kept in its Collection definition. Each 
 
 >   An Entity Collection behaves as a wrapper type around an existing Entity type. It only overrides an Entity type’s attribute resolvers, and its purpose is to make retrieval of multiple instances of a specific Entity type at the same time possible.
 
-Here we define a To-do Entity type :
+Here we define a To-do Entity type **:**
 
 ```css
 entity Todo {
@@ -378,7 +378,7 @@ entity Todo {
 collection Todos of Todo
 ```
 
-And query the collection type :
+And query the collection type **:**
 
 ```json
 {
@@ -407,7 +407,7 @@ Let’s assume this is what `id` and `title` attribute resolvers returned *(repr
 
 Merge operation (based on the indexes of arrays) would result in a set of objects, each of which is an Entity of the specified type.
 
-Then this would be the final result :
+Then this would be the final result **:**
 
 ```json
 {
@@ -431,7 +431,7 @@ Then this would be the final result :
 
 #### Result Coercion
 
-Sage servers must return a list as the result of an Entity Collection type. Each item in the list must be a map which represents an Entity of a specified Entity type, and contains only the requested attributes.
+Sage servers must return a list as the result of an Entity Collection type. Each item in the list must be a map which represents an instance of a specified Entity type, and contains only the requested attributes.
 
 If the collection’s Entity type is nullable, then errors occurring during preparation or coercion of an individual item in the collection must result in the value **null** at that position in the collection along with an error added to the response. If a collection’s Entity type is non‐null, an error occurring at an individual item in the collection must result in an error for the entire collection query.
 
