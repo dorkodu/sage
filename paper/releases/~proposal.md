@@ -1,8 +1,8 @@
-<img src="../resources/sage-dark.png" alt="Sage Logo" style="width: 60%; margin: 0 auto;"/>
+<img src="../../resources/sage-dark.png" alt="Sage Logo" style="width: 60%; margin: 0 auto;"/>
 
 # Sage
 
-*July 2021 — Proposal* *(Work In Progress)*
+*July 2021 — Proposal*
 
 #### **`Author`**
  **Doruk Eray**
@@ -131,7 +131,7 @@ The primary goal was to develop a **simple & lightweight** but **efficient**, **
 
 For example, here is a sample Sage transaction *(request and response for a query)* **:**
 
-— Query **:**
+— Query**:**
 
 ```json
 {
@@ -145,7 +145,7 @@ For example, here is a sample Sage transaction *(request and response for a quer
 }
 ```
 
-— Result **:**
+— Result**:**
 
 ```json
 {
@@ -1597,13 +1597,13 @@ In this paper, we present Sage, which is a new way of data exchange and API desi
 
 ## <a name="9.1">9.1</a> Links
 
-- **[Sage — libre.dorkodu.com/sage](https://libre.dorkodu.com/sage)**
+- **[Sage — libre.dorkodu.com/sage](https://libre.dorkodu.com/sage/)**
 
     Sage’s website on Dorkodu Libre. There you can find more resources for learning and using Sage, and also the latest working draft of this paper.
 
 - **[Dorkodu — dorkodu.com](https://dorkodu.com)**
 
-    Who we are? We want to purify and liberate the human knowledge by making it open, useful and meaningful for everyone. We hope you will hear more about us soon. If you are interested in our work, see our website. 
+    Who we are? We want to liberate the human by making knowledge open, useful and meaningful for everyone. We hope you will hear more about us soon. If you are interested in our work, see our website. 
 
 - **[Dorkodu Libre — libre.dorkodu.com](https://libre.dorkodu.com)**
 

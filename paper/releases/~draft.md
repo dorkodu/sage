@@ -1,4 +1,4 @@
-<img src="../resources/sage-dark.png" alt="Sage Logo" style="width: 60%; margin: 0 auto;"/>
+<img src="../../resources/sage-dark.png" alt="Sage Logo" style="width: 60%; margin: 0 auto;"/>
 
 # Sage
 
@@ -9,8 +9,8 @@
  Founder and Chief @ [Dorkodu](https://dorkodu.com).
  Self-taught Software Engineer.
 
- Website **:** [doruk.dorkodu.com](https://doruk.dorkodu.com)
- Email **:** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
+ Website**:** [doruk.dorkodu.com](https://doruk.dorkodu.com)
+ Email**:** [doruk@dorkodu.com](mailto:doruk@dorkodu.com)
 
 ---
 
