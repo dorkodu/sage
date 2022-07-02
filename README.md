@@ -8,7 +8,7 @@ The Sage specification is edited in the markdown files found in [**/paper**](./p
 
 The latest working draft of the specification can be found at this repository.
 
-Sage protocol’s specification paper (we call it shortly *the Paper*) and its releases can be found at [libre.dorkodu.com/sage/paper](https://libre.dorkodu.com/sage/paper).
+Sage protocol’s specification paper (we call it shortly *the Paper*) and its releases can be found at [libre.dorkodu.com/sage/paper/](https://libre.dorkodu.com/sage/paper/).
 
 ## Overview
 
@@ -18,14 +18,14 @@ The target audience for this specification are not the product developers; but t
 
 In order to be broadly adopted, Sage protocol targets supporting wide variety of platforms, which will necessitate a collaborative effort across projects and communities. This specification serves as a compass for implementation and development efforts of Sage.
 
-Looking for more? [See Sage’s website](https://libre.dorkodu.com/sage).
+Looking for more? [See Sage’s website](https://libre.dorkodu.com/sage/).
 
 ## Documentation
 
-- **[Website](https://libre.dorkodu.com/sage)**
+- **[Website](https://libre.dorkodu.com/sage/)**
 
-- **[Reference Documentation & Learning Material](https://libre.dorkodu.com/sage/learn)**
+- **[Reference Documentation & Learning Material](https://libre.dorkodu.com/sage/learn/)**
 
-- **[Libraries, Tools and Community Work](https://libre.dorkodu.com/sage/code)**
+- **[Libraries, Tools and Community Work](https://libre.dorkodu.com/sage/code/)**
 
-- **[FAQ](https://libre.dorkodu.com/sage/faq)**
+- **[FAQ](https://libre.dorkodu.com/sage/faq/)**
