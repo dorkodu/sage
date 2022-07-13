@@ -1,2 +1,16 @@
+*.log
+.DS_Store
+node_modules
+dist
+
 .vscode
-.obsidian
+inspiration
+
+node_modules
+package-lock.json
+
+.yalc
+yalc.lock
+
+coverage/
+__generated__
