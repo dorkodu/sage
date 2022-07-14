@@ -1,16 +1,7 @@
 *.log
 .DS_Store
+.vscode
 node_modules
 dist
-
-.vscode
 inspiration
-
-node_modules
 package-lock.json
-
-.yalc
-yalc.lock
-
-coverage/
-__generated__
