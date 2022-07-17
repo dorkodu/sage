@@ -1,31 +1,98 @@
 <p align="center">
-  <img alt="Sage Logo" src="resources/sage-dark.png" style="width: 70% !important; height: auto !important; margin: 5px auto !important;" />
+  <a href="https://libre.dorkodu.com/sage">
+      <img alt="Sage" src="resources/sage-M.png"
+      style="height: 150px !important; margin: 5px auto !important;" />
+  </a>
 </p>
+<p align="center">
+  a marvelous data exchange protocol for APIs
+</p>
+<br>
 
-# Sage
+# sage
 
-The Sage specification is edited in the markdown files found in [**/paper**](./paper) folder.
+## intro
 
-The latest working draft of the specification can be found at this repository.
+sage allows you to easily build & consume fully typesafe APIs, without schemas or code generation.
 
-Sage protocol’s specification paper (we call it shortly *the Paper*) and its releases can be found at [libre.dorkodu.com/sage/paper/](https://libre.dorkodu.com/sage/paper/).
+### features
 
-## Overview
+- ✅&nbsp; well-tested and production ready.
+- 🧙‍♂️&nbsp; full static type safety & autocompletion on the client, for inputs, outputs and errors.
+- 🐎&nbsp; fantastic DX - No code generation, run-time bloat, or build pipeline.
+- 🍃&nbsp; light -- Sage has zero dependencies and a tiny client-side footprint.
+- 🐻&nbsp; easy to add to your existing brownfield project.
+- 🔋&nbsp; batteries included.
+- 🥃&nbsp; subscriptions support.
+- ⚡️&nbsp; request batching - requests made at the same time can be automatically combined into one
+- 👀&nbsp; we have a few examples in the [./examples](./examples) folder :)
 
-This is the working draft of the specification for Sage, a query-based data exchange protocol for APIs, and a runtime capable of executing those queries with your existing data and business logic. The [specification](https://libre.dorkodu.com/sage/paper) is open source; created and governed by [Dorkodu](https://dorkodu.com).
+### overview
 
-The target audience for this specification are not the product developers; but those who have, or are actively interested in, building their own Sage implementations and tools.
+this is the working draft for **sage**, a data exchange protocol for APIs, and reference implementations of a runtime and capable of executing queries with your existing data and business logic. the [specification](https://libre.dorkodu.com/sage/paper) is open source; created and governed @ [dorkodu](https://dorkodu.com).
 
-In order to be broadly adopted, Sage protocol targets supporting wide variety of platforms, which will necessitate a collaborative effort across projects and communities. This specification serves as a compass for implementation and development efforts of Sage.
+### about the protocol*
 
-Looking for more? [See Sage’s website](https://libre.dorkodu.com/sage/).
+the target audience for the protocol specification are not the product developers; but those who have, or are actively interested in, building their own sage implementations and tools.
 
-## Documentation
+in order to be broadly adopted, we want sage to support wide variety of platforms, which will necessitate a collaborative effort across projects and communities. 
 
-- **[Website](https://libre.dorkodu.com/sage/)**
+this specification serves as a compass for implementation and development efforts of sage.
 
-- **[Reference Documentation & Learning Material](https://libre.dorkodu.com/sage/learn/)**
+looking for more? [see sage’s website](https://libre.dorkodu.com/sage/).
 
-- **[Libraries, Tools and Community Work](https://libre.dorkodu.com/sage/code/)**
 
-- **[FAQ](https://libre.dorkodu.com/sage/faq/)**
+## quickstart
+
+⏳ — work in progress.
+
+## protocol
+
+the sage specification paper (we call it shortly _the paper_) is edited in the markdown files found in [**/paper**](./paper) folder.
+the latest working draft and releases of the paper can be found at this repository.
+
+## documentation
+
+- **[website](https://libre.dorkodu.com/sage/)**
+
+- **[reference documentation & learning material](https://libre.dorkodu.com/sage/learn/)**
+
+- **[libraries, tools and community work](https://libre.dorkodu.com/sage/code/)**
+
+- **[faq](https://libre.dorkodu.com/sage/faq/)**
+
+## people
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://doruk.dorkodu.com">
+        <img src="https://avatars.githubusercontent.com/u/68155490?v=4" width="100px;" style="border-radius:100px;" alt="doruk eray"/>
+        <br />
+      </a>
+    </td>
+    <td>
+			<b>doruk eray</b>
+      <br>
+      creator of sage
+			<br>
+      founder and chief @ <b><a href="https://dorkodu.com">dorkodu</a></b>
+			<br>
+      <a href="https://github.com/dorukeray">
+      	<img alt="GitHub followers" src="https://img.shields.io/github/followers/dorukeray?label=%40dorukeray&style=social">
+			</a>
+      <a href="https://twitter.com/d0rukeray">
+				<img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/d0rukeray?style=social">
+			</a>
+      · <a href="https://doruk.dorkodu.com">website</a>
+    </td>
+  </tr>
+</table>
+
+## sponsors
+
+if you enjoy working with sage and want to support me consider giving a token appreciation by [github sponsors](https://github.com/sponsors/dorukeray)!
+also, if your team uses sage and you want to support long-term maintenance of sage, [get in touch](mailto:doruk@dorkodu.com) to discuss potential partnerships.
+
+## license
+sage is open-sourced software licensed under the [**mit license**](LICENSE).
