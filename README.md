@@ -1,12 +1,13 @@
 <p align="center">
   <a href="https://libre.dorkodu.com/sage">
       <img alt="Sage" src="resources/sage-M.png"
-      style="height: 150px !important; margin: 5px auto !important;" />
+      style="height: 200px !important; margin: 5px auto !important;" />
   </a>
 </p>
 <p align="center">
   a marvelous data exchange protocol for APIs
 </p>
+
 <br>
 
 # sage
