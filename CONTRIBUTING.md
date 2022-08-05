@@ -1,19 +1,20 @@
-# Contributing
+# contributing
 
-So excited to have you here! If you want **any** guidance whatsoever with contributing to tRPC, don't hesitate to reach out on [Discord](https://trpc.io/discord)!
+so excited to have you here!
+if you want **any** guidance whatsoever with contributing to **sage**, don't hesitate to reach out on [twitter](https://twitter.com/d0rukeray)!
 
 
-## Development workflow
+## development workflow
 
 ```bash
-git clone git@github.com:trpc/trpc.git
-cd trpc
+git clone git@github.com:dorkodu/sage.git
+cd sage
 yarn
 ```
 
-### Get it running
+### get it running
 
-**Terminal 1:**
+**terminal 1:**
 
 ```bash
 # in project root directory
@@ -22,13 +23,15 @@ yarn dev
 
 This will start a watcher in parallel which builds all `packages/*` on any file change.
 
-**Terminal 2:**
+**terminal 2:**
 
 In another terminal, you can for instance navigate to `examples/next-prisma-starter` and run `yarn dev` & it will update whenever code is changed in the packages.
 
-### Testing
+### testing
 
-> Note: you will want to have `yarn dev` running in parallel in another terminal
+> ###### **note**
+>
+> you will want to have `yarn dev` running in parallel in another terminal
 
 ```bash
 # in project root directory

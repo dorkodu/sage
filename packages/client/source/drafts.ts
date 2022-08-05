@@ -46,30 +46,6 @@ const { loading, error, data } = api.query({
   }
 });
 
-/*--------- ALTERNATİF API ----------*/
-
-const currentUser = Sage.want("User")
-  .attributes(["name", "tag", "bio", "profilePhoto.url", "followStatus"])
-  .arguments({
-    "user.id": 123456
-  })
-  .act("update")
-
-const bestFriend = currentUser.link("bestFriend", {
-  attributes: [···],
-  arguments: {
-   "foo": "bar",
-   "DorookieMercury": true 
-  }
-});
-
-// bence sorgu nesnesi gibi daha iyi ama şöyle de olur:
-const bestFriend = currentUser.link("bestFriend")
-.attributes(["name", "tag"])
-.arguments({
-  "user.id": 123456
-})
-
 //? static query yazabilmeliyim
 const EXCHANGE_RATES = {
   type: "ExchangeRates",

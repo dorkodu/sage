@@ -3,14 +3,6 @@ interface SageOptions {
   headers?: { [key: string]: string };
 }
 
-interface SageQuery {
-  type: string;
-  attributes?: string[];
-  arguments?: { [key: string | number]: any };
-  links?: { [key: string]: SageQuery };
-  act?: string;
-}
-
 interface SageQueryObject {
   [key: string]: SageQueryProperties;
 }
@@ -33,17 +25,15 @@ export class Sage {
     this.options = options;
   }
 
-  public want(name: string, query: SageQuery) {
-
-  }
+  public want(name: string, query: SageQuery) {}
 
   public async query(query: any, options?: SageQueryOptions) {
     const url = options?.url || this.options.url;
     const req: RequestInit = {
       method: "POST",
       headers: options?.headers || this.options.headers,
-      body: JSON.stringify(query)
-    }
+      body: JSON.stringify(query),
+    };
 
     const res = await fetch(url, req);
     const json = await res.json();

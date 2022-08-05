@@ -1,13 +1,39 @@
 {
-  "name": "sage-client",
-  "version": "0.0.1",
-  "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "dev": "ts-node-dev --respawn --quiet source/index.ts"
+  "name": "@dorkodu/sage.client",
+  "version": "0.1.0",
+  "description": "Sage Client Library",
+  "author": "doruk eray",
+  "license": "MIT",
+  "homepage": "https://libre.dorkodu.com/sage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorkodu/sage.git",
+    "directory": "packages/client"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts"
+    ]
+  },
+  "scripts": {},
+  "main": "dist/trpc-client.cjs.js",
+  "module": "dist/trpc-client.esm.js",
+  "typings": "dist/trpc-client.cjs.d.ts",
+  "files": [
+    "README.md",
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.9.0"
+  },
+  "peerDependencies": {
+    "@dorkodu/sage.server": "^0.1.0"
   },
   "devDependencies": {
-    "rimraf": "^3.0.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.7.3"
+    "@dorkodu/sage.server": "^0.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

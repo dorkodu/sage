@@ -1,5 +1,5 @@
 {
-  "name": "sage-server",
+  "name": "@dorkodu/sage.server",
   "version": "0.0.1",
   "scripts": {
     "build": "rimraf ./dist && tsc",
