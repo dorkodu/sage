@@ -1,38 +1,39 @@
 import { Maybe } from "../types";
 
-export interface SageDefinition {
+export interface ISageDefinition {
   name: string;
   resolve: CallableFunction;
 }
 
-export interface SageAttribute extends SageDefinition {
-  rule: CallableFunction | null;
+export interface ISageAttribute extends ISageDefinition {
+  rule?: CallableFunction | null;
 }
 
-export interface SageAct extends SageDefinition {
+export interface ISageAct extends ISageDefinition {
   do: CallableFunction;
 }
 
-export interface SageLink extends SageDefinition {
-  linksTo: SageResource;
+export interface ISageLink extends ISageDefinition {
+  linksTo: ISageResource;
 }
 
-export abstract class SageResource implements SageDefinition {
+export interface ISageResource extends ISageDefinition {
   name: string;
   resolve: CallableFunction;
-  attributes: SageAttribute[];
-  acts: SageAct[];
-  links: SageLink[];
-
-  constructor() {
-    super();
-  }
+  attributes?: { [key: string]: ISageAttribute };
+  acts?: { [key: string]: ISageAct };
+  links?: { [key: string]: ISageLink };
 }
 
-export interface SageQuery {
+export interface ISageQuery {
+  name: string;
   type: string;
-  attributes?: string[];
   arguments?: { [key: string | number]: any };
-  links?: { [key: string]: SageQuery };
+  attributes?: string[];
   act?: string;
+  links?: { [key: string]: ISageQuery };
+}
+
+export interface ISageSchema {
+  types: { [key: string]: ISageResource };
 }
