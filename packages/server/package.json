@@ -1,6 +1,7 @@
 {
   "name": "@dorkodu/sage.server",
   "version": "0.0.1",
+  "moduleResolution": "node",
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "dev": "ts-node-dev --respawn --quiet source/index.ts"
