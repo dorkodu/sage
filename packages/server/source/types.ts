@@ -6,19 +6,14 @@
  */
 export type Prefix<K extends string, T extends string> = `${K}${T}`;
 
-/**
- * @internal
- * @deprecated will be removed in next major
- */
-export type identity<T> = T;
+type OrNull<Type> = Type | null;
+type OneOrMany<Type> = Type | Type[];
+type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
 
 /**
  * @internal
- * @deprecated will be removed in next major
  */
-export type format<T> = {
-  [k in keyof T]: T[k];
-};
+export type identity<T> = T;
 
 /**
  * @internal
@@ -36,7 +31,7 @@ export type flatten<T, Q> = identity<{
  */
 export type Prefixer<
   TObj extends Record<string, any>,
-  TPrefix extends string,
+  TPrefix extends string
 > = {
   [P in keyof TObj as Prefix<TPrefix, string & P>]: TObj[P];
 };
