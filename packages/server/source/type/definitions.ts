@@ -1,42 +1,45 @@
 import { Maybe } from "../types";
-import {
-  ISageResource,
-  ISageAct,
-  ISageAttribute,
-  ISageDefinition,
-  ISageLink,
-  ISageQuery,
-  ISageSchema,
-} from "./interfaces";
 
-export abstract class SageDefinition {
-  public readonly name: string;
-  public readonly description: Maybe<string>;
-  public readonly deprecationReason: Maybe<string>;
-  public readonly isDeprecated: boolean;
-
-  constructor(
-    name: string,
-    description?: Maybe<string>,
-    deprecationReason?: Maybe<string>
-  ) {
-    this.name = name;
-    this.description = description;
-    this.deprecationReason = deprecationReason;
-    this.isDeprecated = typeof deprecationReason === "string";
-  }
+export interface SageDefinition {
+  readonly name: string;
 }
 
-export class SageResource extends SageDefinition implements ISageResource {
-  public readonly resolve: CallableFunction;
-  public readonly attributes?: { [key: string]: ISageAttribute };
-  public readonly acts?: { [key: string]: ISageAct };
-  public readonly links?: { [key: string]: ISageLink };
+type SageArtifactFunction = (reference: Maybe<object>) => any;
 
-  constructor(resource: ISageResource) {
-    super(resource);
-    this.resolve = resource.resolve;
-    this.attributes = resource.attributes;
-    this.arguments = resource.arguments;
-  }
+export interface SageDefinition {
+  readonly name: string;
+}
+
+export interface SageAttribute extends SageDefinition {
+  readonly rule?: (value: any) => boolean;
+  readonly resolve: SageArtifactFunction;
+}
+
+export interface SageAct extends SageDefinition {
+  readonly do: SageArtifactFunction;
+}
+
+export interface SageLink extends SageDefinition {
+  readonly linksTo: SageResource;
+  readonly resolve: SageArtifactFunction;
+}
+
+export interface SageResource extends SageDefinition {
+  readonly attributes?: { [key: string]: SageAttribute };
+  readonly acts?: { [key: string]: SageAct };
+  readonly links?: { [key: string]: SageLink };
+  readonly resolve: (query: SageQuery, context: Maybe<object>) => Maybe<object>;
+}
+
+export interface SageQuery {
+  readonly name: string;
+  readonly type: string;
+  readonly arguments?: { [key: string]: any };
+  readonly attributes?: string[];
+  readonly act?: string;
+  readonly links?: { [key: string]: SageQuery };
+}
+
+export interface SageSchema {
+  readonly types: { [key: string]: SageResource };
 }
