@@ -1,21 +1,35 @@
-import { ISageResource, ISageAct, ISageAttribute } from "./type/interfaces";
-import { SageResource } from "./type/definitions";
+import {
+  SageResource,
+  SageAct,
+  SageAttribute,
+  SageLink,
+  SageSchema,
+} from "./type/definitions";
 
 export * from "./assertNotBrowser";
 export * from "./SageError";
 export * from "./types";
 
 export const Sage = {
-  Resource(resource: ISageResource): ISageResource {
-    return new SageResource(resource);
+  execute(
+    schema: SageSchema,
+    document: SageDocument,
+    context?: object,
+    options?: SageOptions
+  ) {},
+  Resource(resource: SageResource): SageResource {
+    return resource;
   },
   Act(act: SageAct): SageAct {
-    return new SageResource(resource);
+    return act;
   },
   Attribute(attribute: SageAttribute): SageAttribute {
-    return new SageAttribute(attribute);
+    return attribute;
   },
   Link(link: SageLink): SageLink {
-    return new SageLink(link);
+    return link;
+  },
+  Schema(schema: SageSchema): SageSchema {
+    return schema;
   },
 };
