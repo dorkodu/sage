@@ -1,6 +1,3 @@
-import { getMessageFromUnkownError } from "./internals/errors";
-import { SAGE_ERROR_CODE_KEY } from "./rpc/codes";
-
 export class SageError extends Error {
   public readonly cause?;
   public readonly code;

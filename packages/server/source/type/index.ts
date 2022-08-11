@@ -1,10 +1,12 @@
 import { Maybe } from "../utils";
 
+export type SageContext = Maybe<object>;
+
+type SageArtifactFunction = (context: SageContext) => any;
+
 export interface SageDefinition {
   readonly name: string;
 }
-
-type SageArtifactFunction = (context: Maybe<object>) => any;
 
 export interface SageAttribute extends SageDefinition {
   readonly rule?: (value: any) => boolean;
@@ -24,10 +26,7 @@ export interface SageResource extends SageDefinition {
   readonly attributes?: { [key: string]: SageAttribute };
   readonly acts?: { [key: string]: SageAct };
   readonly links?: { [key: string]: SageLink };
-  readonly resolve: (
-    query?: SageQuery,
-    context?: Maybe<object>
-  ) => Maybe<object>;
+  readonly resolve: (query: SageQuery, context: SageContext) => SageContext;
 }
 
 export interface SageSchema {
