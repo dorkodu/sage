@@ -55,3 +55,7 @@ export interface SageExecutionResult {
   error: object;
   meta: object;
 }
+
+export interface SageValidationContract {
+  readonly validate: (value: any) => SageError[];
+}

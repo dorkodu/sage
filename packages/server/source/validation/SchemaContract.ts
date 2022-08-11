@@ -1,3 +1,5 @@
+import { SageError } from "../SageError";
+
 import {
   SageSchema,
   SageDefinition,
@@ -5,9 +7,17 @@ import {
   SageAttribute,
   SageAct,
   SageLink,
+  SageValidationContract,
 } from "../type";
 
-export const SchemaContract = {};
+export const SchemaContract: SageValidationContract = {
+  validate(schema: SageSchema) {
+    let errors: SageError[] = [];
+
+    //? do validation
+    return errors;
+  },
+};
 
 const DefinitionContract = {
   name: function (name: string): boolean {
