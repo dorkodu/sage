@@ -14,31 +14,19 @@ import { DocumentContract, QueryContract, SchemaContract } from "./validation";
 
 import { SageExecutor } from "./execution";
 
-export * from "./assertNotBrowser";
-export * from "./SageError";
 export * from "./problem";
 export * from "./utils";
 
 import { SageProblem } from "./problem";
 
 export const Sage = {
-  execute(schema: SageSchema, document: SageDocument, context?: object) {
   execute(schema: SageSchema, document: SageDocument, context?: SageContext) {
     try {
       // ? if string, parse the request string and get document.
-      // ? validate the document
-      let documentErrors = DocumentContract.validate(document);
-      let schemaErrors = SchemaContract.validate(document);
-
-      let validationErrors = [].concat(documentErrors, schemaErrors);
-
-      // ? if document is invalid, return an empty execution result with validation errors
-
       // returns all validation problems as SageError array
       // ? if document is invalid, return an empty execution result with validation problems
       // ? document is valid, so return the execution result
       return SageExecutor.execute(schema, document);
-    } catch (error) {}
     } catch (problem) {}
   },
 
@@ -50,7 +38,6 @@ export const Sage = {
     else return true;
   },
 
-  validateSchema(): boolean {},
   parse(source: SageCompressedDocumentFormat): {
     document: SageDocument;
     problems: Array<SageProblem>;
@@ -66,7 +53,25 @@ export const Sage = {
      */
     let document: SageDocument = {};
 
-  parse(source: any): SageDocument {},
+    //? iterate all queries
+    for (const [nom, compressedQuery] of Object.entries(source)) {
+      //? iterate all query keys and rename
+      for (const [key, value] of Object.entries(compressedQuery)) {
+        let query: SageQuery = {};
+
+        switch (key) {
+          case "atr":
+            query.attributes = value;
+            break;
+
+          default:
+            break;
+        }
+      }
+      //? replace link name with query
+    }
+    return { document, problems };
+  },
 
   Resource(resource: SageResource): SageResource {
     return resource;
