@@ -1,3 +1,4 @@
+import { SageProblem } from "../problem";
 import { Maybe } from "../utils";
 
 export type SageContext = Maybe<object>;

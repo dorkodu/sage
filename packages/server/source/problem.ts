@@ -1,16 +1,19 @@
-export class SageError extends Error {
+const getMessageFromProblemCause = (cause) => {
+
+}
+
+export class SageProblem extends Error {
   public readonly cause?;
   public readonly code;
 
   constructor(opts: {
     message?: string;
-    code: SAGE_ERROR_CODE_KEY;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     cause?: Error;
   }) {
     const cause = opts.cause;
     const code = opts.code;
-    const message = opts.message ?? getMessageFromUnkownError(cause, code);
+    const message = opts.message ??;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore https://github.com/tc39/proposal-error-cause

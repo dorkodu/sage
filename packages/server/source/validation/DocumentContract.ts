@@ -1,10 +1,10 @@
 import { SageDocument, SageValidationContract } from "../type";
-import { SageError } from "../SageError";
+import { SageError } from "../problem";
 
 export const DocumentContract: SageValidationContract = {
   validate(document: SageDocument) {
-    let errors: SageError[] = [];
+    let problems: SageError[] = [];
     //? do validation
-    return errors;
+    return problems;
   },
 };

@@ -34,6 +34,7 @@ export const Sage = {
 
       // ? if document is invalid, return an empty execution result with validation errors
 
+      // returns all validation problems as SageError array
       // ? if document is invalid, return an empty execution result with validation problems
       // ? document is valid, so return the execution result
       return SageExecutor.execute(schema, document);

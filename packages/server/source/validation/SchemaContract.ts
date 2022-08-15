@@ -1,4 +1,4 @@
-import { SageError } from "../SageError";
+import { SageProblem } from "../problem";
 
 import {
   SageSchema,
@@ -12,10 +12,10 @@ import {
 
 export const SchemaContract: SageValidationContract = {
   validate(schema: SageSchema) {
-    let errors: SageError[] = [];
+    let problems: SageProblem[] = [];
 
     //? do validation
-    return errors;
+    return problems;
   },
 };
 
