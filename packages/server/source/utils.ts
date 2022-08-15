@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export function assertNotBrowser() {
+  if (
+    typeof window !== "undefined" &&
+    process.env.NODE_ENV !== "test" &&
+    process.env.JEST_WORKER_ID === undefined
+  ) {
+    throw new Error("Imported server-only code in the browser");
+  }
+}
+
 /**
  * @internal
  */
