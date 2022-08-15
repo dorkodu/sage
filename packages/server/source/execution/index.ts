@@ -1,4 +1,3 @@
-import { SageAttribute } from "./../type/index";
 import {
   SageResource,
   SageAttribute,
@@ -24,9 +23,9 @@ export const SageExecutor = {
    *         1.  Let *queryName* be the name of *query*.
    *         2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.0) **(** *schema, query* **)**.
    *         3.  Set *queryResult* as the value for the key *queryName* in *data*.
-   * 3.  Let *errors* be a list of error objects, each represents an error produced while executing the queries.
-   * 4.  Return an unordered map containing *data* and *errors*.
-   *     1.  If *errors* is still empty at the end of the execution, return an unordered map containing only *data*.
+   * 3.  Let *problems* be a list of problem objects, each represents an problem produced while executing the queries.
+   * 4.  Return an unordered map containing *data* and *problems*.
+   *     1.  If *problems* is still empty at the end of the execution, return an unordered map containing only *data*.
    */
   execute(schema: SageSchema, document: SageDocument): SageExecutionResult {
     //? by default return an empty result
@@ -93,7 +92,7 @@ export const SageExecutor = {
   emptyExecutionResult() {
     return {
       data: {},
-      error: {},
+      problem: {},
       meta: {},
     };
   },
