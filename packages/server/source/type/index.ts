@@ -1,7 +1,7 @@
 import { SageProblem } from "../problem";
 import { Maybe } from "../utils";
 
-export type SageContext = Maybe<object>;
+export type SageContext = { [key: string | symbol | number]: any };
 
 type SageArtifactFunction = (context: SageContext) => any;
 
@@ -37,7 +37,6 @@ export interface SageSchema {
 //? Document
 
 export interface SageQuery {
-  readonly name: string;
   readonly type: string;
   readonly arguments?: { [key: string]: any };
   readonly attributes?: string[];
@@ -57,5 +56,25 @@ export interface SageExecutionResult {
 }
 
 export interface SageValidationContract {
-  readonly validate: (value: any) => SageError[];
+  readonly validate: (value: any) => SageProblem[];
+}
+
+/**
+ * Data that must be available at all points during query execution.
+ */
+export interface SageExecutionContext {
+  schema: SageSchema;
+  query: SageQuery;
+  context: SageContext;
+  problems: Array<SageProblem>;
+}
+
+export interface SageCompressedDocumentFormat {
+  [key: string | number]: {
+    typ: string;
+    arg?: { [key: string]: any };
+    atr?: string[];
+    act?: string;
+    lnk?: { [key: string]: string };
+  };
 }
