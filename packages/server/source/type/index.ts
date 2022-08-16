@@ -41,8 +41,10 @@ export interface SageQuery {
   readonly arguments?: { [key: string]: any };
   readonly attributes?: string[];
   readonly act?: string;
-  readonly links?: { [key: string]: SageQuery };
+  readonly links?: { [key: string]: SageLinkReference };
 }
+
+export type SageLinkReference = SageQuery | string;
 
 export interface SageDocument {
   [key: string]: SageQuery;
@@ -69,12 +71,14 @@ export interface SageExecutionContext {
   problems: Array<SageProblem>;
 }
 
-export interface SageCompressedDocumentFormat {
-  [key: string | number]: {
-    typ: string;
-    arg?: { [key: string]: any };
-    atr?: string[];
-    act?: string;
-    lnk?: { [key: string]: string };
-  };
+export interface SageCompressedQuery {
+  readonly typ: string;
+  readonly arg?: { [key: string]: any };
+  readonly atr?: string[];
+  readonly act?: string;
+  readonly lnk?: { [key: string]: string };
+}
+
+export interface SageCompressedDocument {
+  [key: string | number]: SageCompressedQuery;
 }
