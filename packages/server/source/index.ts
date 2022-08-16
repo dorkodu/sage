@@ -3,74 +3,44 @@ import {
   SageAct,
   SageAttribute,
   SageLink,
-  SageSchema,
   SageDocument,
   SageContext,
-  SageCompressedDocumentFormat,
+  SageSchema,
+  SageCompressedDocument,
   SageQuery,
 } from "./type";
 
 import { DocumentContract, QueryContract, SchemaContract } from "./validation";
 
+import { SageProblem } from "./problem";
+
+import { SageParser } from "./execution/parser";
 import { SageExecutor } from "./execution";
 
 export * from "./problem";
 export * from "./utils";
 
-import { SageProblem } from "./problem";
-
 export const Sage = {
   execute(schema: SageSchema, document: SageDocument, context?: SageContext) {
     try {
-      // ? if string, parse the request string and get document.
-      // returns all validation problems as SageError array
-      // ? if document is invalid, return an empty execution result with validation problems
-      // ? document is valid, so return the execution result
-      return SageExecutor.execute(schema, document);
-    } catch (problem) {}
+      return SageExecutor.execute(schema, document, context);
+    } catch ($e) {
+      return $e;
+    }
   },
 
   validateSchema(schema: SageSchema): Array<SageProblem> | true {
-    let problems: Array<SageProblem> = [];
-    problems = SchemaContract.validate(document);
+    const problems = SchemaContract.validate(schema);
 
     if (problems.length > 0) return problems;
     else return true;
   },
 
-  parse(source: SageCompressedDocumentFormat): {
+  parse(source: SageCompressedDocument): {
     document: SageDocument;
     problems: Array<SageProblem>;
   } {
-    let problems: Array<SageProblem> = [];
-    /**
-     *? iterate all properties and do rename:
-     **   typ -> type
-     **   atr -> attributes
-     **   act -> act
-     **   arg -> arguments
-     **   lnk -> links
-     */
-    let document: SageDocument = {};
-
-    //? iterate all queries
-    for (const [nom, compressedQuery] of Object.entries(source)) {
-      //? iterate all query keys and rename
-      for (const [key, value] of Object.entries(compressedQuery)) {
-        let query: SageQuery = {};
-
-        switch (key) {
-          case "atr":
-            query.attributes = value;
-            break;
-
-          default:
-            break;
-        }
-      }
-      //? replace link name with query
-    }
-    return { document, problems };
+    return SageParser.parse(source);
   },
 
   Resource(resource: SageResource): SageResource {
