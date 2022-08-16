@@ -27,9 +27,17 @@ export const SageExecutor = {
    * 4.  Return an unordered map containing *data* and *problems*.
    *     1.  If *problems* is still empty at the end of the execution, return an unordered map containing only *data*.
    */
-  execute(schema: SageSchema, document: SageDocument): SageExecutionResult {
+  execute(
+    schema: SageSchema,
+    document: SageDocument,
+    context?: SageContext
+  ): SageExecutionResult {
     //? by default return an empty result
     let result = this.emptyExecutionResult();
+
+    for (let [name, query] of Object.entries(document)) {
+      let queryResult = this.executeQuery(schema, query, context);
+    }
 
     return result;
   },
