@@ -6,7 +6,7 @@ import {
   SageDocument,
   SageContext,
   SageSchema,
-  SageCompressedDocument,
+  SageSimplifiedDocument,
   SageQuery,
 } from "./type";
 
@@ -29,16 +29,16 @@ export const Sage = {
     }
   },
 
-  validateSchema(schema: SageSchema): Array<SageProblem> | true {
+  validateSchema(schema: SageSchema): SageProblem[] | true {
     const problems = SchemaContract.validate(schema);
 
     if (problems.length > 0) return problems;
     else return true;
   },
 
-  parse(source: SageCompressedDocument): {
+  parse(source: SageSimplifiedDocument): {
     document: SageDocument;
-    problems: Array<SageProblem>;
+    problems: SageProblem[];
   } {
     return SageParser.parse(source);
   },
@@ -46,15 +46,19 @@ export const Sage = {
   Resource(resource: SageResource): SageResource {
     return resource;
   },
+
   Act(act: SageAct): SageAct {
     return act;
   },
+
   Attribute(attribute: SageAttribute): SageAttribute {
     return attribute;
   },
+
   Link(link: SageLink): SageLink {
     return link;
   },
+
   Schema(schema: SageSchema): SageSchema {
     return schema;
   },

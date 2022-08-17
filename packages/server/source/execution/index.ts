@@ -30,7 +30,7 @@ export const SageExecutor = {
   execute(
     schema: SageSchema,
     document: SageDocument,
-    context?: SageContext
+    context: SageContext = {}
   ): SageExecutionResult {
     //? by default return an empty result
     let result = this.emptyExecutionResult();
@@ -69,7 +69,7 @@ export const SageExecutor = {
     context = resource.resolve(query, context);
 
     //? retrieve attributes
-    if (query.attributes) {
+    if (typeof query.attributes) {
       // typing for resolved attribute values
       let attributes: { [key: string]: any } = [];
 
@@ -89,18 +89,24 @@ export const SageExecutor = {
     //? resolve links
   },
 
-  resolveLink(link: SageLink, schema: SageSchema, referanceValue: any) {},
+  resolveLink(
+    link: SageLink,
+    schema: SageSchema,
+    referanceValue: SageContext
+  ) {},
+
   retrieveAttribute(
     attribute: string,
     resource: SageResource,
-    context: SageContext
+    context: SageContext = {}
   ) {},
+
   performAct(act: SageAct, context: SageContext) {},
 
-  emptyExecutionResult() {
+  emptyExecutionResult(): SageExecutionResult {
     return {
       data: {},
-      problem: {},
+      error: {},
       meta: {},
     };
   },
