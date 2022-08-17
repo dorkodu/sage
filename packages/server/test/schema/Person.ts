@@ -27,7 +27,7 @@ const age = Sage.Attribute({
 
 const greet = Sage.Act({
   name: "greet",
-  do: function (context: any) {
+  do: function (context: { message: string }) {
     console.log(context.message);
   },
 });

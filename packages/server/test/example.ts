@@ -1,6 +1,8 @@
 import { Sage } from "../source";
+import { schema } from "./schema";
 
 const request = {
+  berk: {},
   doruk: {
     typ: "Person",
     atr: ["name", "age"],
@@ -22,6 +24,6 @@ const request = {
   },
 };
 
-const document = Sage.parse(request);
-const problems = Sage.validateSchema(document);
+const { document, problems } = Sage.parse(request);
+const schemaValidationResult = Sage.validateSchema(document);
 const result = Sage.execute();

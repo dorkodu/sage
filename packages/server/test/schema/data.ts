@@ -22,13 +22,13 @@ interface Person {
 
 interface DataSource {
   Artist: {
-    [key: number]: Artist;
+    [key: ID]: Artist;
   };
   Artwork: {
-    [key: number]: Artwork;
+    [key: ID]: Artwork;
   };
   Person: {
-    [key: number]: Person;
+    [key: ID]: Person;
   };
 }
 
