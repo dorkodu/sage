@@ -1,7 +1,7 @@
 import { SageProblem } from "../problem";
 import { Maybe } from "../utils";
 
-export type SageContext = { [key: string | symbol | number]: any };
+export type SageContext = any;
 
 type SageArtifactFunction = (context: SageContext) => any;
 
@@ -20,13 +20,17 @@ export interface SageAct extends SageDefinition {
 
 export interface SageLink extends SageDefinition {
   readonly linksTo: SageResource;
-  readonly resolve: SageArtifactFunction;
+  readonly resolve: (resource: any, context: SageContext) => any;
 }
 
 export interface SageResource extends SageDefinition {
   readonly attributes?: { [key: string]: SageAttribute };
   readonly acts?: { [key: string]: SageAct };
   readonly links?: { [key: string]: SageLink };
+  readonly resolve: (query: SageQuery, context: SageContext) => SageContext;
+}
+
+export interface SageCollection extends SageResource {
   readonly resolve: (query: SageQuery, context: SageContext) => SageContext;
 }
 
@@ -38,10 +42,10 @@ export interface SageSchema {
 
 export interface SageQuery {
   readonly type: string;
-  readonly arguments?: { [key: string]: any };
-  readonly attributes?: string[];
-  readonly act?: string;
-  readonly links?: { [key: string]: SageLinkReference };
+  readonly arguments: { [key: string]: any };
+  readonly attributes: string[];
+  readonly act: string;
+  readonly links: { [key: string]: SageLinkReference };
 }
 
 export type SageLinkReference = SageQuery | string;
@@ -71,14 +75,14 @@ export interface SageExecutionContext {
   problems: Array<SageProblem>;
 }
 
-export interface SageCompressedQuery {
-  readonly typ: string;
+export interface SageSimplifiedQuery {
+  readonly typ?: string;
   readonly arg?: { [key: string]: any };
   readonly atr?: string[];
   readonly act?: string;
   readonly lnk?: { [key: string]: string };
 }
 
-export interface SageCompressedDocument {
-  [key: string | number]: SageCompressedQuery;
+export interface SageSimplifiedDocument {
+  [key: string | number]: SageSimplifiedQuery;
 }
