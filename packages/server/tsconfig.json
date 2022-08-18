@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ES6",
+    "target": "ES2019",
     "outDir": "./dist",
     "removeComments": true,
     "moduleResolution": "node"
