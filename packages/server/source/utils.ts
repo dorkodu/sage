@@ -16,9 +16,9 @@ export function assertNotBrowser() {
  */
 export type Prefix<K extends string, T extends string> = `${K}${T}`;
 
-type OrNull<Type> = Type | null;
-type OneOrMany<Type> = Type | Type[];
-type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
+export type Nullable<Type> = Type | null;
+export type OneOrMany<Type> = Type | Type[];
+export type OneOrManyOrNull<Type> = Nullable<OneOrMany<Type>>;
 
 /**
  * @internal

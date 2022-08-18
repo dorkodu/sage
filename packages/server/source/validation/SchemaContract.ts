@@ -6,7 +6,6 @@ import {
   SageResource,
   SageAttribute,
   SageAct,
-  SageLink,
   SageValidationContract,
 } from "../type";
 

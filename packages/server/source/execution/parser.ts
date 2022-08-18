@@ -35,13 +35,13 @@ export const SageParser = {
   },
 
   unsimplifyQuery(simplifiedQuery: SageSimplifiedQuery): SageQuery {
-    let query: any = {};
+    let query: SageQuery = {};
 
     //? iterate all query keys and rename
     for (const [key, value] of Object.entries(simplifiedQuery)) {
       switch (key) {
         case "typ":
-          query.type = value;
+          query.resource = value;
           break;
         case "atr":
           query.attributes = value;
@@ -71,9 +71,8 @@ export const SageParser = {
    */
   replaceLinkReferencesWithQueries(document: SageDocument): SageDocument {
     for (let [queryName, query] of Object.entries(document)) {
-      if (query.links) {
+      if (query.links !== null) {
         for (const [linkName, linkReference] of Object.entries(query.links)) {
-          // @ts-ignore
           //! typescript HOTFIX: 'links' may be undefined, but we already checked this two lines above.
           document[queryName].links[linkName] = document[linkReference];
         }

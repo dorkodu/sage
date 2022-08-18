@@ -1,5 +1,5 @@
-import { SageProblem } from "../problem";
-import { Maybe } from "../utils";
+import { SageProblem } from "./problem";
+import { Maybe, Nullable } from "./utils";
 
 export type SageContext = any;
 
@@ -11,44 +11,32 @@ export interface SageDefinition {
 
 export interface SageAttribute extends SageDefinition {
   readonly rule?: (value: any) => boolean;
-  readonly resolve: SageArtifactFunction;
+  readonly value: SageArtifactFunction;
 }
 
 export interface SageAct extends SageDefinition {
   readonly do: SageArtifactFunction;
 }
 
-export interface SageLink extends SageDefinition {
-  readonly linksTo: SageResource;
-  readonly resolve: (resource: any, context: SageContext) => any;
-}
-
 export interface SageResource extends SageDefinition {
   readonly attributes?: { [key: string]: SageAttribute };
   readonly acts?: { [key: string]: SageAct };
-  readonly links?: { [key: string]: SageLink };
-  readonly resolve: (query: SageQuery, context: SageContext) => SageContext;
-}
-
-export interface SageCollection extends SageResource {
-  readonly resolve: (query: SageQuery, context: SageContext) => SageContext;
+  readonly context: (query: SageQuery, context: SageContext) => SageContext;
 }
 
 export interface SageSchema {
-  readonly types: { [key: string]: SageResource };
+  readonly resources: { [key: string]: SageResource };
 }
 
 //? Document
+export type SageLinkReference = string;
 
 export interface SageQuery {
-  readonly type: string;
-  readonly arguments: { [key: string]: any };
-  readonly attributes: string[];
-  readonly act: string;
-  readonly links: { [key: string]: SageLinkReference };
+  resource?: string;
+  arguments?: { [key: string]: any };
+  attributes?: string[];
+  act?: string;
 }
-
-export type SageLinkReference = SageQuery | string;
 
 export interface SageDocument {
   [key: string]: SageQuery;
@@ -76,11 +64,10 @@ export interface SageExecutionContext {
 }
 
 export interface SageSimplifiedQuery {
-  readonly typ?: string;
-  readonly arg?: { [key: string]: any };
-  readonly atr?: string[];
-  readonly act?: string;
-  readonly lnk?: { [key: string]: string };
+  res?: string;
+  arg?: { [key: string]: any };
+  atr?: string[];
+  act?: string;
 }
 
 export interface SageSimplifiedDocument {
