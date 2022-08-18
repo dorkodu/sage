@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ES2017",
+    "target": "ES6",
     "outDir": "./dist",
     "removeComments": true,
     "moduleResolution": "node"
   },
-  "include": ["./source", "./test"]
+  "include": ["source", "example", "test"]
 }
