@@ -1,7 +1,15 @@
 *.log
 .DS_Store
 .vscode
+
+yarn.lock
+.yarn/*
+.yarn/cache
+.yarn/unplugged
+
 node_modules
 dist
 inspiration
 package-lock.json
+coverage/
+__generated__

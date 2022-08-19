@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.build.json",
+  "include": ["packages", "types", "scripts", "examples"],
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "paths": {
+      "@dorkodu/sage.server": ["packages/server/source"],
+      "@dorkodu/sage.client": ["packages/client/source"],
+      "$test/*": ["test/*"]
+    }
+  }
+}
