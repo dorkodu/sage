@@ -1,10 +1,12 @@
 {
+  "extends": "../../tsconfig.json",
+  "include": ["source", "test", "jest.config.js"],
   "compilerOptions": {
-    "strict": true,
     "target": "ES2019",
+    "lib": ["ES2020.Promise"],
+    "strict": true,
     "outDir": "./dist",
     "removeComments": true,
     "moduleResolution": "node"
-  },
-  "include": ["source", "example", "test"]
+  }
 }
