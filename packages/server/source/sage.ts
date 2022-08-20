@@ -17,17 +17,16 @@ import { SageParser } from "./execution/parser";
 import { SageExecutor } from "./execution";
 
 export const Sage = {
-  execute(schema: SageSchema, document: SageDocument, context?: SageContext) {
-    try {
-      return SageExecutor.execute(schema, document, context);
-    } catch ($e) {
-      return $e;
-    }
+  execute(
+    document: SageDocument,
+    schema: SageSchema,
+    context: SageContext = {}
+  ) {
+    return SageExecutor.execute(schema, document, context);
   },
 
   validateSchema(schema: SageSchema): SageProblem[] | true {
     const problems = SchemaContract.validate(schema);
-
     if (problems.length > 0) return problems;
     else return true;
   },

@@ -1,4 +1,4 @@
-import { invert } from './utils';
+import { invert } from "./utils";
 
 export class SageProblem extends Error {
   public readonly cause?;
@@ -21,47 +21,40 @@ export class SageProblem extends Error {
 
     this.code = code;
     this.cause = cause;
-    this.name = 'Sage::Problem';
+    this.name = "Sage::Problem";
 
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-export function Premise(
-  test: any,
-  message: string = "",
-  cause?: Error
-) {
-    
+export function Premise(test: any, message: string = "", cause?: Error) {
   //? create sage problem
   //* (just that same old error, but rebranded!)
   let problem = new SageProblem({
-    message: `Sage: [${type.toString()}] ` + message + 
-    (cause
-      ? ` \n[Reason] ${cause.name + cause.message + " \n" + cause?.stack}`
-      : ""),
-    code: 'INTERNAL_SERVER_ERROR',
-    cause
+    message:
+      `Sage: [Problem] ` +
+      message +
+      (cause
+        ? ` \n[Reason] ${cause.name + cause.message + " \n" + cause?.stack}`
+        : ""),
+    code: "INTERNAL_SERVER_ERROR",
+    cause,
   });
 
-  // log message example below:
-  // Sage::ERROR: Resource 'User' does not define act 'name'.
   //? log problem to console
   //! report only if test fails
   if (!test) console.error(problem.message);
-  
+
   //? return the problem for future use
   return problem;
 }
 
 export function getMessageFromUnkownError(
   error: unknown,
-  fallback: string,
+  fallback: string = "An unknown error occured. No information found."
 ): string {
-  
-  if (typeof error === 'string') 
-    return error;
-  if (error instanceof Error && typeof error.message === 'string')
+  if (typeof error === "string") return error;
+  if (error instanceof Error && typeof error.message === "string")
     return error.message;
 
   return fallback;
@@ -70,19 +63,21 @@ export function getMessageFromUnkownError(
 export function getErrorFromUnknown(cause: unknown): SageProblem {
   // this should ideally be an `instanceof SageProblem` but tRPC source code says that isn't working for some reason :/
   // ref https://github.com/trpc/trpc/issues/331
-  if (cause instanceof SageProblem && cause.name === 'Sage::Problem')
+  if (cause instanceof SageProblem && cause.name === "Sage::Problem")
     return cause as SageProblem;
 
   const problem = new SageProblem({
-    code: 'INTERNAL_SERVER_ERROR',
-    cause,
+    code: "INTERNAL_SERVER_ERROR",
+    message: "An unresolved error occured."
   });
 
-  // take stack trace from cause
+  // take error info from cause
   if (cause instanceof Error) {
     problem.stack = cause.stack;
+    problem.message = cause.message;
+    problem.name = cause.name;
   }
-  
+
   return problem;
 }
 
@@ -98,7 +93,7 @@ export const SageErrorCodesByKey = {
    * An error occurred on the server while parsing the JSON text.
    */
   PARSE_ERROR: -32700,
-  
+
   /**
    * The JSON sent is not a valid Sage.Document object.
    */
@@ -108,18 +103,18 @@ export const SageErrorCodesByKey = {
    * Internal error type for user-safe prompting.
    */
   INTERNAL_SERVER_ERROR: -32603,
-  
+
   //? Implementation specific errors
-  
-  UNAUTHORIZED: -32001,           // 401
-  FORBIDDEN: -32003,              // 403
-  NOT_FOUND: -32004,              // 404
-  METHOD_NOT_SUPPORTED: -32005,   // 405
-  TIMEOUT: -32008,                // 408
-  CONFLICT: -32009,               // 409
-  PRECONDITION_FAILED: -32012,    // 412
-  PAYLOAD_TOO_LARGE: -32013,      // 413
-  CLIENT_CLOSED_REQUEST: -32099,  // 499
+
+  UNAUTHORIZED: -32001, // 401
+  FORBIDDEN: -32003, // 403
+  NOT_FOUND: -32004, // 404
+  METHOD_NOT_SUPPORTED: -32005, // 405
+  TIMEOUT: -32008, // 408
+  CONFLICT: -32009, // 409
+  PRECONDITION_FAILED: -32012, // 412
+  PAYLOAD_TOO_LARGE: -32013, // 413
+  CLIENT_CLOSED_REQUEST: -32099, // 499
 } as const;
 
 export const SageErrorCodesByNumber = invert(SageErrorCodesByKey);

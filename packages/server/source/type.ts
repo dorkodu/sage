@@ -32,7 +32,7 @@ export interface SageSchema {
 export type SageLinkReference = string;
 
 export interface SageQuery {
-  resource?: string;
+  resource: string;
   arguments?: { [key: string]: any };
   attributes?: string[];
   act?: string;
@@ -64,7 +64,7 @@ export interface SageExecutionContext {
 }
 
 export interface SageSimplifiedQuery {
-  res?: string;
+  res: string;
   arg?: { [key: string]: any };
   atr?: string[];
   act?: string;

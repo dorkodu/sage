@@ -2,28 +2,28 @@ import { Sage } from "../source";
 import { schema } from "./schema";
 
 const request = {
-  berk: {},
   doruk: {
-    typ: "Person",
-    atr: ["name", "age"],
+    res: "Person",
+    atr: ["name", "age", "favoriteArtwork"],
     arg: {
-      personId: 1,
-    },
-    lnk: {
-      bestFriend: "doruk:bestFriend",
+      id: 1,
     },
   },
-  "doruk:bestFriend": {
+  "doruk:favoriteArtwork": {
+    res: "Artwork",
     atr: ["name"],
-    lnk: {
-      favoriteArtwork: "doruk:bestFriend:favoriteArtwork",
+    arg: {
+      id: 1,
     },
-  },
-  "doruk:bestFriend:favoriteArtwork": {
-    atr: ["name"],
   },
 };
 
+//? parse and validate document
 const { document, problems } = Sage.parse(request);
-const schemaValidationResult = Sage.validateSchema(document);
-const result = Sage.execute();
+
+//? validate schema
+const schemaValidationResult = Sage.validateSchema(schema);
+
+//? execute query
+//! only if BOTH document & schema are validated.
+const result = Sage.execute(document, schema, {});
