@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "lib": ["es5", "es6", "dom", "dom.iterable"],
+    "lib": ["es5", "es6", "ES2019", "dom", "dom.iterable"],
     "target": "ES5",
     "importHelpers": true,
     "declaration": true,
