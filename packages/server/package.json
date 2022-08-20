@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "dev": "ts-node-dev --respawn --quiet source/index.ts",
+    "dev": "ts-node-dev --respawn --quiet ./source/index.ts",
     "test": "jest"
   },
   "main": "dist/sage.server.cjs.js",

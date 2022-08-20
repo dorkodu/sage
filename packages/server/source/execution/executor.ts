@@ -10,7 +10,13 @@ import {
 } from "../type";
 
 import { DocumentContract, QueryContract, SchemaContract } from "../validation";
-import { Maybe } from "../utils";
+import { assertNotBrowser, Maybe } from "../utils";
+import { SageProblem } from "../problem";
+
+interface SageQueryExecutionResult {
+  data: any;
+  errors: SageProblem[];
+}
 
 export const SageExecutor = {
   /**
@@ -36,6 +42,9 @@ export const SageExecutor = {
 
     for (let [name, query] of Object.entries(document)) {
       let queryResult = this.executeQuery(schema, query, context);
+      
+      //? if errors has 
+      if()
     }
 
     return result;
@@ -61,7 +70,7 @@ export const SageExecutor = {
    *   > *linksResult* are appended as a reserved attribute *‘$links’* to the *resultMap*.
    * 8. Return *resultMap*.
    */
-  executeQuery(schema: SageSchema, query: SageQuery, context: SageContext) {
+  executeQuery(schema: SageSchema, query: SageQuery, context: SageContext): SageQueryExecutionResult {
     let result: any = {};
 
     let resource = schema.resources[query.resource];
@@ -100,7 +109,14 @@ export const SageExecutor = {
     context: SageContext
   ): true | SageProblem[] {
     //! resource has no acts
+
+    ();
+
     if (typeof resource.acts === undefined) {
+      let problem = new SageProblem({
+        code: 123,
+        message: `Resource "${resource.name}" has no acts defined.`,
+      });
     }
 
     return true;

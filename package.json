@@ -29,7 +29,7 @@
     "test": "npm-run-all -p test:server test:client",
     "test:server": "cd ./packages/server && yarn test",
     "test:client": "cd ./packages/client && yarn test",
-    "warmup": "npm-run-all -s init:server init:client",
+    "warmup": "npm-run-all -s warm:server warm:client",
     "warm:server": "cd ./packages/server && yarn",
     "warm:client": "cd ./packages/client && yarn"
   },
