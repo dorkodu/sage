@@ -1,18 +1,7 @@
 {
   "name": "sage",
-  "packageManager": "yarn@3.2.2",
   "type": "module",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
-  "preconstruct": {
-    "packages": [
-      "packages/*"
-    ]
-  },
   "prettier": {
     "printWidth": 80,
     "trailingComma": "all",
@@ -27,56 +16,25 @@
   "engines": {
     "node": "^16.0.0"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "lerna": "lerna",
-    "start": "preconstruct watch",
-    "dev": "yarn start",
-    "test": "cd packages/server && yarn jest",
-    "lint": "eslint --ext \".js,.ts,.tsx\" --ignore-path .gitignore .",
-    "lint-fix": "yarn lint --fix && manypkg fix",
-    "codegen": "yarn ts-node scripts/generateBigFRouter.ts",
-    "ts-node": "ts-node --compiler-options '{\"module\":\"commonjs\"}'",
-    "postinstall": "preconstruct dev && yarn codegen",
-    "build": "preconstruct build",
-    "prepublish": "yarn build",
-    "prepack": "yarn ts-node scripts/postversion.ts",
-    "changeset": "changeset",
-    "release": "changeset publish",
-    "commit-date": "git log -n 1 --date=format:'%Y-%m-%d-%H-%M-%S' --pretty=format:'%ad'",
-    "canary-preid": "echo \"$(yarn --silent current-branch)-$(yarn --silent commit-date)\"",
-    "current-branch": "echo \"$(git rev-parse --abbrev-ref HEAD)\" | sed -E 's/refs\\/heads\\///' | sed -E 's/\\W|_/-/g' | sed -e 's/\\//-/'",
-    "publish-prerelease": "yarn && yarn lerna publish prerelease --force-publish --dist-tag experimental --no-push && sleep 60 && git push --follow-tags"
+    "build": "npm-run-all -p build:server build:client",
+    "build:server": "cd ./packages/server && yarn build",
+    "build:client": "cd ./packages/client && yarn build",
+    "dev": "npm-run-all -p dev:server dev:client",
+    "dev:server": "cd ./packages/server && yarn dev",
+    "dev:client": "cd ./packages/client && yarn dev",
+    "test": "npm-run-all -p test:server test:client",
+    "test:server": "cd ./packages/server && yarn test",
+    "test:client": "cd ./packages/client && yarn test",
+    "init": "npm-run-all -s init:server init:client",
+    "init:server": "cd ./packages/server && yarn",
+    "init:client": "cd ./packages/client && yarn"
   },
-  "dependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.4",
-    "@babel/preset-typescript": "^7.15.0",
-    "@changesets/changelog-github": "^0.4.1",
-    "@changesets/cli": "^2.17.0",
-    "@manypkg/cli": "^0.19.0",
-    "@preconstruct/cli": "^2.1.2",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/user-event": "^14.1.1",
-    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
-    "@types/jest": "^27.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "babel-plugin-annotate-pure-calls": "^0.4.0",
-    "babel-plugin-dev-expression": "^0.2.2",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-no-only-tests": "^2.6.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-unicorn": "40.1.0",
-    "expect-type": "^0.13.0",
-    "jest": "^28.1.3",
-    "jsdom": "^20.0.0",
-    "lerna": "^4.0.0",
-    "playwright": "^1.19.1",
-    "prettier": "^2.5.1",
-    "ts-jest": "^28.0.8",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.7.3"
-  }
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "packageManager": "yarn@3.2.2"
 }

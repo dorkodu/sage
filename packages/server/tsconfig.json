@@ -3,7 +3,6 @@
   "include": ["source", "test", "jest.config.js"],
   "compilerOptions": {
     "target": "ES2019",
-    "lib": ["ES2020.Promise"],
     "strict": true,
     "outDir": "./dist",
     "removeComments": true,

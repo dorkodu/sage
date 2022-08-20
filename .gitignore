@@ -2,10 +2,13 @@
 .DS_Store
 .vscode
 
-yarn.lock
 .yarn/*
-.yarn/cache
-.yarn/unplugged
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 node_modules
 dist
