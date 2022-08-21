@@ -110,10 +110,69 @@ export const SageExecutor = {
   },
 
   retrieveAttribute(
-    attribute: string,
+    attributeName: string,
     resource: SageResource,
     context: SageContext = {},
-  ) {},
+  ): ProcedureResult {
+    // create empty procedure result
+    let result: ProcedureResult = {
+      data: null,
+      errors: [],
+    };
+
+    //TODO: make this perfect code block a reusable helper function called 'Premise' & hide complexity
+    //! resource has no attributes
+    if (typeof resource.attributes == "undefined") {
+      result.errors.push(
+        new SageProblem({
+          message: `Resource '${resource.name}' has no attributes defined.`,
+          code: SageStatusCode.UNDEFINED,
+        }),
+      );
+      return result;
+    }
+
+    const attribute = resource.attributes[attributeName];
+
+    //! attribute is not defined
+    if (typeof attribute == "undefined") {
+      result.errors.push(
+        new SageProblem({
+          message: `Attribute '${attributeName}' is not defined on resource '${resource.name}'.`,
+          code: SageStatusCode.UNDEFINED,
+        }),
+      );
+      return result;
+    }
+
+    /**
+     * ? retrieve value AND validate
+     * used try-catch here because the user-written schema definition code may cause error.
+     * an error thrown would break the entire execution, so never trust luck!
+     */
+    try {
+      const value = attribute.value(context);
+
+      if (typeof attribute.rule == "function") {
+        if (attribute.rule(value) == false) {
+          result.errors.push(
+            new SageProblem({
+              message: `Returned value (${value}) from attribute '${attributeName}' is invalid.`,
+              code: SageStatusCode.INVALID_VALUE,
+            }),
+          );
+          return result;
+        }
+      }
+
+      //? add value ONLY AFTER VERIFIED RULE
+      result.data = value;
+    } catch (error) {
+      result.errors.push(getErrorFromUnknown(error));
+    }
+
+    return result;
+  },
 
   performAct(
     act: string,
