@@ -10,12 +10,18 @@ import {
 } from "../type";
 
 import { DocumentContract, QueryContract, SchemaContract } from "../validation";
-import { assertNotBrowser, Maybe } from "../utils";
-import { Premise, SageProblem } from "../problem";
+import { assertNotBrowser, Maybe, OneOrMany } from "../utils";
+import {
+  getErrorFromUnknown,
+  Premise,
+  SageProblem,
+  SageStatusCode,
+} from "../problem";
 
-interface SageQueryExecutionResult {
+interface ProcedureResult {
   data: any;
-  errors: SageProblem[];
+  errors: Error[];
+  meta?: any;
 }
 
 export const SageExecutor = {
