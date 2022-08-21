@@ -28,33 +28,38 @@ export class SageProblem extends Error {
  * @returns SageProblem
  */
 export function Premise(
-  test: any,
+  test: boolean,
   info: {
     message: string;
     code?: SageStatusCode;
     cause?: Error;
   },
-): SageProblem {
+): SageProblem | true {
   //? create sage problem with the information provided
   //* (just that same old error, but rebranded!)
+
+  let errorlog =
+    `Sage: [Problem] ` +
+    info.message +
+    (info.cause
+      ? ` \n[Reason] ${
+          info.cause.name + info.cause.message + " \n " + info.cause?.stack
+        }`
+      : "");
+
   let problem = new SageProblem({
-    message:
-      `Sage: [Problem] ` +
-      info.message +
-      (info.cause
-        ? ` \n[Reason] ${
-            info.cause.name + info.cause.message + " \n " + info.cause?.stack
-          }`
-        : ""),
+    message: errorlog,
     code: info.code ?? SageStatusCode.INTERNAL_SERVER_ERROR,
-    cause: info.cause,
+    cause: info.cause ?? new Error(errorlog),
   });
 
   //! log problem to console only if test fails
-  if (!test) console.error(problem.message);
-
   //? return the problem for future use
-  return problem;
+  if (!test) {
+    return problem;
+  }
+
+  return true;
 }
 
 export function getMessageFromUnkownError(
@@ -100,17 +105,17 @@ export function getErrorFromUnknown(cause: unknown): SageProblem {
  */
 
 /**
- * Sage's own protocol status codes, mimicking and extending HTTP.
+ * Sage's own protocol status codes, mimicking HTTP's.
  * Note: Unstable! Subject to change, don't depend on.
  */
-enum SageStatusCode {
+export enum SageStatusCode {
   /**
    * Invalid request was received by the server.
    * An error occurred on the server while parsing the JSON text.
    */
   PARSE_ERROR = 700,
 
-  OK = 200,
+  OK = 200, // Request was successful, but no detail
   CREATED = 202,
   NO_CONTENT = 204,
   RESET_CONTENT = 205,
@@ -125,23 +130,23 @@ enum SageStatusCode {
    */
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-  METHOD_NOT_SUPPORTED = 405,
+  FORBIDDEN = 403, // resource exists but cannot access
+  NOT_FOUND = 404, // resource not found
+  UNDEFINED = 405, // requested artifact is not defined on resource
   NOT_ACCEPTABLE = 406,
   TIMEOUT = 408,
   CONFLICT = 409,
   PRECONDITION_FAILED = 412,
-  PAYLOAD_TOO_LARGE = 413,
-  CLIENT_CLOSED_REQUEST = 499,
-
-  INTERNAL_SERVER_ERROR = 500,
-  NOT_IMPLEMENTED = 501,
-  SERVICE_UNAVAILABLE = 503,
+  PAYLOAD_TOO_LARGE = 413, //
   TEAPOT = 418,
   LOCKED = 423,
   FAILED_DEPENDENCY = 424,
   UPGRADE_REQUIRED = 426,
-  TOO_MANY_REQUESTS = 429,
+  TOO_MANY_REQUESTS = 429, // max query limit per request,
   LEGAL = 451,
+  CLIENT_CLOSED_REQUEST = 499,
+
+  INTERNAL_SERVER_ERROR = 500, // unknown or secrets hidden
+  INVALID_VALUE = 501, // attribute value is invalid
+  SERVICE_UNAVAILABLE = 503, // sage error, nothing to hide
 }

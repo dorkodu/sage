@@ -11,13 +11,13 @@ export function assertNotBrowser() {
   }
 }
 
-type KeyFromValue<V, T extends Record<PropertyKey, PropertyKey>> = {
+export type KeyFromValue<V, T extends Record<PropertyKey, PropertyKey>> = {
   [K in keyof T]: V extends T[K] ? K : never;
 }[keyof T];
 
-type ValueOf<T> = T[keyof T];
+export type ValueOf<T> = T[keyof T];
 
-type Invert<T extends Record<PropertyKey, PropertyKey>> = {
+export type Invert<T extends Record<PropertyKey, PropertyKey>> = {
   [V in T[keyof T]]: KeyFromValue<V, T>;
 };
 
