@@ -175,19 +175,53 @@ export const SageExecutor = {
   },
 
   performAct(
-    act: string,
+    actName: string,
     resource: SageResource,
-    context: SageContext,
-  ): true | SageProblem[] {
-    let problems: SageProblem[] = [];
+    context: SageContext = {},
+  ): ProcedureResult {
+    // create empty procedure result
+    let result: ProcedureResult = {
+      /* return if act performed successfully */
+      data: false,
+      errors: [],
+    };
+
+    //TODO: find an elegant way to push/capture all problems into an array and return it
 
     //! resource has no acts
-    Premise(
-      typeof resource.acts !== "undefined",
-      `Resource '${resource.name}' has no acts defined.`,
-    );
+    if (typeof resource.acts == "undefined") {
+      result.errors.push(
+        new SageProblem({
+          message: `Resource '${resource.name}' has no acts defined.`,
+          code: SageStatusCode.UNDEFINED,
+        }),
+      );
+      return result;
+    }
 
-    return true;
+    const act = resource.acts[actName];
+
+    //! act is not defined
+    if (typeof act == "undefined") {
+      result.errors.push(
+        new SageProblem({
+          message: `Act '${actName}' is not defined on resource '${resource.name}'.`,
+          code: SageStatusCode.UNDEFINED,
+        }),
+      );
+      return result;
+    }
+
+    //? run act's procedure with user-given context
+    // make sure no exception passes through
+    try {
+      act.do(context);
+      result.data = true;
+    } catch (error) {
+      result.errors.push(getErrorFromUnknown(error));
+    }
+
+    return result;
   },
 
   emptyExecutionResult(): SageExecutionResult {
