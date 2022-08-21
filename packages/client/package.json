@@ -16,6 +16,7 @@
       "index.ts"
     ]
   },
+  "type": "module",
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "dev": "ts-node-dev --respawn --quiet ./source/index.ts",

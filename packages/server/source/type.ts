@@ -44,9 +44,9 @@ export interface SageDocument {
 
 //? execution
 export interface SageExecutionResult {
-  data: object;
-  error: object;
-  meta: object;
+  data: { [key: string | number]: any };
+  error: { [key: string | number]: Error[] };
+  meta: any;
 }
 
 export interface SageValidationContract {
@@ -60,7 +60,7 @@ export interface SageExecutionContext {
   schema: SageSchema;
   query: SageQuery;
   context: SageContext;
-  problems: Array<SageProblem>;
+  problems: SageProblem[];
 }
 
 export interface SageSimplifiedQuery {

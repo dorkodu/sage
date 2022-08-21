@@ -20,7 +20,7 @@ export const Sage = {
   execute(
     document: SageDocument,
     schema: SageSchema,
-    context: SageContext = {}
+    context: SageContext = {},
   ) {
     return SageExecutor.execute(schema, document, context);
   },

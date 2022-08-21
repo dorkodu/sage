@@ -10,6 +10,7 @@
     "url": "git+https://github.com/dorkodu/sage.git",
     "directory": "packages/server"
   },
+  "type": "module",
   "packageManager": "yarn@3.2.2",
   "preconstruct": {
     "entrypoints": [

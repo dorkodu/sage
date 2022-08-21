@@ -3,7 +3,6 @@
 .vscode
 
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -13,6 +12,5 @@
 node_modules
 dist
 inspiration
-package-lock.json
 coverage/
 __generated__

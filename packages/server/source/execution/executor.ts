@@ -11,7 +11,7 @@ import {
 
 import { DocumentContract, QueryContract, SchemaContract } from "../validation";
 import { assertNotBrowser, Maybe } from "../utils";
-import { SageProblem } from "../problem";
+import { Premise, SageProblem } from "../problem";
 
 interface SageQueryExecutionResult {
   data: any;
@@ -35,16 +35,18 @@ export const SageExecutor = {
   execute(
     schema: SageSchema,
     document: SageDocument,
-    context: SageContext = {}
+    context: SageContext = {},
   ): SageExecutionResult {
     //? by default return an empty result
     let result = this.emptyExecutionResult();
 
     for (let [name, query] of Object.entries(document)) {
       let queryResult = this.executeQuery(schema, query, context);
-      
-      //? if errors has 
-      if()
+
+      //? if has any error, add
+      if (queryResult.errors.length > 0) {
+        result.error[name] = [];
+      }
     }
 
     return result;
@@ -70,7 +72,11 @@ export const SageExecutor = {
    *   > *linksResult* are appended as a reserved attribute *‘$links’* to the *resultMap*.
    * 8. Return *resultMap*.
    */
-  executeQuery(schema: SageSchema, query: SageQuery, context: SageContext): SageQueryExecutionResult {
+  executeQuery(
+    schema: SageSchema,
+    query: SageQuery,
+    context: SageContext,
+  ): SageQueryExecutionResult {
     let result: any = {};
 
     let resource = schema.resources[query.resource];
@@ -85,7 +91,7 @@ export const SageExecutor = {
         let attributeValue = this.retrieveAttribute(
           attribute,
           resource,
-          context
+          context,
         );
 
         //* attributes.<attributeName> = <attributeValue>
@@ -100,24 +106,21 @@ export const SageExecutor = {
   retrieveAttribute(
     attribute: string,
     resource: SageResource,
-    context: SageContext = {}
+    context: SageContext = {},
   ) {},
 
   performAct(
     act: string,
     resource: SageResource,
-    context: SageContext
+    context: SageContext,
   ): true | SageProblem[] {
+    let problems: SageProblem[] = [];
+
     //! resource has no acts
-
-    ();
-
-    if (typeof resource.acts === undefined) {
-      let problem = new SageProblem({
-        code: 123,
-        message: `Resource "${resource.name}" has no acts defined.`,
-      });
-    }
+    Premise(
+      typeof resource.acts !== "undefined",
+      `Resource '${resource.name}' has no acts defined.`,
+    );
 
     return true;
   },

@@ -15,6 +15,8 @@ type KeyFromValue<V, T extends Record<PropertyKey, PropertyKey>> = {
   [K in keyof T]: V extends T[K] ? K : never;
 }[keyof T];
 
+type ValueOf<T> = T[keyof T];
+
 type Invert<T extends Record<PropertyKey, PropertyKey>> = {
   [V in T[keyof T]]: KeyFromValue<V, T>;
 };
@@ -60,7 +62,7 @@ export type flatten<T, Q> = identity<{
  */
 export type Prefixer<
   TObj extends Record<string, any>,
-  TPrefix extends string
+  TPrefix extends string,
 > = {
   [P in keyof TObj as Prefix<TPrefix, string & P>]: TObj[P];
 };
