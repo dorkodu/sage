@@ -58,55 +58,60 @@ export const SageExecutor = {
     return result;
   },
 
-  /**
-   * ExecuteQuery(schema, query)
-   * 1.  Let *entityType* be the type in *query*.
-   *   1.  Assert: *entityType* is an Entity type defined in *schema*.
-   * 2. Let *referenceValue* be the result of calling the Entity type’s resolver function with *query* as the parameter.
-   * 3. Let *act* be the act in *query*.
-   *   1.  If *act* is defined:
-   *     1.  Run [PerformAct](#7.2.1.1) **(** *entityType, act, schema, referenceValue* **)**.
-   * 4. Let *attributes* be the set of requested attributes in *query*.
-   *   1.  If *attributes* is defined:
-   *     1.  Let *attributesResult* be the result of [RetrieveAttributes](#7.2.1.2) **(** *entityType, attributes, schema, referenceValue* **)**.
-   * 5. Let *links* be the map of requested links in *query*.
-   *   1.  If *links* is defined:
-   *     1.  Let *linksResult* be the result of [ResolveLinks](#7.2.1.3) **(** *entityType, links, schema, referenceValue* **)**.
-   * 6. If *attributesResult* is not empty, let *resultMap* be equal to *attributesResult*.
-   *    Otherwise initialize *resultMap* to an empty ordered map.
-   * 7. If *linksResult* is not empty, set it as the value for the key *$links* in *resultMap*.
-   *   > *linksResult* are appended as a reserved attribute *‘$links’* to the *resultMap*.
-   * 8. Return *resultMap*.
-   */
   executeQuery(
     schema: SageSchema,
     query: SageQuery,
     context: SageContext,
-  ): SageQueryExecutionResult {
-    let result: any = {};
+  ): ProcedureResult {
+    // create empty result
+    let result: ProcedureResult = {
+      data: null,
+      errors: [],
+    };
 
     let resource = schema.resources[query.resource];
-    context = resource.resolve(query, context);
+
+    //! assert resource is defined on schema
+    if (typeof resource == "undefined") {
+      result.errors.push(
+        new SageProblem({
+          message: `Requested resource '${query.resource}' is not defined on schema.`,
+          code: SageStatusCode.NOT_FOUND,
+        }),
+      );
+      return result;
+    }
+
+    //? create a new context from resource
+    context = resource.context(query, context);
+
+    //* initialize global attributes map before checking if asked for any.
 
     //? retrieve attributes
-    if (typeof query.attributes) {
-      // typing for resolved attribute values
-      let attributes: { [key: string]: any } = [];
-
-      for (let attribute in query.attributes) {
-        let attributeValue = this.retrieveAttribute(
-          attribute,
+    if (typeof query.attributes !== "undefined") {
+      query.attributes.forEach((attributeName) => {
+        //? retrieve attribute
+        let attributeResult = this.retrieveAttribute(
+          attributeName,
           resource,
           context,
         );
 
-        //* attributes.<attributeName> = <attributeValue>
-        attributes[attribute] = attributeValue;
-      }
+        //? add procedure results to global query result
+        result.data[attributeName] = attributeResult.data;
+        result.errors.push(...attributeResult.errors);
+      });
     }
 
     //? perform acts
-    //? resolve links
+    if (typeof query.act !== "undefined") {
+      let actResult = this.performAct(query.act, resource, context);
+
+      // add act errors to global query result
+      result.errors.push(...actResult.errors);
+    }
+
+    return result;
   },
 
   retrieveAttribute(
