@@ -6,14 +6,8 @@ import {
   SageExecutionResult,
   SageQuery,
 } from "../type";
-
 import { getErrorFromUnknown, SageProblem, SageStatusCode } from "../problem";
-
-interface ProcedureResult {
-  data: any;
-  errors: Error[];
-  meta?: any;
-}
+import { ProcedureResult } from "../utils";
 
 export const SageExecutor = {
   execute(
@@ -52,7 +46,7 @@ export const SageExecutor = {
     let resource = schema.resources[query.resource];
 
     //! assert resource is defined on schema
-    if (typeof resource == "undefined") {
+    if (resource === undefined) {
       result.errors.push(
         new SageProblem({
           message: `Requested resource '${query.resource}' is not defined on schema.`,
@@ -68,7 +62,7 @@ export const SageExecutor = {
     //* initialize global attributes map before checking if asked for any.
 
     //? retrieve attributes
-    if (typeof query.attributes !== "undefined") {
+    if (query.attributes !== undefined) {
       query.attributes.forEach((attributeName) => {
         //? retrieve attribute
         let attributeResult = this.retrieveAttribute(
@@ -84,7 +78,7 @@ export const SageExecutor = {
     }
 
     //? perform acts
-    if (typeof query.act !== "undefined") {
+    if (query.act !== undefined) {
       let actResult = this.performAct(query.act, resource, context);
 
       // add act errors to global query result
@@ -107,7 +101,7 @@ export const SageExecutor = {
 
     //TODO: make this perfect code block a reusable helper function called 'Premise' & hide complexity
     //! resource has no attributes
-    if (typeof resource.attributes == "undefined") {
+    if (resource.attributes === undefined) {
       result.errors.push(
         new SageProblem({
           message: `Resource '${resource.name}' has no attributes defined.`,
@@ -120,7 +114,7 @@ export const SageExecutor = {
     const attribute = resource.attributes[attributeName];
 
     //! attribute is not defined
-    if (typeof attribute == "undefined") {
+    if (attribute === undefined) {
       result.errors.push(
         new SageProblem({
           message: `Attribute '${attributeName}' is not defined on resource '${resource.name}'.`,
@@ -174,7 +168,7 @@ export const SageExecutor = {
     //TODO: find an elegant way to push/capture all problems into an array and return it
 
     //! resource has no acts
-    if (typeof resource.acts == "undefined") {
+    if (resource.acts === undefined) {
       result.errors.push(
         new SageProblem({
           message: `Resource '${resource.name}' has no acts defined.`,
@@ -187,7 +181,7 @@ export const SageExecutor = {
     const act = resource.acts[actName];
 
     //! act is not defined
-    if (typeof act == "undefined") {
+    if (act === undefined) {
       result.errors.push(
         new SageProblem({
           message: `Act '${actName}' is not defined on resource '${resource.name}'.`,

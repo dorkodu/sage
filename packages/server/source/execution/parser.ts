@@ -1,38 +1,39 @@
-import { SageProblem, Premise } from "../problem";
+import { SageProblem } from "../problem";
 
 import {
   SageSimplifiedDocument,
   SageSimplifiedQuery,
   SageDocument,
   SageQuery,
+  SageExecutionResult,
 } from "../type";
 
+export interface ParseResult {
+  document: SageDocument;
+  errors: Error[];
+}
+
 export const SageParser = {
-  parse(source: SageSimplifiedDocument): {
-    document: SageDocument;
-    problems: SageProblem[];
-  } {
-    let problems: SageProblem[] = [];
-    /**
-     *? iterate all properties and rename:
-     **   res -> resource
-     **   atr -> attributes
-     **   act -> act
-     **   arg -> arguments
-     */
-    let document: SageDocument = {};
+  parse(source: SageSimplifiedDocument): ParseResult {
+    // empty parse result
+    let result: ParseResult = {
+      document: {},
+      errors: [],
+    };
 
     //? iterate all queries
     for (let [name, simplifiedQuery] of Object.entries(source)) {
       let query: SageQuery = this.unsimplifyQuery(simplifiedQuery);
-      document[name] = query; // place back each $query with extracted/renamed keys to $document
+      result.document[name] = query; // place back each $query with extracted/renamed keys to $document
     }
 
-    return { document, problems };
+    return result;
+  },
+
   },
 
   unsimplifyQuery(simplifiedQuery: SageSimplifiedQuery): SageQuery {
-    let query: SageQuery = { resource: simplifiedQuery.res};
+    let query: SageQuery = { resource: simplifiedQuery.res };
 
     //? iterate all query keys and rename
     for (const [key, value] of Object.entries(simplifiedQuery)) {
@@ -51,4 +52,4 @@ export const SageParser = {
 
     return query;
   },
-}
+};

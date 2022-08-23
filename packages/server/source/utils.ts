@@ -11,6 +11,11 @@ export function assertNotBrowser() {
   }
 }
 
+export interface ProcedureResult {
+  data: any;
+  errors: Error[];
+}
+
 export type KeyFromValue<V, T extends Record<PropertyKey, PropertyKey>> = {
   [K in keyof T]: V extends T[K] ? K : never;
 }[keyof T];
