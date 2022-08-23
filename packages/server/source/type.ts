@@ -45,7 +45,7 @@ export interface SageDocument {
 //? execution
 export interface SageExecutionResult {
   data: { [key: string | number]: any };
-  error: { [key: string | number]: Error[] };
+  errors: { [key: string | number]: Error[] };
   meta: any;
 }
 

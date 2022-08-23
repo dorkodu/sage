@@ -1,22 +1,13 @@
 import {
   SageResource,
-  SageAttribute,
   SageContext,
-  SageAct,
   SageSchema,
   SageDocument,
   SageExecutionResult,
   SageQuery,
 } from "../type";
 
-import { DocumentContract, QueryContract, SchemaContract } from "../validation";
-import { assertNotBrowser, Maybe, OneOrMany } from "../utils";
-import {
-  getErrorFromUnknown,
-  Premise,
-  SageProblem,
-  SageStatusCode,
-} from "../problem";
+import { getErrorFromUnknown, SageProblem, SageStatusCode } from "../problem";
 
 interface ProcedureResult {
   data: any;
@@ -25,19 +16,6 @@ interface ProcedureResult {
 }
 
 export const SageExecutor = {
-  /**
-   * ExecuteRequest(schema, document)
-   *
-   * 1.  Initialize *data* to an empty ordered map.
-   * 2.  Let *data* be the result of running the following algorithm *normally* (allowing parallelization) **:**
-   *     1.  For each *query* given in the *document* **:**
-   *         1.  Let *queryName* be the name of *query*.
-   *         2.  Let *queryResult* be the result of [ExecuteQuery](#7.2.0) **(** *schema, query* **)**.
-   *         3.  Set *queryResult* as the value for the key *queryName* in *data*.
-   * 3.  Let *problems* be a list of problem objects, each represents an problem produced while executing the queries.
-   * 4.  Return an unordered map containing *data* and *problems*.
-   *     1.  If *problems* is still empty at the end of the execution, return an unordered map containing only *data*.
-   */
   execute(
     schema: SageSchema,
     document: SageDocument,
@@ -46,13 +24,15 @@ export const SageExecutor = {
     //? by default return an empty result
     let result = this.emptyExecutionResult();
 
-    for (let [name, query] of Object.entries(document)) {
+    for (let [queryName, query] of Object.entries(document)) {
       let queryResult = this.executeQuery(schema, query, context);
 
-      //? if has any error, add
+      // create an errors entry for query ONLY IF it has any
       if (queryResult.errors.length > 0) {
-        result.error[name] = [];
+        result.errors[queryName] = queryResult.errors;
       }
+
+      result.data[queryName] = queryResult.data;
     }
 
     return result;
@@ -232,7 +212,7 @@ export const SageExecutor = {
   emptyExecutionResult(): SageExecutionResult {
     return {
       data: {},
-      error: {},
+      errors: {},
       meta: {},
     };
   },
