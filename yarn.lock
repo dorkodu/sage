@@ -424,6 +424,7 @@ __metadata:
   resolution: "@dorkodu/sage.server@workspace:packages/server"
   dependencies:
     "@types/jest": ^28.1.7
+    "@types/node": ^18.7.11
     jest: ^28.1.3
     rimraf: ^3.0.2
     ts-jest: ^28.0.8
@@ -921,6 +922,13 @@ __metadata:
   version: 18.7.8
   resolution: "@types/node@npm:18.7.8"
   checksum: e0125efefa896083c05f549d93166109959ffdd68cb626aad0d660c0ce9de888fe405b4763b4a3c3e0968560409c272413e0ad07204522543c688e162a617ecb
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.7.11":
+  version: 18.7.11
+  resolution: "@types/node@npm:18.7.11"
+  checksum: 66f200a5595d94285fa2052d29048b328acd729ace4be3516d3d2c1736ab33b5cbf698bec70afc5c6101e5df6c9867e3ec3a091dd937886c1e7a712ddde60f69
   languageName: node
   linkType: hard
 

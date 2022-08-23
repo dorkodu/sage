@@ -837,6 +837,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@dorkodu/sage.server", "workspace:packages/server"],\
             ["@types/jest", "npm:28.1.7"],\
+            ["@types/node", "npm:18.7.11"],\
             ["jest", "virtual:6b42de706b34d15b83aa08a51ffec96be09d8035063c86d959e1eb705a204054f955696704dc396b7b45b93fc83749a1f3d30658f7f851aa00dd259b4884886b#npm:28.1.3"],\
             ["rimraf", "npm:3.0.2"],\
             ["ts-jest", "virtual:6b42de706b34d15b83aa08a51ffec96be09d8035063c86d959e1eb705a204054f955696704dc396b7b45b93fc83749a1f3d30658f7f851aa00dd259b4884886b#npm:28.0.8"],\
@@ -1399,6 +1400,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/node", [\
+        ["npm:18.7.11", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-18.7.11-f39f364ab6-66f200a559.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:18.7.11"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:18.7.8", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.7.8-f0ed4b241a-e0125efefa.zip/node_modules/@types/node/",\
           "packageDependencies": [\

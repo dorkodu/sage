@@ -61,7 +61,7 @@ For example, if fetching *age* of Neo fails in the following query**:**
     "arg": {
       "character.id": 1
     }
-	} 
+  } 
 }
 ```
 
