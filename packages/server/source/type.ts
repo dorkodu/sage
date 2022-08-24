@@ -1,5 +1,5 @@
 import { SageProblem } from "./problem";
-import { Maybe, Nullable } from "./utils";
+import { Maybe, Nullable, ProcedureResult } from "./utils";
 
 export type SageContext = any;
 
@@ -50,17 +50,8 @@ export interface SageExecutionResult {
 }
 
 export interface SageValidationContract {
-  readonly validate: (value: any) => SageProblem[];
-}
-
-/**
- * Data that must be available at all points during query execution.
- */
-export interface SageExecutionContext {
-  schema: SageSchema;
-  query: SageQuery;
-  context: SageContext;
-  problems: SageProblem[];
+  readonly validate: (subject: any) => ProcedureResult;
+  rules: { [key: string]: (subject: any) => true | Error };
 }
 
 export interface SageSimplifiedQuery {
