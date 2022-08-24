@@ -43,6 +43,39 @@ export const SageParser = {
     return errorOutput;
   },
 
+  response(result: SageExecutionResult, meta?: any): SageResponse {
+    //? empty response
+    let response: SageResponse = {};
+
+    //? add errors to response
+    if (
+      result.errors !== undefined &&
+      result.errors !== null &&
+      Object.keys(result.errors).length > 0
+    ) {
+      response.errors = {};
+
+      for (let [name, errors] of Object.entries(result.errors)) {
+        // empty error output array
+        let errorOutputs: SageErrorOutput[] = [];
+
+        errors.forEach((e) => {
+          errorOutputs.push(this.outputError(e));
+        });
+
+        // add error outputs to response
+        response.errors[name] = errorOutputs;
+      }
+    }
+
+    //? add meta to response
+    if (meta != undefined && meta != null) response.meta = meta;
+
+    //? add data to response
+    if (result.data != undefined && result.data != null)
+      response.data = result.data;
+
+    return response;
   },
 
   unsimplifyQuery(simplifiedQuery: SageSimplifiedQuery): SageQuery {

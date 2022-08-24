@@ -64,3 +64,15 @@ export interface SageSimplifiedQuery {
 export interface SageSimplifiedDocument {
   [key: string | number]: SageSimplifiedQuery;
 }
+
+export interface SageErrorOutput {
+  message: string;
+  code: number | string;
+  meta?: any;
+}
+
+export interface SageResponse {
+  data?: { [key: string | number]: any };
+  errors?: { [key: string | number]: SageErrorOutput[] };
+  meta?: any;
+}
