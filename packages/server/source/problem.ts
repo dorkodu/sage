@@ -35,27 +35,27 @@ export function Premise(
     cause?: Error;
   },
 ): SageProblem | true {
-  //? create sage problem with the information provided
-  //* (just that same old error, but rebranded!)
-
-  let errorlog =
-    `Sage: [Problem] ` +
-    info.message +
-    (info.cause
-      ? ` \n[Reason] ${
-          info.cause.name + info.cause.message + " \n " + info.cause?.stack
-        }`
-      : "");
-
-  let problem = new SageProblem({
-    message: errorlog,
-    code: info.code ?? SageStatusCode.INTERNAL_SERVER_ERROR,
-    cause: info.cause ?? new Error(errorlog),
-  });
-
-  //! log problem to console only if test fails
   //? return the problem for future use
   if (!test) {
+    //? create sage problem with the information provided
+    //* (just that same old error, but rebranded!)
+
+    let errorlog =
+      `Sage: [Problem] ` +
+      (info.code ?? "") +
+      info.message +
+      (info.cause
+        ? ` \n[Reason] ${
+            info.cause.name + info.cause.message + " \n " + info.cause?.stack
+          }`
+        : "");
+
+    let problem = new SageProblem({
+      message: errorlog,
+      code: info.code ?? SageStatusCode.INTERNAL_SERVER_ERROR,
+      cause: info.cause ?? new Error(errorlog),
+    });
+
     return problem;
   }
 
@@ -149,4 +149,7 @@ export enum SageStatusCode {
   INTERNAL_SERVER_ERROR = 500, // unknown or secrets hidden
   INVALID_VALUE = 501, // attribute value is invalid
   SERVICE_UNAVAILABLE = 503, // sage error, nothing to hide
+
+  PROTOCOL_VIOLATION = 800, // general protocol error, no detail
+  NAMING = 801, // name for a given definition was invalid
 }
