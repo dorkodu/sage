@@ -1,3 +1,3 @@
-export * from "./QueryContract";
-export * from "./SchemaContract";
-export * from "./DocumentContract";
+export * from "./base";
+export * from "./schema";
+export * from "./request";
