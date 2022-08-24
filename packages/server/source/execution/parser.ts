@@ -1,4 +1,4 @@
-import { SageProblem } from "../problem";
+import { SageProblem, SageStatusCode } from "../problem";
 
 import {
   SageSimplifiedDocument,
@@ -6,17 +6,19 @@ import {
   SageDocument,
   SageQuery,
   SageExecutionResult,
+  SageResponse,
+  SageErrorOutput,
 } from "../type";
 
-export interface ParseResult {
+export interface SageParseResult {
   document: SageDocument;
   errors: Error[];
 }
 
 export const SageParser = {
-  parse(source: SageSimplifiedDocument): ParseResult {
+  parse(source: SageSimplifiedDocument): SageParseResult {
     // empty parse result
-    let result: ParseResult = {
+    let result: SageParseResult = {
       document: {},
       errors: [],
     };
@@ -28,6 +30,17 @@ export const SageParser = {
     }
 
     return result;
+  },
+
+  outputError(error: Error): SageErrorOutput {
+    let errorOutput: SageErrorOutput = {
+      message: error.message,
+      code: SageStatusCode.INTERNAL_SERVER_ERROR,
+    };
+
+    if (error instanceof SageProblem) errorOutput.code = error.code;
+
+    return errorOutput;
   },
 
   },
