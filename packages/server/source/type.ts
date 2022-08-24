@@ -26,6 +26,7 @@ export interface SageResource extends SageDefinition {
 
 export interface SageSchema {
   readonly resources: { [key: string]: SageResource };
+  verified: boolean;
 }
 
 //? Document

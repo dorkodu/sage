@@ -6,15 +6,17 @@ import {
   SageContext,
   SageSchema,
   SageSimplifiedDocument,
-  SageQuery,
+  SageExecutionResult,
+  SageResponse,
+  SageValidationContract,
+  SageErrorOutput,
 } from "./type";
 
-import { DocumentContract, QueryContract, SchemaContract } from "./validation";
+import { DocumentContract, SchemaContract } from "./validation";
 
-import { SageProblem } from "./problem";
-
-import { SageParser } from "./execution/parser";
+import { SageParseResult, SageParser } from "./execution/parser";
 import { SageExecutor } from "./execution";
+import { ProcedureResult } from "./utils";
 
 export const Sage = {
   execute(
@@ -25,16 +27,15 @@ export const Sage = {
     return SageExecutor.execute(schema, document, context);
   },
 
-  validateSchema(schema: SageSchema): SageProblem[] | true {
-    const problems = SchemaContract.validate(schema);
-    if (problems.length > 0) return problems;
-    else return true;
+  validate(contract: SageValidationContract, subject: any) {
+    return contract.validate(subject);
   },
 
-  parse(source: SageSimplifiedDocument): {
-    document: SageDocument;
-    problems: SageProblem[];
-  } {
+  validateSchema(schema: SageSchema): ProcedureResult {
+    return this.validate(SchemaContract, schema);
+  },
+
+  parse(source: SageSimplifiedDocument): SageParseResult {
     return SageParser.parse(source);
   },
 
