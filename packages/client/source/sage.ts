@@ -1,25 +1,10 @@
-interface SageOptions {
-  url: string;
-  headers?: { [key: string]: string };
-}
+import {
+  SageDataRequirement,
+  SageDataSource,
+  SageDocument,
+  SageQuery,
+} from "./type";
 
-interface SageQueryObject {
-  [key: string]: SageQueryProperties;
-}
-
-interface SageQueryProperties {
-  typ: string;
-  atr: string[];
-  arg: { [key: string | number]: any };
-}
-
-interface SageQueryOptions {
-  url?: string;
-  headers?: { [key: string]: string };
-}
-
-export class Sage {
-  private options: SageOptions;
 
   constructor(options: SageOptions) {
     this.options = options;

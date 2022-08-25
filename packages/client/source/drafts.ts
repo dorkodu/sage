@@ -20,7 +20,7 @@ const api = new Sage({
 //? üç farklı yolla veri isteyebiliyosun
 
 // 1) sorguyu oluştur ve hemen yolla (direct execution)
-const { loading, error, data } = api.query({···});
+const { loading, error, data } = api.request({···});
 
 // 2) sorguyu ayrı oluştur sonra yollamak için hazırla
 const CURRENT_USER = Sage.want({
@@ -34,10 +34,10 @@ const CURRENT_USER = Sage.want({
 
 const USER_TIMELINE = Sage.want({···});
 
-const { loading, error, data } = api.query(CURRENT_USER);
+const { loading, error, data } = api.request(CURRENT_USER);
 
 // 3) persisted query
-const { loading, error, data } = api.query({
+const { loading, error, data } = api.request({
   hash: "d9b687af2e555d05fb30f8ef7298a79a",
   variables: {
     "user.id": 5,
@@ -57,7 +57,7 @@ const EXCHANGE_RATES = {
 
 //? örnek bi component ile nasıl kullanabiliriz?
 function ExchangeRates() {
-  const { loading, error, data } = api.query(EXCHANGE_RATES);
+  const { loading, error, data } = api.request(EXCHANGE_RATES);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
