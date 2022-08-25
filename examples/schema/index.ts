@@ -1,4 +1,4 @@
-import { Sage } from "../../source";
+import { Sage } from "../../packages/server/source";
 
 import Person from "./Person";
 import Artist from "./Artist";

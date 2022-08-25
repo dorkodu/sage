@@ -1,4 +1,4 @@
-import { Sage } from "../../source";
+import { Sage } from "../../packages/server/source";
 import { DataSource } from "./data";
 
 import Person from "./Person";

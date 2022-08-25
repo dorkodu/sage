@@ -1,12 +1,17 @@
-import { Sage } from "../../source";
+import { Sage } from "../../packages/server/source";
 import { DataSource } from "./data";
 
 import Person from "./Person";
-import Artist from "./Artist";
-import { SageContext, SageQuery, SageResource } from "../../source/type";
+import { Artwork } from "./Artwork";
+import { Artist as ArtistType } from "./Artist";
+import {
+  SageContext,
+  SageQuery,
+  SageResource,
+} from "../../packages/server/source/type";
 
-//? Artwork Resource
-export const Artwork = Sage.Resource({
+//? Artist Resource
+export const Artist = Sage.Resource({
   name: "Artist",
   context(query, context: { userId: number }) {
     let reference: any = {};
@@ -49,6 +54,12 @@ export const Artwork = Sage.Resource({
 
         return reference;
       },
+    }),
+
+    replica: Sage.Link({
+      name: "replica",
+      linksTo: ArtistType,
+      resolve(resource, context) {},
     }),
   },
 });
