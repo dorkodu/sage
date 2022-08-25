@@ -5,24 +5,29 @@ import {
   SageQuery,
 } from "./type";
 
+export class Sage<SageSchema> {
+  private remote: SageDataSource;
 
-  constructor(options: SageOptions) {
-    this.options = options;
+  constructor(options: { remote: SageDataSource }) {
+    this.remote = options.remote;
   }
 
-  public want(name: string, query: SageQuery) {}
+  public want(query: SageQuery): SageDataRequirement {
+    return { query, fetch() {} };
+  }
 
-  public async query(query: any, options?: SageQueryOptions) {
-    const url = options?.url || this.options.url;
-    const req: RequestInit = {
+  public request(document: SageDocument, source?: SageDataSource) {
+    const url = source?.url || this.remote.url;
+
+    const request: RequestInit = {
       method: "POST",
-      headers: options?.headers || this.options.headers,
-      body: JSON.stringify(query),
+      headers: source?.headers || this.remote.headers,
+      body: JSON.stringify(document),
     };
 
-    const res = await fetch(url, req);
-    const json = await res.json();
+    const response = await fetch(url, request);
+    const json = await response.json();
 
-    return { data: json.data, error: json.error };
+    return { data: json.data, error: json.error, meta: json.meta };
   }
 }
