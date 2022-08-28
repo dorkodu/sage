@@ -12,21 +12,20 @@
 
 # sage
 
-## intro
-
 sage allows you to easily build & consume fully typesafe APIs, without a query language, schema, or code generation.
 
 ### features
 
-- ✅&nbsp; well-tested and production ready.
-- 🔐&nbsp; full static type safety & autocompletion on the client, for inputs, outputs and errors.
-- ❌&nbsp; no query language, schema, code generation, run-time bloat, or build pipeline.
-- 🍃&nbsp; light – sage has zero dependencies and a tiny client-side footprint.
-- 🔗&nbsp; work with relational, graph-like data simply.
-- 🔋&nbsp; batteries included – reference implementations in javascript.
-- 🗽&nbsp; liberating developer experience.
-- ⏳&nbsp; fast, thanks to sophisticated simplicity :)
+- ✅&nbsp; describe your data requirements as resources.
+- 🔐&nbsp; static type safety & autocompletion on the client for queries.
+- ❌&nbsp; no query/schema definition language, code generation, run-time bloat, or build pipeline.
+- 🍃&nbsp; lightweight – sage has zero dependencies and a tiny client-side footprint.
+- 🔗&nbsp; work easily with any data source, a remote api, local cache.
 - 📨 infinite resources with one request.
+- 
+- 🔋&nbsp; reference server & client libraries in typescript.
+- 🗽&nbsp; liberating developer experience.
+- ⏳&nbsp; fast, thanks to simplicity :)
 
 ### overview
 

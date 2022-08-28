@@ -7,8 +7,6 @@ import {
   SageResponse,
 } from "./type";
 
-import {} from "@d";
-
 export class Sage<SageSchema> {
   private source: SageDataSource;
 
