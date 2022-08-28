@@ -6,28 +6,27 @@ import {
 } from "./type";
 
 export class Sage<SageSchema> {
-  private remote: SageDataSource;
+  private source: SageDataSource;
 
-  constructor(options: { remote: SageDataSource }) {
-    this.remote = options.remote;
+  constructor(options: { source: SageDataSource }) {
+    this.source = options.source;
   }
 
   public want(query: SageQuery): SageDataRequirement {
-    return { query, fetch() {} };
+    let source = this.source;
+
+    return {
+      query,
+      source,
+      fetch() {
+        return this.source.retrieve({ "0": this.query });
+      },
+    };
   }
 
-  public request(document: SageDocument, source?: SageDataSource) {
-    const url = source?.url || this.remote.url;
+  public async request(document: SageDocument, source?: SageDataSource) {
+    source = source ?? this.source;
 
-    const request: RequestInit = {
-      method: "POST",
-      headers: source?.headers || this.remote.headers,
-      body: JSON.stringify(document),
-    };
-
-    const response = await fetch(url, request);
-    const json = await response.json();
-
-    return { data: json.data, error: json.error, meta: json.meta };
+    return await source.retrieve(document);
   }
 }
