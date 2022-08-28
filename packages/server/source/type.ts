@@ -25,8 +25,8 @@ export interface SageResource<
   TActs extends Record<string, SageAct<TContext>>
   > extends SageDefinition<TName> {
   readonly context: (query: SageQuery) => TContext;
-  readonly attributes?: TAttributes;
-  readonly acts?: TActs;
+  readonly attributes: TAttributes;
+  readonly acts: TActs;
 }
 
 export interface SageSchema {

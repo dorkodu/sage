@@ -32,6 +32,15 @@ const User = SageServer.Resource({
       value() {
         return "Doruk Eray";
       },
+    },
+    name: {
+      name: "name",
+      rule(value: any) {
+        return typeof value === "string";
+      },
+      value() {
+        return "Doruk Eray";
+      },
     }
   },
   acts: {
@@ -42,6 +51,8 @@ const User = SageServer.Resource({
     }
   }
 })
+
+type test = keyof typeof User.attributes
 
 function attributes(keys: (keyof typeof User.attributes)[]) { }
 
