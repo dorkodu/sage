@@ -78,6 +78,27 @@ export const SageParser = {
     return response;
   },
 
+  simplifyQuery(query: SageQuery): SageSimplifiedQuery {
+    let simpleQuery: SageSimplifiedQuery = { res: query.resource };
+
+    //? iterate all query keys and rename
+    for (const [key, value] of Object.entries(query)) {
+      switch (key) {
+        case "attributes":
+          simpleQuery.atr = value;
+          break;
+        case "acts":
+          simpleQuery.act = value;
+          break;
+        case "arguments":
+          simpleQuery.arg = value;
+          break;
+      }
+    }
+
+    return simpleQuery;
+  },
+
   unsimplifyQuery(simplifiedQuery: SageSimplifiedQuery): SageQuery {
     let query: SageQuery = { resource: simplifiedQuery.res };
 
