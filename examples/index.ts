@@ -18,8 +18,10 @@ const router = sage.router().schema("user", {
 
 const User = SageServer.Resource({
   name: "USER",
-  context: () => {
-    return { id: 123 }
+  context: (query: SageQuery) => {
+    return {
+      id: 123, query
+    }
   },
   attributes: {
     name: {
