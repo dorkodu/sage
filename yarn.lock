@@ -2094,7 +2094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.7.11":
+"@types/node@npm:*, @types/node@npm:^18.7.11, @types/node@npm:^18.7.13":
   version: 18.7.13
   resolution: "@types/node@npm:18.7.13"
   checksum: 45431e7e89ecaf85c7d2c180d801c132a7c59e2f8ad578726b6d71cc74e3267c18f9ccdcad738bc0479790c078f0c79efb0e58da2c6be535c15995dbb19050c9
@@ -6903,8 +6903,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sage@workspace:."
   dependencies:
+    "@types/node": ^18.7.13
     lerna: ^5.4.3
     npm-run-all: ^4.1.5
+    tslib: ^2.4.0
   languageName: unknown
   linkType: soft
 
@@ -7647,7 +7649,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.3.0":
+"tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113

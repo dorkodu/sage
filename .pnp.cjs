@@ -43,8 +43,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@types/node", "npm:18.7.13"],\
             ["lerna", "npm:5.4.3"],\
-            ["npm-run-all", "npm:4.1.5"]\
+            ["npm-run-all", "npm:4.1.5"],\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8172,8 +8174,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["sage", "workspace:."],\
+            ["@types/node", "npm:18.7.13"],\
             ["lerna", "npm:5.4.3"],\
-            ["npm-run-all", "npm:4.1.5"]\
+            ["npm-run-all", "npm:4.1.5"],\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
