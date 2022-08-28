@@ -1,6 +1,5 @@
 *.log
 .DS_Store
-.vscode
 
 .yarn/*
 !.yarn/patches
@@ -11,6 +10,5 @@
 
 node_modules
 dist
-inspiration
 coverage/
 __generated__
