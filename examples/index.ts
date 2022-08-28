@@ -18,7 +18,8 @@ const router = sage.router().schema("user", {
 
 const User = SageServer.Resource({
   name: "USER",
-  context: (query: SageQuery) => {
+  context: (query) => {
+
     return {
       id: 123, query
     }
@@ -33,8 +34,8 @@ const User = SageServer.Resource({
         return "Doruk Eray";
       },
     },
-    name: {
-      name: "name",
+    email: {
+      name: "email",
       rule(value: any) {
         return typeof value === "string";
       },
@@ -45,7 +46,8 @@ const User = SageServer.Resource({
   },
   acts: {
     signup: {
-      do(context) {
+      name: "signup",
+      do: (context) => {
 
       },
     }
@@ -58,8 +60,8 @@ function attributes(keys: (keyof typeof User.attributes)[]) { }
 
 const doruk = attributes([]);
 
-const query: SageQuery = {
-  resource: "User",
-  attributes: ["name"],
-  arguments: { id: 123 },
-};
+//const query: SageQuery = {
+//  resource: "User",
+//  attributes: ["name"],
+//  arguments: { id: 123 },
+//};

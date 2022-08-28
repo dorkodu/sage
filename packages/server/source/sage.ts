@@ -10,6 +10,7 @@ import {
   SageResponse,
   SageValidationContract,
   SageErrorOutput,
+  SageQuery,
 } from "./type";
 
 import { DocumentContract, SchemaContract } from "./validation";
@@ -94,12 +95,7 @@ export const Sage = {
     return SageParser.parse(source);
   },
 
-  Resource<
-    T1,
-    T2 extends string,
-    T3 extends Record<string, SageAttribute>,
-    T4 extends Record<string, SageAct<T1>>
-  >(resource: SageResource<T1, T2, T3, T4>): typeof resource {
+  Resource<T1 extends string, T2>(resource: SageResource<T1, T2>): typeof resource {
     return resource;
   },
 

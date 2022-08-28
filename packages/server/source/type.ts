@@ -9,24 +9,22 @@ export interface SageDefinition<T extends string> {
   readonly name: T;
 }
 
-export interface SageAttribute extends SageDefinition {
+export interface SageAttribute<TName extends string, TContext> extends SageDefinition<TName> {
   readonly rule?: (value: any) => boolean;
-  readonly value: SageArtifactFunction;
+  readonly value: SageArtifactFunction<TContext>;
 }
 
-export interface SageAct<TContext> extends SageDefinition {
+export interface SageAct<TName extends string, TContext> extends SageDefinition<TName> {
   readonly do: SageArtifactFunction<TContext>;
 }
 
 export interface SageResource<
-  TContext,
   TName extends string,
-  TAttributes extends Record<string, SageAttribute>,
-  TActs extends Record<string, SageAct<TContext>>
+  TContext
   > extends SageDefinition<TName> {
   readonly context: (query: SageQuery) => TContext;
-  readonly attributes: TAttributes;
-  readonly acts: TActs;
+  readonly attributes: Record<string, SageAttribute<TName, TContext>>;
+  readonly acts: Record<string, SageAct<TName, TContext>>;
 }
 
 export interface SageSchema {
