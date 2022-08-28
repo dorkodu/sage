@@ -1,4 +1,6 @@
-function combine<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
+export * from "../../server/source/utils";
+
+export function combine<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
   return Object.assign(object(), obj1, obj2);
 }
 
@@ -41,10 +43,12 @@ class SageRouter<TSchema extends SageSchemaRecord<T>, T> {
   }
 }
 
-function merge<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
+export function merge<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
   return Object.assign(object(), obj1, obj2);
 }
 
-function object() {
+export function object() {
   return Object.create(null);
 }
+
+export function isRemoteSource(source: unknown) source is SageRemoteSource {}
