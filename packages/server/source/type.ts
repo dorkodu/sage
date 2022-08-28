@@ -3,10 +3,10 @@ import { Maybe, Nullable, ProcedureResult } from "./utils";
 
 export type SageContext = any;
 
-type SageArtifactFunction = (context: SageContext) => any;
+type SageArtifactFunction<TContext> = (context: TContext) => any;
 
-export interface SageDefinition {
-  readonly name: string;
+export interface SageDefinition<T extends string> {
+  readonly name: T;
 }
 
 export interface SageAttribute extends SageDefinition {
@@ -14,14 +14,19 @@ export interface SageAttribute extends SageDefinition {
   readonly value: SageArtifactFunction;
 }
 
-export interface SageAct extends SageDefinition {
-  readonly do: SageArtifactFunction;
+export interface SageAct<TContext> extends SageDefinition {
+  readonly do: SageArtifactFunction<TContext>;
 }
 
-export interface SageResource extends SageDefinition {
-  readonly attributes?: { [key: string]: SageAttribute };
-  readonly acts?: { [key: string]: SageAct };
-  readonly context: (query: SageQuery, context: SageContext) => SageContext;
+export interface SageResource<
+  TContext,
+  TName extends string,
+  TAttributes extends Record<string, SageAttribute>,
+  TActs extends Record<string, SageAct<TContext>>
+  > extends SageDefinition<TName> {
+  readonly context: (query: SageQuery) => TContext;
+  readonly attributes?: TAttributes;
+  readonly acts?: TActs;
 }
 
 export interface SageSchema {

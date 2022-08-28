@@ -13,14 +13,13 @@ const router = sage.router().schema("user", {
   rule: {
     id: 0,
   },
-  do: (atr, arg) => {},
+  do: (atr, arg) => { },
 });
 
-const User: SageResource = {
-  name: "User",
-  context(query, context) {
-    context.$query = query;
-    return context;
+const User = SageServer.Resource({
+  name: "USER",
+  context: () => {
+    return { id: 123 }
   },
   attributes: {
     name: {
@@ -31,20 +30,18 @@ const User: SageResource = {
       value() {
         return "Doruk Eray";
       },
-    },
-    email: {
-      name: "email",
-      rule(value: any) {
-        return typeof value === "string";
-      },
-      value() {
-        return "doruk@dorkodu.com";
-      },
-    },
+    }
   },
-};
+  acts: {
+    signup: {
+      do(context) {
 
-function attributes(keys: (keyof typeof User.attributes)[]) {}
+      },
+    }
+  }
+})
+
+function attributes(keys: (keyof typeof User.attributes)[]) { }
 
 const doruk = attributes([]);
 

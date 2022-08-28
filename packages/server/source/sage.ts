@@ -94,7 +94,12 @@ export const Sage = {
     return SageParser.parse(source);
   },
 
-  Resource(resource: SageResource): SageResource {
+  Resource<
+    T1,
+    T2 extends string,
+    T3 extends Record<string, SageAttribute>,
+    T4 extends Record<string, SageAct<T1>>
+  >(resource: SageResource<T1, T2, T3, T4>): typeof resource {
     return resource;
   },
 
