@@ -9,9 +9,9 @@ import {
 export interface SageDataRequirement {
   query: SageQuery;
   source: SageDataSource;
-  fetch: () => Promise<SageResponse> | SageResponse;
+  get: () => SageResponse;
 }
 
 export interface SageDataSource {
-  retrieve: (document: SageDocument) => Promise<SageResponse> | SageResponse;
+  retrieve: (document: SageDocument) => Promise<SageResponse>;
 }

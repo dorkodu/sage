@@ -3,7 +3,11 @@ import {
   SageDataSource,
   SageDocument,
   SageQuery,
+  SageSimplifiedDocument,
+  SageResponse,
 } from "./type";
+
+import {} from "@d";
 
 export class Sage<SageSchema> {
   private source: SageDataSource;
@@ -18,15 +22,23 @@ export class Sage<SageSchema> {
     return {
       query,
       source,
-      fetch() {
-        return this.source.retrieve({ "0": this.query });
+      async get() {
+        return await this.source.retrieve({ "0": this.query });
       },
     };
   }
 
+  public simplify(document: SageDocument): SageSimplifiedDocument {
+    const simple: SageSimplifiedDocument = {};
+
+    for (const [name, query] of Object.entries(document)) {
+    }
+
+    return simple;
+  }
+
   public async request(document: SageDocument, source?: SageDataSource) {
     source = source ?? this.source;
-
     return await source.retrieve(document);
   }
 }

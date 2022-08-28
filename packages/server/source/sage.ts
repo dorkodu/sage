@@ -14,8 +14,7 @@ import {
 
 import { DocumentContract, SchemaContract } from "./validation";
 
-import { SageParseResult, SageParser } from "./execution/parser";
-import { SageExecutor } from "./execution";
+import { SageExecutor, SageParser, SageParseResult } from "./execution";
 import { ProcedureResult } from "./utils";
 
 export const Sage = {

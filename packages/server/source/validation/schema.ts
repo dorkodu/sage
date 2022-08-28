@@ -1,14 +1,13 @@
-import { BaseValidationContract } from ".";
-import { Premise, SageProblem, SageStatusCode } from "../problem";
-
 import {
   SageSchema,
   SageDefinition,
   SageResource,
   SageAttribute,
   SageAct,
-  SageValidationContract,
 } from "../type";
+
+import { Premise, SageProblem, SageStatusCode } from "../problem";
+import { BaseValidationContract } from "./base";
 
 export const SchemaContract = Object.create(BaseValidationContract);
 export const DefinitionContract = Object.create(BaseValidationContract);
@@ -27,4 +26,4 @@ DefinitionContract.rules.name = (definition: SageDefinition) => {
 };
 
 //? Schema Contract
-SchemaContract.rules.definitions = (schema: SageSchema) => {};
+// SchemaContract.rules.definitions = (schema: SageSchema) => {};
