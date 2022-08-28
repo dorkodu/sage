@@ -1,12 +1,12 @@
-import {
-  Sage,
-  SageExecutionResult,
-  SageResponse,
-} from "../packages/server/source";
+import { Sage, SageExecutionResult, SageResponse } from "@dorkodu/sage.server";
 import { schema } from "./schema";
 
 let context = {
-  me: 42, // logged in user id
+  me: {
+    id: 42,
+    name: "Doruk Eray",
+    token: "291ed01mpo1m",
+  }, // logged in user id
 };
 
 //? SHORTCUT

@@ -1,9 +1,9 @@
-import { Sage } from "../../packages/server/source";
+import { Sage } from "@dorkodu/sage.server";
 
-import Person from "./Person";
 import Artist from "./Artist";
 import Artwork from "./Artwork";
 
 export const schema = Sage.Schema({
-  resources: { Person, Artist, Artwork },
+  resources: { Artist, Artwork },
+  verified: false,
 });

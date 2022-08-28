@@ -15,9 +15,9 @@ interface Artwork {
 interface Person {
   name: string;
   age: number;
-  bestFriend: ID;
-  favoriteArtist: ID;
-  favoriteArtwork: ID;
+  bestFriend: Person;
+  favoriteArtist: Artist;
+  favoriteArtwork: Artwork;
 }
 
 interface DataSource {
@@ -26,9 +26,6 @@ interface DataSource {
   };
   Artwork: {
     [key: ID]: Artwork;
-  };
-  Person: {
-    [key: ID]: Person;
   };
 }
 
@@ -56,22 +53,6 @@ export const DataSource: DataSource = {
       year: 2015,
       about: "2D role-playing video game designed and developed by Toby Fox.",
       artist: 2,
-    },
-  },
-  Person: {
-    1: {
-      name: "Doruk Eray",
-      age: 18,
-      bestFriend: 2,
-      favoriteArtist: 1,
-      favoriteArtwork: 1,
-    },
-    2: {
-      name: "Berk Cambaz",
-      age: 18,
-      bestFriend: 2, //? intentional... he doesn't value me that much :(
-      favoriteArtist: 2,
-      favoriteArtwork: 2,
     },
   },
 };

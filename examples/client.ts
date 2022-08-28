@@ -5,13 +5,15 @@ import { Schema as DataSchema } from "./server";
 
 const API = new SageHTTPSource({
   url: "http://localhost:2004",
-  headers: {},
+  headers: {
+    "Authentication-Token": "sj31",
+  },
 });
 
 const sage = new Sage<DataSchema>({ source: API });
 
 const me = sage.want({
-  resource: "Me",
+  resource: "Artwork",
   attributes: ["name", "email", "token"],
   act: "refresh",
   arguments: {
@@ -19,10 +21,17 @@ const me = sage.want({
   },
 });
 
-const result = me.fetch();
+// get your data anythime, anywhere
+const result = me.get();
 
-const query: SageQuery = {
-  resource:
-}
+// a standard query
+const PinkFloyd: SageQuery = {
+  resource: "Artist",
+  attributes: ["name", "about"],
+  arguments: {
+    id: 1,
+  },
+};
 
-sage.request({ })
+// send many queries in one single roundtrip
+sage.request({ floyd: PinkFloyd, artwork: me.query });

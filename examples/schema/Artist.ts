@@ -1,28 +1,25 @@
-import { Sage } from "../../packages/server/source";
-import { DataSource } from "./data";
-
-import Person from "./Person";
-import { Artwork } from "./Artwork";
-import { Artist as ArtistType } from "./Artist";
 import {
+  Sage,
   SageContext,
   SageQuery,
   SageResource,
-} from "../../packages/server/source/type";
+} from "@dorkodu/sage.server";
+
+import { DataSource } from "./data";
 
 //? Artist Resource
-export const Artist = Sage.Resource({
+export default Sage.Resource({
   name: "Artist",
   context(query, context: { userId: number }) {
-    let reference: any = {};
+    let reference: any = { query };
 
-    let id = query.arguments.artistId;
+    let id = query.arguments?.artistId;
     reference.artist = DataSource.Artist[id];
 
     return reference;
   },
   attributes: {
-    name: Sage.Attribute({
+    name: {
       name: "name",
       value(context) {
         return context.artist.name;
@@ -30,9 +27,9 @@ export const Artist = Sage.Resource({
       rule(value) {
         return typeof value === "string";
       },
-    }),
+    },
 
-    about: Sage.Attribute({
+    about: {
       name: "about",
       value(context) {
         return context.artist.about;
@@ -40,26 +37,14 @@ export const Artist = Sage.Resource({
       rule(value) {
         return typeof value === "string";
       },
-    }),
+    },
   },
-  links: {
-    artworks: Sage.Link({
-      name: "artworks",
-      linksTo: Artwork,
-      resolve(resource, context) {
-        let reference: any = {};
-
-        reference.context = context;
-        reference.resource = resource;
-
-        return reference;
+  acts: {
+    greet: {
+      name: "greet",
+      do(context) {
+        console.info(context.artist);
       },
-    }),
-
-    replica: Sage.Link({
-      name: "replica",
-      linksTo: ArtistType,
-      resolve(resource, context) {},
-    }),
+    },
   },
 });
