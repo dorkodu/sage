@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["es5", "es6", "ES2019", "dom", "dom.iterable"],
-    "target": "ES5",
+    "module": "ES2022",
+    "target": "ES6",
     "importHelpers": true,
     "declaration": true,
     "declarationMap": true,
@@ -12,6 +11,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   }
 }
