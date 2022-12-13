@@ -1,46 +1,11 @@
 {
-  "name": "sage",
-  "type": "module",
-  "private": true,
-  "prettier": {
-    "printWidth": 80,
-    "trailingComma": "all",
-    "endOfLine": "auto",
-    "importOrder": [
-      "__",
-      "<THIRD_PARTY_MODULES>",
-      "^[./]"
-    ],
-    "importOrderSortSpecifiers": true
-  },
-  "engines": {
-    "node": "^16.0.0"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
+  "name": "mage",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "build": "npm-run-all -p build:server build:client",
-    "build:server": "cd ./packages/server && yarn build",
-    "build:client": "cd ./packages/client && yarn build",
-    "dev": "npm-run-all -p dev:server dev:client",
-    "dev:server": "cd ./packages/server && yarn dev",
-    "dev:client": "cd ./packages/client && yarn dev",
-    "test": "npm-run-all -p test:server test:client",
-    "test:server": "cd ./packages/server && yarn test",
-    "test:client": "cd ./packages/client && yarn test",
-    "warmup": "npm-run-all -s warm:server warm:client",
-    "warm:server": "cd ./packages/server && yarn",
-    "warm:client": "cd ./packages/client && yarn"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "@types/jest": "^28.0.0",
-    "jest": "^28.0.0",
-    "lerna": "^5.4.3",
-    "npm-run-all": "^4.1.5",
-    "ts-jest": "^28.0.0",
-    "tslib": "^2.4.0",
-    "typescript": "^4.8.2"
-  },
-  "packageManager": "yarn@3.2.3"
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

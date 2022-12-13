@@ -1,14 +1,2 @@
-*.log
-.DS_Store
-
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
 node_modules
 dist
-coverage/
-__generated__

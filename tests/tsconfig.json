@@ -15,7 +15,6 @@
     "skipLibCheck": true,
   },
   "include": [
-    "./packages/**/*",
-    "./examples/**/*",
+    "./src/**/*",
   ]
 }
