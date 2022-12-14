@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    
+    "outDir": "./lib",
+    "removeComments": true,
+    "skipLibCheck": true,
+  },
+  "include": ["./src/**/*"]
+}

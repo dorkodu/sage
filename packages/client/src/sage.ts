@@ -1,5 +1,4 @@
-export type Query = { name: string, input: any, opts?: QueryOpts }
-type QueryOpts = { ctx?: string, wait?: string }
+import type { QueryOpts } from "../../shared/types"
 
 function router<TRouter extends { routes: any }>() {
   return new Router<TRouter>();

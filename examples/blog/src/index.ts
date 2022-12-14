@@ -1,5 +1,5 @@
-import server from "../../../packages/server/sage";
-import client from "../../../packages/client/sage";
+import server from "../../../packages/server/src/sage";
+import client from "../../../packages/client/src/sage";
 
 type Req = {};
 type Res = {};

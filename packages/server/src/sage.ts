@@ -1,4 +1,4 @@
-import { Query } from "../client/sage";
+import type { Query } from "../../shared/types"
 
 function router<
   TContext,
