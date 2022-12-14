@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm-run-all --parallel build:*",
+    "build:server": "cd ./packages/server && pnpm build",
+    "build:client": "cd ./packages/client && pnpm build"
   },
   "keywords": [],
   "author": "",

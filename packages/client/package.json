@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "module": "lib/index.js",
   "typings": "src/types.d.ts",
-  "scripts": {},
+  "scripts": {
+    "build": "rimraf ./dist && tsc"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
