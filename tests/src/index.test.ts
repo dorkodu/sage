@@ -37,7 +37,8 @@ const blogs: Array<IBlog> = [
   { id: 0, userId: 0, content: "hello world" },
   { id: 1, userId: 0, content: "goodbye world" },
   { id: 2, userId: 1, content: "testing" },
-  { id: 2, userId: 1, content: "attention please" },
+  { id: 3, userId: 1, content: "attention please" },
+  { id: 4, userId: 1, content: "ceo of dorkodu" },
 ]
 
 function getUserIdByAuthToken(token: string | undefined) {
@@ -115,7 +116,7 @@ const sage = client.router<Router>();
 
 describe("blog example", () => {
 
-  it("query normally", async () => {
+  it("query normally", () => {
     const { a, b, c, } = sage.get({
       a: sage.query("auth", { token: "token_of_berk" }, { ctx: "ctx" }),
       b: sage.query("getUser", {}, { wait: "a", ctx: "ctx" }),
@@ -133,4 +134,27 @@ describe("blog example", () => {
     expect(c?.length).toBe(2);
   })
 
+  it("query one by one", () => {
+    const { a } = sage.get({
+      a: sage.query("auth", { token: "token_of_doruk" }),
+    }, (query) => router.handle(() => ({}), query));
+
+    expect(a?.userId).toBeTypeOf("number");
+    expect(a?.userId).toBe(1);
+
+    const { b } = sage.get({
+      b: sage.query("getUser", { userId: a?.userId }),
+    }, (query) => router.handle(() => ({}), query));
+
+    expect(b?.id).toBeTypeOf("number");
+    expect(b?.username).toBeTypeOf("string");
+    expect(b?.id).toBe(1);
+    expect(b?.username).toBe("doruk");
+
+    const { c } = sage.get({
+      c: sage.query("getUserBlogs", { userId: a?.userId }),
+    }, (query) => router.handle(() => ({}), query));
+    
+    expect(c?.length).toBe(3);
+  })
 })
