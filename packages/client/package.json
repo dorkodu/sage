@@ -1,40 +1,28 @@
 {
-  "name": "@dorkodu/sage.client",
-  "version": "1.0.0",
-  "description": "🍃 sage client :: the reference client package of the marvelous data exchange protocol.",
-  "author": "Doruk Eray",
+  "name": "@dorkodu/sage-client",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Dorkodu",
+  "homepage": "https://github.com/dorkodu/sage/tree/main/packages/client#readme",
   "license": "MIT",
-  "homepage": "https://libre.dorkodu.com/sage",
+  "main": "lib/sage.js",
+  "typings": "lib/sage.d.ts",
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dorkodu/sage.git",
-    "directory": "packages/client"
+    "url": "https://github.com/dorkodu/sage.git"
   },
-  "packageManager": "yarn@3.2.2",
-  "preconstruct": {
-    "entrypoints": [
-      "index.ts"
-    ]
+  "bugs": {
+    "url": "https://github.com/dorkodu/sage/issues"
   },
-  "type": "module",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "dev": "ts-node-dev --respawn --quiet ./source/index.ts",
-    "test": "jest"
-  },
-  "main": "dist/sage.client.cjs.js",
-  "module": "dist/sage.client.esm.js",
-  "typings": "dist/sage.client.cjs.d.ts",
-  "files": [
-    "README.md",
-    "dist",
-    "source"
-  ],
-  "publishConfig": {
-    "access": "public"
+    "build": "rimraf ./dist && tsc"
   },
   "devDependencies": {
+    "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^4.7.3"
+    "typescript": "^4.9.4"
   }
 }

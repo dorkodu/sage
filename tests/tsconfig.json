@@ -10,10 +10,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     
-    "outDir": "./lib",
+    "outDir": "./dist",
     "removeComments": true,
     "skipLibCheck": true,
-    "declaration": true,
   },
-  "include": ["./src/**/*"]
+  "include": [
+    "./src/**/*",
+  ]
 }

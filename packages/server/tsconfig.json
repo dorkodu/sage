@@ -1,11 +1,19 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["source", "test", "jest.config.js"],
   "compilerOptions": {
-    "target": "ES2019",
     "strict": true,
-    "outDir": "./dist",
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    
+    "outDir": "./lib",
     "removeComments": true,
-    "moduleResolution": "node"
-  }
+    "skipLibCheck": true,
+    "declaration": true,
+  },
+  "include": ["./src/**/*"]
 }
