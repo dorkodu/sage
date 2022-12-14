@@ -29,11 +29,12 @@ class Router<TContext, TRoutes extends Record<any, any>> {
     const results: Record<string, any> = {};
     const contexts: Record<string, any> = {};
 
-    const safetyLimit = 10;
-    let safety = 0;
+    let shouldSkip = false;
 
-    while (Object.keys(queries).length !== 0 && safetyLimit > safety++) {
+    while (Object.keys(queries).length !== 0 && !shouldSkip) {
       for (const name in queries) {
+        shouldSkip = true;
+
         const query = queries[name];
         if (!query) continue;
 
@@ -41,11 +42,13 @@ class Router<TContext, TRoutes extends Record<any, any>> {
         if (!query.opts?.wait) {
           results[name] = this.handleQuery(contexts, context, query);
           delete queries[name];
+          shouldSkip = false;
         }
         // If waiting part is done
         else if (results[query.opts.wait]) {
           results[name] = this.handleQuery(contexts, context, query);
           delete queries[name];
+          shouldSkip = false;
         }
       }
     }

@@ -177,4 +177,12 @@ describe("blog example", () => {
       expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
     })
   })
+
+  it("unresolvable query must skip", () => {
+    sage.get({
+      a: sage.query("auth", { token: "token" }, { wait: "a" })
+    }, (query) => {
+      expect(Object.keys(router.handle(() => ({}), query)).length).toBe(0);
+    })
+  })
 })
