@@ -33,7 +33,10 @@ const users: Array<IUser> = [
 
 const blogs: Array<IBlog> = [
   { id: 0, userId: 0, content: "hello world" },
-  { id: 1, userId: 1, content: "testing" },
+  { id: 1, userId: 0, content: "goodbye world" },
+  { id: 2, userId: 1, content: "testing" },
+  { id: 3, userId: 1, content: "attention please" },
+  { id: 4, userId: 1, content: "ceo of dorkodu" },
 ]
 
 function getUserById(id: number | undefined) {
@@ -53,7 +56,7 @@ function getBlogsByUserId(id: number | undefined) {
 
   for (let i = 0; i < blogs.length; ++i) {
     const blog = blogs[i];
-    if (blog?.id === id) out.push(blog);
+    if (blog?.userId === id) out.push(blog);
   }
 
   return out;
