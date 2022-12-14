@@ -16,6 +16,8 @@
   "scripts": {
     "build": "npm-run-all --parallel build:*",
     "build:server": "cd ./packages/server && pnpm build",
-    "build:client": "cd ./packages/client && pnpm build"
+    "build:client": "cd ./packages/client && pnpm build",
+    "test": "cd ./tests && pnpm test",
+    "test:watch": "cd ./tests && pnpm test:watch"
   }
 }
