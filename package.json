@@ -1,6 +1,6 @@
 {
   "name": "sage",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "the marvelous data exchange protocol for api's.",
   "keywords": [],
   "author": "Dorkodu",
@@ -19,5 +19,11 @@
     "build:client": "cd ./packages/client && pnpm build",
     "test": "cd ./tests && pnpm test",
     "test:watch": "cd ./tests && pnpm test:watch"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^6.1.0"
   }
 }
