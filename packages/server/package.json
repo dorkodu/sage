@@ -7,9 +7,6 @@
   "license": "MIT",
   "main": "lib/sage.js",
   "typings": "lib/sage.d.ts",
-  "directories": {
-    "lib": "lib"
-  },
   "files": [
     "lib"
   ],
