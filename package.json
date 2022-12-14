@@ -1,13 +1,21 @@
 {
-  "name": "mage",
+  "name": "sage",
   "version": "1.0.0",
-  "description": "",
+  "description": "the marvelous data exchange protocol for api's.",
+  "keywords": [],
+  "author": "Dorkodu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorkodu/sage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dorkodu/sage/issues"
+  },
+  "homepage": "https://github.com/dorkodu/sage#readme",
   "scripts": {
     "build": "npm-run-all --parallel build:*",
     "build:server": "cd ./packages/server && pnpm build",
     "build:client": "cd ./packages/client && pnpm build"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
