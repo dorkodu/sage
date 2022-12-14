@@ -154,7 +154,27 @@ describe("blog example", () => {
     const { c } = sage.get({
       c: sage.query("getUserBlogs", { userId: a?.userId }),
     }, (query) => router.handle(() => ({}), query));
-    
+
     expect(c?.length).toBe(3);
+  })
+
+  it("query must be optimized", () => {
+    sage.get({
+      a: sage.query("getUser")
+    }, (query) => {
+      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
+    })
+
+    sage.get({
+      a: sage.query("getUser", {})
+    }, (query) => {
+      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
+    })
+
+    sage.get({
+      a: sage.query("getUser", {}, {})
+    }, (query) => {
+      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
+    })
   })
 })
