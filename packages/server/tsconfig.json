@@ -13,6 +13,7 @@
     "outDir": "./lib",
     "removeComments": true,
     "skipLibCheck": true,
+    "declaration": true,
   },
   "include": ["./src/**/*"]
 }
