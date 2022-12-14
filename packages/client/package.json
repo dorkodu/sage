@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
-  "module": "lib/index.js",
   "typings": "src/types.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc"
