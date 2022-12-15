@@ -10,7 +10,7 @@ class Router<TRouter extends { routes: any }> {
     TCallback extends (query: TQueries) => any
   >(queries: TQueries, callback: TCallback) {
     const result = callback(queries);
-    return result as { [T in keyof typeof queries]: ReturnType<TRouter["routes"][(typeof queries)[T]["name"]]["handler"]> | undefined }
+    return result as { [T in keyof typeof queries]: ReturnType<TRouter["routes"][(typeof queries)[T]["name"]]["handler"]> }
   }
 
   public query<

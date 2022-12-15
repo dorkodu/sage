@@ -116,8 +116,8 @@ const sage = client.router<Router>();
 
 describe("blog example", () => {
 
-  it("query normally", () => {
-    const { a, b, c, } = sage.get({
+  it("query normally", async () => {
+    const { a, b, c } = await sage.get({
       a: sage.query("auth", { token: "token_of_berk" }, { ctx: "ctx" }),
       b: sage.query("getUser", {}, { wait: "a", ctx: "ctx" }),
       c: sage.query("getUserBlogs", {}, { wait: "a", ctx: "ctx" })
@@ -134,15 +134,15 @@ describe("blog example", () => {
     expect(c?.length).toBe(2);
   })
 
-  it("query one by one", () => {
-    const { a } = sage.get({
+  it("query one by one", async () => {
+    const { a } = await sage.get({
       a: sage.query("auth", { token: "token_of_doruk" }),
     }, (query) => router.handle(() => ({}), query));
 
     expect(a?.userId).toBeTypeOf("number");
     expect(a?.userId).toBe(1);
 
-    const { b } = sage.get({
+    const { b } = await sage.get({
       b: sage.query("getUser", { userId: a?.userId }),
     }, (query) => router.handle(() => ({}), query));
 
@@ -151,7 +151,7 @@ describe("blog example", () => {
     expect(b?.id).toBe(1);
     expect(b?.username).toBe("doruk");
 
-    const { c } = sage.get({
+    const { c } = await sage.get({
       c: sage.query("getUserBlogs", { userId: a?.userId }),
     }, (query) => router.handle(() => ({}), query));
 

@@ -11,7 +11,7 @@ function route<
   TContext,
   TInput,
   TOutput,
-  THandler extends (input: TInput, context: TContext) => TOutput
+  THandler extends (input: any, context: TContext) => TOutput
 >(context: TContext, input: TInput, handler: THandler) {
   return { context, input, handler }
 }
@@ -25,7 +25,7 @@ class Router<TContext, TRoutes extends Record<any, any>> {
     this.routes = routes;
   }
 
-  public handle(context: () => TContext, queries: Record<string, Query>) {
+  public async handle(context: () => TContext, queries: Record<string, Query>) {
     const results: Record<string, any> = {};
     const contexts: Record<string, any> = {};
 
@@ -40,13 +40,13 @@ class Router<TContext, TRoutes extends Record<any, any>> {
 
         // If no need to wait
         if (!query.opts?.wait) {
-          results[name] = this.handleQuery(contexts, context, query);
+          results[name] = await this.handleQuery(contexts, context, query);
           delete queries[name];
           shouldSkip = false;
         }
         // If waiting part is done
         else if (results[query.opts.wait]) {
-          results[name] = this.handleQuery(contexts, context, query);
+          results[name] = await this.handleQuery(contexts, context, query);
           delete queries[name];
           shouldSkip = false;
         }
@@ -56,17 +56,17 @@ class Router<TContext, TRoutes extends Record<any, any>> {
     return results;
   }
 
-  private handleQuery(
+  private async handleQuery(
     contexts: Record<string, any>,
     context: () => TContext,
     query: Query
-  ): any {
+  ): Promise<any> {
     if (!this.routes[query.name]) return {};
     if (query.opts?.ctx) {
-      if (!contexts[query.opts.ctx]) contexts[query.opts.ctx] = context();
-      return this.routes[query.name].handler(query.input, contexts[query.opts.ctx]);
+      if (!contexts[query.opts.ctx]) contexts[query.opts.ctx] = await context();
+      return await this.routes[query.name].handler(query.input, contexts[query.opts.ctx]);
     }
-    return this.routes[query.name].handler(query.input, context());
+    return await this.routes[query.name].handler(query.input, await context());
   }
 }
 

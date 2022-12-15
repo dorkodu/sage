@@ -14,6 +14,7 @@
     "removeComments": true,
     "skipLibCheck": true,
     "declaration": true,
+    "lib": ["ES2015"]
   },
   "include": ["./src/**/*"]
 }
