@@ -5,12 +5,12 @@ function router<TRouter extends { routes: any }>() {
 }
 
 class Router<TRouter extends { routes: any }> {
-  public get<
+  public async get<
     TQueries extends Record<any, { name: any }>,
     TCallback extends (query: TQueries) => any
   >(queries: TQueries, callback: TCallback) {
     const result = callback(queries);
-    return result as { [T in keyof typeof queries]: ReturnType<TRouter["routes"][(typeof queries)[T]["name"]]["handler"]> }
+    return result as { [T in keyof typeof queries]: Awaited<ReturnType<TRouter["routes"][(typeof queries)[T]["name"]]["handler"]>> } | undefined
   }
 
   public query<

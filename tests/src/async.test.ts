@@ -41,7 +41,7 @@ const blogs: Array<IBlog> = [
   { id: 4, userId: 1, content: "ceo of dorkodu" },
 ]
 
-function getUserIdByAuthToken(token: string | undefined) {
+async function getUserIdByAuthToken(token: string | undefined) {
   if (token === undefined) return undefined;
 
   for (let i = 0; i < auths.length; ++i) {
@@ -52,7 +52,7 @@ function getUserIdByAuthToken(token: string | undefined) {
   return undefined;
 }
 
-function getUserById(id: number | undefined) {
+async function getUserById(id: number | undefined) {
   if (id === undefined) return undefined;
 
   for (let i = 0; i < users.length; ++i) {
@@ -63,7 +63,7 @@ function getUserById(id: number | undefined) {
   return undefined;
 }
 
-function getBlogsByUserId(id: number | undefined) {
+async function getBlogsByUserId(id: number | undefined) {
   const out: IBlog[] = [];
   if (id === undefined) return out;
 
@@ -78,8 +78,8 @@ function getBlogsByUserId(id: number | undefined) {
 const auth = server.route(
   {} as Context,
   {} as { token: string },
-  (input, ctx) => {
-    let userId: number | undefined = getUserIdByAuthToken(input.token);
+  async (input, ctx) => {
+    let userId: number | undefined = await getUserIdByAuthToken(input.token);
     if (userId !== undefined) ctx.userId = userId;
     return { userId }
   }
@@ -88,22 +88,22 @@ const auth = server.route(
 const getUser = server.route(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IUser | undefined => {
+  async (input, ctx): Promise<IUser | undefined> => {
     let userId: number | undefined = undefined;
     if (input && typeof input.userId === "number") userId = input.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
-    return getUserById(userId)
+    return await getUserById(userId)
   }
 )
 
 const getUserBlogs = server.route(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IBlog[] | undefined => {
+  async (input, ctx): Promise<IBlog[] | undefined> => {
     let userId: number | undefined = undefined;
     if (input && typeof input.userId === "number") userId = input.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
-    return getBlogsByUserId(userId);
+    return await getBlogsByUserId(userId);
   }
 )
 
@@ -134,55 +134,4 @@ describe("blog example", () => {
     expect(res?.c?.length).toBe(2);
   })
 
-  it("query one by one", async () => {
-    const res1 = await sage.get({
-      a: sage.query("auth", { token: "token_of_doruk" }),
-    }, (query) => router.handle(() => ({}), query));
-
-    expect(res1?.a?.userId).toBeTypeOf("number");
-    expect(res1?.a?.userId).toBe(1);
-
-    const res2 = await sage.get({
-      b: sage.query("getUser", { userId: res1?.a?.userId }),
-    }, (query) => router.handle(() => ({}), query));
-
-    expect(res2?.b?.id).toBeTypeOf("number");
-    expect(res2?.b?.username).toBeTypeOf("string");
-    expect(res2?.b?.id).toBe(1);
-    expect(res2?.b?.username).toBe("doruk");
-
-    const res3 = await sage.get({
-      c: sage.query("getUserBlogs", { userId: res1?.a?.userId }),
-    }, (query) => router.handle(() => ({}), query));
-
-    expect(res3?.c?.length).toBe(3);
-  })
-
-  it("query must be optimized", () => {
-    sage.get({
-      a: sage.query("getUser")
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
-
-    sage.get({
-      a: sage.query("getUser", {})
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
-
-    sage.get({
-      a: sage.query("getUser", {}, {})
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
-  })
-
-  it("unresolvable query must skip", () => {
-    sage.get({
-      a: sage.query("auth", { token: "token" }, { wait: "a" })
-    }, (query) => {
-      expect(Object.keys(router.handle(() => ({}), query)).length).toBe(0);
-    })
-  })
 })
