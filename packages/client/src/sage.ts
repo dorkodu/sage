@@ -16,11 +16,8 @@ class Router<TRouter extends { routes: any }> {
   public query<
     TName extends keyof TRouter["routes"],
     TInput extends TRouter["routes"][TName]["input"]
-  >(name: TName, input?: TInput, opts?: QueryOpts) {
-    const out = { name, input, opts }
-    if (!input || Object.keys(input).length === 0) delete out["input"];
-    if (!opts || Object.keys(opts).length === 0) delete out["opts"];
-    return out;
+  >(name: TName, input: TInput, opts?: QueryOpts) {
+    return { name, input, opts };
   }
 }
 

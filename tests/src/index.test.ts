@@ -158,24 +158,27 @@ describe("blog example", () => {
     expect(res3?.c?.length).toBe(3);
   })
 
-  it("query must be optimized", () => {
-    sage.get({
-      a: sage.query("getUser")
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
+  it("check decoded query", () => {
+    sage.get(
+      { a: sage.query("getUser", {}) },
+      (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{}}}');
+      }
+    )
 
-    sage.get({
-      a: sage.query("getUser", {})
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
+    sage.get(
+      { a: sage.query("getUser", {}, {}) },
+      (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{},"opts":{}}}');
+      }
+    )
 
-    sage.get({
-      a: sage.query("getUser", {}, {})
-    }, (query) => {
-      expect(JSON.stringify(query)).toBe(`{"a":{"name":"getUser"}}`)
-    })
+    sage.get(
+      { a: sage.query("getUser", {}, { ctx: "ctx", wait: "a" }) },
+      (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{},"opts":{"ctx":"ctx","wait":"a"}}}');
+      }
+    )
   })
 
   it("unresolvable query must skip", () => {
