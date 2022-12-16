@@ -1,2 +1,2 @@
-export type Query = { name: string, input: any, opts?: QueryOpts }
-export type QueryOpts = { ctx?: string, wait?: string }
+export type Query = { res: string, arg: any, opt?: QueryOptions }
+export type QueryOptions = { ctx?: string, wait?: string }

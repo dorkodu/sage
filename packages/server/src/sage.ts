@@ -1,53 +1,53 @@
 import type { Query } from "../../shared/types"
 
-function router<
+function resource<
   TContext,
-  TRoutes extends Record<any, any>
->(context: TContext, routes: TRoutes) {
-  return new Router(context, routes);
-}
-
-function route<
-  TContext,
-  TInput,
+  TArg,
   TOutput,
-  THandler extends (input: any, context: TContext) => TOutput
->(context: TContext, input: TInput, handler: THandler) {
-  return { context, input, handler }
+  TExecutor extends (arg: any, context: TContext) => TOutput
+>(context: TContext, arg: TArg, executor: TExecutor) {
+  return { context, arg, executor }
 }
 
-class Router<TContext, TRoutes extends Record<any, any>> {
-  public context: TContext;
-  public routes: TRoutes;
+function schema<
+  TContext,
+  TResources extends Record<any, any>
+>(context: TContext, resources: TResources) {
+  return new Schema(context, resources);
+}
 
-  constructor(context: TContext, routes: TRoutes) {
+class Schema<TContext, TResources extends Record<any, any>> {
+  public context: TContext;
+  public resources: TResources;
+
+  constructor(context: TContext, resources: TResources) {
     this.context = context;
-    this.routes = routes;
+    this.resources = resources;
   }
 
-  public async handle(context: () => TContext, queries: Record<string, Query>) {
+  public async execute(context: () => TContext, document: Record<string, Query>) {
     const results: Record<string, any> = {};
     const contexts: Record<string, any> = {};
 
     let shouldSkip = false;
 
-    while (Object.keys(queries).length !== 0 && !shouldSkip) {
-      for (const name in queries) {
+    while (Object.keys(document).length !== 0 && !shouldSkip) {
+      for (const res in document) {
         shouldSkip = true;
 
-        const query = queries[name];
+        const query = document[res];
         if (!query) continue;
 
         // If no need to wait
-        if (!query.opts?.wait) {
-          results[name] = await this.handleQuery(contexts, context, query);
-          delete queries[name];
+        if (!query.opt?.wait) {
+          results[res] = await this.handleQuery(contexts, context, query);
+          delete document[res];
           shouldSkip = false;
         }
         // If waiting part is done
-        else if (results[query.opts.wait]) {
-          results[name] = await this.handleQuery(contexts, context, query);
-          delete queries[name];
+        else if (results[query.opt.wait]) {
+          results[res] = await this.handleQuery(contexts, context, query);
+          delete document[res];
           shouldSkip = false;
         }
       }
@@ -61,16 +61,16 @@ class Router<TContext, TRoutes extends Record<any, any>> {
     context: () => TContext,
     query: Query
   ): Promise<any> {
-    if (!this.routes[query.name]) return {};
-    if (query.opts?.ctx) {
-      if (!contexts[query.opts.ctx]) contexts[query.opts.ctx] = await context();
-      return await this.routes[query.name].handler(query.input, contexts[query.opts.ctx]);
+    if (!this.resources[query.res]) return {};
+    if (query.opt?.ctx) {
+      if (!contexts[query.opt.ctx]) contexts[query.opt.ctx] = await context();
+      return await this.resources[query.res].executor(query.arg, contexts[query.opt.ctx]);
     }
-    return await this.routes[query.name].handler(query.input, await context());
+    return await this.resources[query.res].executor(query.arg, await context());
   }
 }
 
 export default {
-  router,
-  route
+  schema,
+  resource,
 }

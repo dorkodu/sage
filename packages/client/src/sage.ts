@@ -1,24 +1,24 @@
-import type { QueryOpts } from "../../shared/types"
+import type { QueryOptions } from "../../shared/types"
 
-function router<TRouter extends { routes: any }>() {
-  return new Router<TRouter>();
+function use<TSchema extends { resources: any }>() {
+  return new Schema<TSchema>();
 }
 
-class Router<TRouter extends { routes: any }> {
+class Schema<TSchema extends { resources: any }> {
   public async get<
-    TQueries extends Record<any, { name: any }>,
-    TCallback extends (query: TQueries) => any
-  >(queries: TQueries, callback: TCallback) {
-    const result = callback(queries);
-    return result as { [T in keyof typeof queries]: Awaited<ReturnType<TRouter["routes"][(typeof queries)[T]["name"]]["handler"]>> } | undefined
+    TDocument extends Record<any, { res: any }>,
+    TCallback extends (document: TDocument) => Promise<any>
+  >(document: TDocument, callback: TCallback) {
+    const result = await callback(document);
+    return result as { [T in keyof typeof document]: Awaited<ReturnType<TSchema["resources"][(typeof document)[T]["res"]]["executor"]>> } | undefined
   }
 
   public query<
-    TName extends keyof TRouter["routes"],
-    TInput extends TRouter["routes"][TName]["input"]
-  >(name: TName, input: TInput, opts?: QueryOpts) {
-    return { name, input, opts };
+    TRes extends keyof TSchema["resources"],
+    TArg extends TSchema["resources"][TRes]["arg"]
+  >(res: TRes, arg: TArg, opt?: QueryOptions) {
+    return { res, arg, opt };
   }
 }
 
-export default { router }
+export default { use }
