@@ -18,7 +18,7 @@
     "url": "https://github.com/dorkodu/sage/issues"
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc"
+    "build": "rimraf ./lib && tsc"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
