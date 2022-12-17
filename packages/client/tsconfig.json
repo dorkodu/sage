@@ -11,8 +11,6 @@
     "noUnusedParameters": true,
     
     "outDir": "./lib",
-    "outFile": "./lib/sage.js",
-    "module": "AMD",
     "removeComments": true,
     "skipLibCheck": true,
     "declaration": true,

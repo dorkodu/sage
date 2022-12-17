@@ -11,12 +11,10 @@
     "noUnusedParameters": true,
     
     "outDir": "./lib",
-    "outFile": "./lib/sage.js",
-    "module": "AMD",
     "removeComments": true,
     "skipLibCheck": true,
     "declaration": true,
-    "lib": ["ES2015"]
+    "lib": ["ES2015"],
   },
   "include": ["./src/**/*"]
 }

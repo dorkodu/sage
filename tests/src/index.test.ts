@@ -114,7 +114,7 @@ const schema = server.schema(
 )
 const sage = client.use<Schema>();
 
-describe("blog example", () => {
+describe("index", () => {
 
   it("query normally", async () => {
     const res = await sage.get({
