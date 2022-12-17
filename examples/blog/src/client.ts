@@ -1,4 +1,4 @@
 import client from "../../../packages/client/src/sage";
-import type { Router } from "./server";
+import type { Schema } from "./server";
 
-export const sage = client.router<Router>();
+export const sage = client.use<Schema>();

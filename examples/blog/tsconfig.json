@@ -13,6 +13,7 @@
     "outDir": "./dist",
     "removeComments": true,
     "skipLibCheck": true,
+    "target": "ES2015"
   },
   "include": [
     "./src/**/*"

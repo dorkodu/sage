@@ -38,55 +38,43 @@ function getBlogsByUserId(id: number | undefined) {
   return out;
 }
 
-const auth = sage.route({} as Context, {} as {}, (_input, ctx) => {
-  ctx.userId = 0;
-  return { userId: 0 };
-});
+const auth = sage.resource(
+  {} as Context,
+  {} as {},
+  (_arg, ctx) => {
+    ctx.userId = 0;
+    return { userId: 0 };
+  });
 
-const getUser = sage.route(
+const getUser = sage.resource(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IUser | undefined => {
+  (arg, ctx): IUser | undefined => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return getUserById(userId);
   }
 );
 
-const getUserBlogs = sage.route(
+const getUserBlogs = sage.resource(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IBlog[] | undefined => {
+  (arg, ctx): IBlog[] | undefined => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return getBlogsByUserId(userId);
   }
 );
 
-export type Router = typeof router;
+export type Schema = typeof schema;
 
-export const server = sage.service({} as Context, {
-  auth,
-  getUser,
-  getUserBlogs,
-});
-
-// Server
-const getUserProfile = sage.resource();
-type Schema = typeof schema;
-const schema = sage.schema();
-schema.execute();
-
-// Client
-const api = sage.use<Schema>();
-api.get({
-  a: api.query("asd", {}, { wait: "a", ctx: "a" }),
-});
-
-const document = {
-  a: {
-    res: "getSessions",
-  },
-};
+export const schema = sage.schema(
+  {} as Context,
+  {
+    auth,
+    getUser,
+    getUserBlogs,
+  }
+);

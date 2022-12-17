@@ -75,44 +75,44 @@ function getBlogsByUserId(id: number | undefined) {
   return out;
 }
 
-const auth = server.route(
+const auth = server.resource(
   {} as Context,
   {} as { token: string },
-  (input, ctx) => {
-    let userId: number | undefined = getUserIdByAuthToken(input.token);
+  (arg, ctx) => {
+    let userId: number | undefined = getUserIdByAuthToken(arg.token);
     if (userId !== undefined) ctx.userId = userId;
     return { userId }
   }
 )
 
-const getUser = server.route(
+const getUser = server.resource(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IUser | undefined => {
+  (arg, ctx): IUser | undefined => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return getUserById(userId)
   }
 )
 
-const getUserBlogs = server.route(
+const getUserBlogs = server.resource(
   {} as Context,
   {} as { userId?: number },
-  (input, ctx): IBlog[] | undefined => {
+  (arg, ctx): IBlog[] | undefined => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return getBlogsByUserId(userId);
   }
 )
 
-type Router = typeof router
-const router = server.router(
+type Schema = typeof schema
+const schema = server.schema(
   {} as Context,
   { auth, getUser, getUserBlogs }
 )
-const sage = client.router<Router>();
+const sage = client.use<Schema>();
 
 describe("blog example", () => {
 
@@ -121,7 +121,7 @@ describe("blog example", () => {
       a: sage.query("auth", { token: "token_of_berk" }, { ctx: "ctx" }),
       b: sage.query("getUser", {}, { wait: "a", ctx: "ctx" }),
       c: sage.query("getUserBlogs", {}, { wait: "a", ctx: "ctx" })
-    }, (query) => router.handle(() => ({}), query));
+    }, (query) => schema.execute(() => ({}), query));
 
     expect(res?.a?.userId).toBeTypeOf("number");
     expect(res?.a?.userId).toBe(0);
@@ -137,14 +137,14 @@ describe("blog example", () => {
   it("query one by one", async () => {
     const res1 = await sage.get({
       a: sage.query("auth", { token: "token_of_doruk" }),
-    }, (query) => router.handle(() => ({}), query));
+    }, (query) => schema.execute(() => ({}), query));
 
     expect(res1?.a?.userId).toBeTypeOf("number");
     expect(res1?.a?.userId).toBe(1);
 
     const res2 = await sage.get({
       b: sage.query("getUser", { userId: res1?.a?.userId }),
-    }, (query) => router.handle(() => ({}), query));
+    }, (query) => schema.execute(() => ({}), query));
 
     expect(res2?.b?.id).toBeTypeOf("number");
     expect(res2?.b?.username).toBeTypeOf("string");
@@ -153,7 +153,7 @@ describe("blog example", () => {
 
     const res3 = await sage.get({
       c: sage.query("getUserBlogs", { userId: res1?.a?.userId }),
-    }, (query) => router.handle(() => ({}), query));
+    }, (query) => schema.execute(() => ({}), query));
 
     expect(res3?.c?.length).toBe(3);
   })
@@ -161,31 +161,31 @@ describe("blog example", () => {
   it("check decoded query", () => {
     sage.get(
       { a: sage.query("getUser", {}) },
-      (query) => {
-        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{}}}');
+      async (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"res":"getUser","arg":{}}}');
       }
     )
 
     sage.get(
       { a: sage.query("getUser", {}, {}) },
-      (query) => {
-        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{},"opts":{}}}');
+      async (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"res":"getUser","arg":{},"opt":{}}}');
       }
     )
 
     sage.get(
       { a: sage.query("getUser", {}, { ctx: "ctx", wait: "a" }) },
-      (query) => {
-        expect(JSON.stringify(query)).toBe('{"a":{"name":"getUser","input":{},"opts":{"ctx":"ctx","wait":"a"}}}');
+      async (query) => {
+        expect(JSON.stringify(query)).toBe('{"a":{"res":"getUser","arg":{},"opt":{"ctx":"ctx","wait":"a"}}}');
       }
     )
   })
 
   it("unresolvable query must skip", () => {
-    sage.get({
-      a: sage.query("auth", { token: "token" }, { wait: "a" })
-    }, (query) => {
-      expect(Object.keys(router.handle(() => ({}), query)).length).toBe(0);
-    })
+    sage.get(
+      { a: sage.query("auth", { token: "token" }, { wait: "a" }) },
+      async (query) => {
+        expect(Object.keys(schema.execute(() => ({}), query)).length).toBe(0);
+      })
   })
 })

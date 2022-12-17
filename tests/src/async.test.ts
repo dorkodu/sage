@@ -75,44 +75,44 @@ async function getBlogsByUserId(id: number | undefined) {
   return out;
 }
 
-const auth = server.route(
+const auth = server.resource(
   {} as Context,
   {} as { token: string },
-  async (input, ctx) => {
-    let userId: number | undefined = await getUserIdByAuthToken(input.token);
+  async (arg, ctx) => {
+    let userId: number | undefined = await getUserIdByAuthToken(arg.token);
     if (userId !== undefined) ctx.userId = userId;
     return { userId }
   }
 )
 
-const getUser = server.route(
+const getUser = server.resource(
   {} as Context,
   {} as { userId?: number },
-  async (input, ctx): Promise<IUser | undefined> => {
+  async (arg, ctx): Promise<IUser | undefined> => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return await getUserById(userId)
   }
 )
 
-const getUserBlogs = server.route(
+const getUserBlogs = server.resource(
   {} as Context,
   {} as { userId?: number },
-  async (input, ctx): Promise<IBlog[] | undefined> => {
+  async (arg, ctx): Promise<IBlog[] | undefined> => {
     let userId: number | undefined = undefined;
-    if (input && typeof input.userId === "number") userId = input.userId;
+    if (arg && typeof arg.userId === "number") userId = arg.userId;
     else if (ctx.userId !== undefined) userId = ctx.userId;
     return await getBlogsByUserId(userId);
   }
 )
 
-type Router = typeof router
-const router = server.router(
+type Schema = typeof schema
+const schema = server.schema(
   {} as Context,
   { auth, getUser, getUserBlogs }
 )
-const sage = client.router<Router>();
+const sage = client.use<Schema>();
 
 describe("blog example", () => {
 
@@ -121,7 +121,7 @@ describe("blog example", () => {
       a: sage.query("auth", { token: "token_of_berk" }, { ctx: "ctx" }),
       b: sage.query("getUser", {}, { wait: "a", ctx: "ctx" }),
       c: sage.query("getUserBlogs", {}, { wait: "a", ctx: "ctx" })
-    }, (query) => router.handle(() => ({}), query));
+    }, (query) => schema.execute(() => ({}), query));
 
     expect(res?.a?.userId).toBeTypeOf("number");
     expect(res?.a?.userId).toBe(0);

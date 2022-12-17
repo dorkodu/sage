@@ -1,5 +1,5 @@
 import { sage } from "./client";
-import { router } from "./server";
+import { schema } from "./server";
 
 sage.get(
   {
@@ -7,15 +7,15 @@ sage.get(
     b: sage.query("getUser", {}, { wait: "a", ctx: "ctx" }),
     c: sage.query("getUserBlogs", {}, { wait: "a", ctx: "ctx" }),
   },
-  async (query) => {
-    console.log(query);
-    const result = await router.handle(
+  async (document) => {
+    console.log(document);
+    const result = await schema.execute(
       () => ({
         req: {},
         res: {},
-        next: () => {},
+        next: () => { },
       }),
-      query
+      document
     );
     console.log(result);
     return result;
