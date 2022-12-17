@@ -40,13 +40,13 @@ class Schema<TContext, TResources extends Record<any, any>> {
 
         // If no need to wait
         if (!query.opt?.wait) {
-          results[res] = await this.handleQuery(contexts, context, query);
+          results[res] = await this.executeQuery(contexts, context, query);
           delete document[res];
           shouldSkip = false;
         }
         // If waiting part is done
         else if (results[query.opt.wait]) {
-          results[res] = await this.handleQuery(contexts, context, query);
+          results[res] = await this.executeQuery(contexts, context, query);
           delete document[res];
           shouldSkip = false;
         }
@@ -56,7 +56,7 @@ class Schema<TContext, TResources extends Record<any, any>> {
     return results;
   }
 
-  private async handleQuery(
+  private async executeQuery(
     contexts: Record<string, any>,
     context: () => TContext,
     query: Query
