@@ -1,12 +1,12 @@
 {
   "name": "@dorkodu/sage",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The marvelous data exchange protocol for APIs",
   "keywords": [],
   "author": "Dorkodu",
   "license": "MIT",
-  "main": "lib/client/src/sage.js",
-  "typings": "lib/client/src/sage.d.ts",
+  "main": "lib/sage.js",
+  "typings": "lib/sage.d.ts",
   "files": [
     "lib",
     "README.md",
