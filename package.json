@@ -8,7 +8,10 @@
   "main": "lib/client/src/sage.js",
   "typings": "lib/client/src/sage.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "README.md",
+    "DOCS.md",
+    "LICENSE"
   ],
   "homepage": "https://github.com/dorkodu/sage#readme",
   "repository": {

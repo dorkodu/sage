@@ -11,7 +11,7 @@
     "noUnusedParameters": true,
 
     "paths": {
-      "@sage/*": ["../../package/src/*"],
+      "@sage/*": ["../../src/*"],
     },
     
     "lib": ["ES2015", "DOM"],

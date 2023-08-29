@@ -13,7 +13,7 @@
     "esModuleInterop": true,
 
     "paths": {
-      "@sage/*": ["../package/src/*"],
+      "@sage/*": ["../src/*"],
       "@blog/*": ["../examples/blog/src/*"],
       "@social-network/*": ["../examples/social-network/src/*"],
     },
