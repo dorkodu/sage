@@ -134,8 +134,14 @@ Check out the full docs here: [Docs](DOCS.md)
 
 ## Examples
 
-For more comprehensive use-cases of Sage, you can check the examples:
+For more comprehensive use cases of Sage, you can check the examples:
 - [Blog Example](examples/blog)
+
+## Real-World Uses
+
+We are already using Sage on our applications. If you do, [submit an issue](https://github.com/dorkodu/sage/issues) and we will display you too.
+- Dorkodu ID — [(GitHub)](https://github.com/dorkodu/id) - [(Website)](https://id.dorkodu.com)
+- Dorkodu Forum — [(GitHub)](https://github.com/dorkodu/forum) - [(Website)](https://forum.dorkodu.com)
 
 ## Authors
 
