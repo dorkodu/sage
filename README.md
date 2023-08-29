@@ -10,8 +10,6 @@
   The marvelous data exchange protocol for APIs
 </p>
 
-<br>
-
 ## About The Project
 
 Sage allows you to easily build & consume fully typesafe APIs, without a query language, or code generation.
@@ -27,8 +25,6 @@ Sage allows you to easily build & consume fully typesafe APIs, without a query l
 - 🔋&nbsp; Reference library in Typescript.
 - 🗽&nbsp; Liberating developer experience.
 - ⏳&nbsp; Fast, thanks to simplicity :)
-
-<br>
 
 ## Quickstart
 
@@ -132,20 +128,14 @@ Result:
 }
 ```
 
-<br>
-
 ## Docs
 
 Check out the full docs here: [Docs](DOCS.md)
-
-<br>
 
 ## Examples
 
 For more comprehensive use-cases of Sage, you can check the examples:
 - [Blog Example](examples/blog)
-
-<br>
 
 ## Authors
 
@@ -198,8 +188,6 @@ For more comprehensive use-cases of Sage, you can check the examples:
     </td>
   </tr>
 </table>
-
-<br>
 
 ## License
 
