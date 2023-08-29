@@ -150,7 +150,7 @@ For more comprehensive use-cases of Sage, you can check the examples:
     <td>
 			<b>Berk Cambaz</b>
       <br>
-      Creator of Sage
+      Project Lead & Developer
 			<br>
       Co-Founder & Chief Technologist @ <b><a href="https://dorkodu.com">Dorkodu</a></b>
 			<br>
@@ -175,7 +175,7 @@ For more comprehensive use-cases of Sage, you can check the examples:
     <td>
 			<b>Doruk Eray</b>
       <br>
-      Creator of Sage
+      Creator
 			<br>
       Founder & Chief @ <b><a href="https://dorkodu.com">Dorkodu</a></b>
 			<br>
