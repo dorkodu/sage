@@ -9,10 +9,14 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    
-    "outDir": "./dist",
-    "removeComments": true,
-    "skipLibCheck": true,
+
+    "esModuleInterop": true,
+
+    "paths": {
+      "@sage/*": ["../package/src/*"],
+      "@blog/*": ["../examples/blog/src/*"],
+      "@social-network/*": ["../examples/social-network/src/*"],
+    },
   },
   "include": [
     "./src/**/*",

@@ -1,82 +1,196 @@
+# @dorkodu/sage
+
 <p align="center">
-  <a href="https://libre.dorkodu.com/sage">
-      <img alt="Sage" src="resources/sage-M.png"
-      style="height: 200px !important; margin: 5px auto !important;" />
+  <a href="https://dorkodu.com/sage">
+    <img alt="Sage" src="resources/sage-M-light.png" style="height: 200px !important; margin: 5px auto !important;" />
   </a>
 </p>
 
 <p align="center">
-  the marvelous data exchange protocol for APIs
+  The marvelous data exchange protocol for APIs
 </p>
+
 <br>
 
-# sage
+## About The Project
 
-sage allows you to easily build & consume fully typesafe APIs, without a query language, schema, or code generation.
+Sage allows you to easily build & consume fully typesafe APIs, without a query language, or code generation.
 
-### features
+### Features
 
-- ✅&nbsp; describe your data requirements as resources.
-- 🔐&nbsp; static type safety & autocompletion on the client for queries.
-- ❌&nbsp; no query/schema definition language, code generation, run-time bloat, or build pipeline.
-- 🍃&nbsp; lightweight – sage has zero dependencies and a tiny client-side footprint.
-- 🔗&nbsp; work easily with any data source, a remote api, local cache.
-- 📨 infinite resources with one request.
-- 
-- 🔋&nbsp; reference server & client libraries in typescript.
-- 🗽&nbsp; liberating developer experience.
-- ⏳&nbsp; fast, thanks to simplicity :)
+- ✅&nbsp; Describe your data requirements as resources.
+- 🔐&nbsp; Static type safety & auto-completion on the client for queries.
+- ❌&nbsp; No query/schema definition language, code generation, run-time bloat, or build pipeline.
+- 🍃&nbsp; Lightweight – Sage has zero dependencies and a tiny client-side footprint.
+- 🔗&nbsp; Work easily with any data source, a remote API, local cache.
+- 📨 Infinite resources with one request.
+- 🔋&nbsp; Reference library in Typescript.
+- 🗽&nbsp; Liberating developer experience.
+- ⏳&nbsp; Fast, thanks to simplicity :)
 
-### overview
+<br>
 
-this is the working draft for **sage**, a data exchange protocol for APIs, and reference implementations of a runtime and capable of executing queries with your existing data and business logic. the [specification](https://libre.dorkodu.com/sage/paper) is open source; created and governed @ [dorkodu](https://dorkodu.com).
+## Quickstart
 
-## quickstart
+With NPM:
+```console
+$ npm install @dorkodu/sage
+```
 
-⏳ — work in progress.
+With Yarn:
+```console
+$ yarn add @dorkodu/sage
+```
 
-## protocol
+With PNPM:
+```console
+$ pnpm add @dorkodu/sage
+```
 
-the sage specification paper (we call it shortly _the paper_) is edited in the markdown files found in [**/paper**](./paper) folder.
-the latest working draft and releases of the paper can be found at this repository.
+<br>
 
-the target audience for the protocol specification are not the product developers; but those who have, or are actively interested in, building their own sage implementations and tools.
+Import Sage:
+```ts
+import { sage } from "@dorkodu/sage";
+```
 
-in order to be broadly adopted, we want sage to support wide variety of platforms, which will necessitate a collaborative effort across projects and communities.
+<br>
 
-this specification serves as a compass for implementation and development efforts of sage.
+Create a schema (in server):
+```ts
+interface Context {
+  /* Constant context variables (eg. req, res, next from ExpressJS) */
+  readonly req: Req;
+  readonly res: Res;
+  readonly next: Next;
 
-looking for more? [see sage’s website](https://libre.dorkodu.com/sage/).
+  /* Non-constant context variables that are useful */
+  userId?: number;
+}
 
-## documentation
+const auth = sage.resource(
+  {} as Context,
+  {} as { token: string },
+  async (arg, ctx) => {
+    // Validate "arg" (using zod, etc.), never trust the user input
+    // Query database using "arg"
+    return authStatus;
+  }
+)
 
-- **[website](https://libre.dorkodu.com/sage/)**
+const getUser = sage.resource(
+  {} as Context,
+  {} as { userId: number },
+  async (arg, ctx) => {
+    // Validate "arg" (using zod, etc.), never trust the user input
+    // Query database using "arg"
+    return user;
+  }
+)
 
-- **[reference documentation & learning material](https://libre.dorkodu.com/sage/learn/)**
+export type Schema = typeof schema;
+export const schema = sage.schema({} as Context, { auth, getUser });
+```
 
-- **[libraries, tools and community work](https://libre.dorkodu.com/sage/code/)**
+<br>
 
-- **[faq](https://libre.dorkodu.com/sage/faq/)**
+Create a router using schema from server (in client):
+```ts
+export const router = sage.use<Schema>();
+```
 
-## people
+<br>
+
+Send queries to server and get results:
+```ts
+const result = await router.get(
+  {
+    a: router.query("auth", { token: "..." }, { ctx: "ctx" }),
+    b: router.query("getUser", { userId: 0 }, { ctx: "ctx", wait: "a" }),
+  },
+  async (queries) => {
+    const result = await mockFetch(queries);
+    return result;
+  }
+)
+```
+
+<br>
+
+Result:
+```json
+{
+  "a": {
+    "status": true,
+    ...
+  },
+  "b": {
+    "id": 0,
+    "name": "Sage",
+    ...
+  }
+}
+```
+
+<br>
+
+## Docs
+
+Check out the full docs here: [Docs](DOCS.md)
+
+<br>
+
+## Examples
+
+For more comprehensive use-cases of Sage, you can check the examples:
+- [Blog Example](examples/blog)
+
+<br>
+
+## Authors
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://berk.dorkodu.com">
+        <img src="https://avatars.githubusercontent.com/u/50113500?v=4" width="100px;" style="border-radius:100px;" alt="Berk Cambaz"/>
+        <br />
+      </a>
+    </td>
+    <td>
+			<b>Berk Cambaz</b>
+      <br>
+      Creator of Sage
+			<br>
+      Co-Founder & Chief Technologist @ <b><a href="https://dorkodu.com">Dorkodu</a></b>
+			<br>
+      <a href="https://github.com/berkcambaz">
+      	<img alt="GitHub Followers" src="https://img.shields.io/github/followers/berkcambaz?label=%40berkcambaz&style=social">
+			</a>
+      <a href="https://twitter.com/bercrobat">
+				<img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/bercrobat?style=social">
+			</a>
+    </td>
+  </tr>
+</table>
 
 <table>
   <tr>
     <td align="center">
       <a href="https://doruk.dorkodu.com">
-        <img src="https://avatars.githubusercontent.com/u/68155490?v=4" width="100px;" style="border-radius:100px;" alt="doruk eray"/>
+        <img src="https://avatars.githubusercontent.com/u/68155490?v=4" width="100px;" style="border-radius:100px;" alt="Doruk Eray"/>
         <br />
       </a>
     </td>
     <td>
-			<b>doruk eray</b>
+			<b>Doruk Eray</b>
       <br>
-      creator of sage
+      Creator of Sage
 			<br>
-      founder and chief @ <b><a href="https://dorkodu.com">dorkodu</a></b>
+      Founder & Chief @ <b><a href="https://dorkodu.com">Dorkodu</a></b>
 			<br>
       <a href="https://github.com/dorukeray">
-      	<img alt="GitHub followers" src="https://img.shields.io/github/followers/dorukeray?label=%40dorukeray&style=social">
+      	<img alt="GitHub Followers" src="https://img.shields.io/github/followers/dorukeray?label=%40dorukeray&style=social">
 			</a>
       <a href="https://twitter.com/d0rukeray">
 				<img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/d0rukeray?style=social">
@@ -85,11 +199,8 @@ looking for more? [see sage’s website](https://libre.dorkodu.com/sage/).
   </tr>
 </table>
 
-## sponsors
+<br>
 
-if you enjoy working with sage and want to support us, consider giving a token appreciation by [github sponsors](https://github.com/sponsors/dorukeray)!
-also, if your team uses sage and you want to support long-term maintenance of sage, [get in touch](mailto:doruk@dorkodu.com) to discuss potential partnerships.
+## License
 
-## license
-
-sage is open-sourced software licensed under the [**mit license**](LICENSE).
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.

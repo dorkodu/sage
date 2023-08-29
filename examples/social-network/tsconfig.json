@@ -9,11 +9,12 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+
+    "paths": {
+      "@sage/*": ["../../package/src/*"],
+    },
     
-    "outDir": "./lib",
-    "removeComments": true,
-    "skipLibCheck": true,
-    "declaration": true,
+    "lib": ["ES2015", "DOM"],
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*"],
 }

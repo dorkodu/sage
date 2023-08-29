@@ -1,10 +1,13 @@
 import { defineConfig } from 'vitest/config'
 
-export default defineConfig({
-  test: {
+import path from "path";
 
-  },
-  server: {
-    
+export default defineConfig({
+  resolve:{
+    alias: {
+      "@sage": path.resolve(__dirname, "../package/src"),
+      "@blog": path.resolve(__dirname, "../examples/blog/src"),
+      "@social-network": path.resolve(__dirname, "../examples/social-network/src"),
+    },
   }
 })
