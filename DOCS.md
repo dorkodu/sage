@@ -160,6 +160,6 @@ const result = await router.get(
 
 And that's all you need to know about Sage.
 
-If you have still have questions, you can check the [examples](Readme.md#examples)
+If you have still have questions, you can check the [examples](README.md#examples)
 
 Or see ask a question [here](https://github.com/dorkodu/sage/issues).
