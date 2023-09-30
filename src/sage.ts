@@ -25,7 +25,7 @@ export const sage = {
   /* Used by client */
 
   /**
-   * Creates a router using the schema type from server, to send queries to server.
+   * Creates a router using the schema type from the server, to send queries to the server.
    */
   use,
 }
@@ -48,17 +48,17 @@ export type QueryOptions = {
   /**
    * Name of the query to wait for.
    * If not specified, the query is run asynchronously.
-   * If specified, wait's until that query is finished executing.
+   * If specified, wait until that query is finished executing.
    */
   wait?: string
 }
 
 /**
- * Creates a sage resource that can be used by sage schema.
- * @param context Context for the resouce, must be the same as schema's context.
+ * Creates a sage resource that can be used by the sage schema.
+ * @param context Context for the resource, must be the same as schema's context.
  * @param arg Arguments that are accepted by the sage resource.
  * @param executor Executor function that uses context and argument to generate a result.
- * @returns Result of the executor function.
+ * @returns the Result of the executor function.
  */
 export function resource<
   TContext,
@@ -70,7 +70,7 @@ export function resource<
 
 /**
  * Creates a sage schema that can be used to execute queries.
- * @param context Context for the resouce, must be the same as resources context.
+ * @param context Context for the resource, must be the same as the resources' context.
  * @param resources Resources that will be used by the schema.
  * @returns Sage schema that can execute queries.
  */
@@ -94,7 +94,7 @@ export class Schema<TContext, TResources extends Record<any, any>> {
    * Executes the given queries using the context function.
    * @param context Function that creates the context object.
    * @param queries Queries to be executed.
-   * @returns Result of the executed queries.
+   * @returns the Result of the executed queries.
    */
   public async execute(context: () => TContext, queries: Record<string, Query>) {
     const contexts: Record<string, any> = {};
@@ -162,8 +162,8 @@ export class Router<TSchema extends { resources: any }> {
    * that handles the communication of the queries to the server.
    * It can be HTTP, WebSockets, WebRTC, or anything else. 
    * @param queries Queries to get their results.
-   * @param callback A callback function to send the queries to the server (with any protocol/way user wants).
-   * @returns Result of the sage query.
+   * @param callback A callback function to send the queries to the server (with any protocol/way the user wants).
+   * @returns the Result of the sage query.
    */
   public async get<
     TQueries extends Record<any, { res: any }>,
