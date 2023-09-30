@@ -1,3 +1,14 @@
+/**
+ * Sage - The Marvellous Data Exchange Protocol & Library
+ * ? See the original code from Dorkodu: https://github.com/dorkodu/sage 
+ * 
+ * @berkcambaz -> Developer. Reformed and revolutionized the typesafe data exchange. 
+ * @dorukeray -> Creator. Just planted the seeds.
+ */
+
+/**
+ * Sage - Singleton Library
+ */
 export const sage = {
   /* Used by server */
 
@@ -19,8 +30,14 @@ export const sage = {
   use,
 }
 
-type Query = { res: string, arg: any, opt?: QueryOptions }
-type QueryOptions = {
+/**
+ * Sage Query object.
+ * @field res Name of the sage resource. 
+ * @field arg Arguments for the sage resource.
+ * @field opt Options of the query.
+ */
+export type Query = { res: string, arg: any, opt?: QueryOptions }
+export type QueryOptions = {
   /**
    * Name of the context.
    * If not specified, a new context is generated for that query.
@@ -43,7 +60,7 @@ type QueryOptions = {
  * @param executor Executor function that uses context and argument to generate a result.
  * @returns Result of the executor function.
  */
-function resource<
+export function resource<
   TContext,
   TArg,
   TOutput,
@@ -57,14 +74,14 @@ function resource<
  * @param resources Resources that will be used by the schema.
  * @returns Sage schema that can execute queries.
  */
-function schema<
+export function schema<
   TContext,
   TResources extends Record<any, any>
 >(context: TContext, resources: TResources) {
   return new Schema(context, resources);
 }
 
-class Schema<TContext, TResources extends Record<any, any>> {
+export class Schema<TContext, TResources extends Record<any, any>> {
   public context: TContext;
   public resources: TResources;
 
@@ -133,11 +150,11 @@ class Schema<TContext, TResources extends Record<any, any>> {
  * Used to create queries with auto-complete, using the schema type from the server.
  * @returns Sage router that can create queries.
  */
-function use<TSchema extends { resources: any }>() {
+export function use<TSchema extends { resources: any }>() {
   return new Router<TSchema>();
 }
 
-class Router<TSchema extends { resources: any }> {
+export class Router<TSchema extends { resources: any }> {
   /**
    * Gets the result of the sage query.
    * As sage is a suitable library for any type of communication protocol,
