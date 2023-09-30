@@ -66,7 +66,7 @@ You can perform input validation, query the database, set properties on `ctx` ob
 After creating your resources, create a schema using the same context as the resources and the resources themselves.
 
 ```ts
-// Export the schema type to get auto-completion on client side
+// Export the schema type to get auto-completion on the client side
 export type Schema = typeof schema;
 
 export const schema = sage.schema(
